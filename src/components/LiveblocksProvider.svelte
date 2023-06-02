@@ -1,0 +1,15 @@
+<script lang="ts">
+	import { clientSymbol } from '../symbols';
+	import { setContext } from 'svelte';
+	import type { Client } from '@liveblocks/client';
+
+	export let client: Client;
+
+	if (!client) {
+		throw new Error('LiveblocksProvider requires a client');
+	}
+
+	setContext<Client>(clientSymbol, client);
+</script>
+
+<slot />
