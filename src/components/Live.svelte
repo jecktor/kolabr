@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Cursor from './Cursor.svelte';
 	import Avatar from './Avatar.svelte';
-	import { useMyPresence, useOthers, useSelf } from '../utils';
+	import { useMyPresence, useOthers, useSelf } from '$utils';
 
 	/**
 	 * Liveblocks allows each user to have "presence", essentially a set of
