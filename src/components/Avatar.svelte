@@ -8,7 +8,13 @@
 
 <div class="avatar" data-tooltip={name} style={`border: 4px solid ${color};`}>
 	<div class="avatar_picture">
-		<img alt="Avatar" height={IMAGE_SIZE} src={picture} width={IMAGE_SIZE} />
+		<img
+			alt="Avatar"
+			height={IMAGE_SIZE}
+			src={picture}
+			width={IMAGE_SIZE}
+			referrerpolicy="no-referrer"
+		/>
 	</div>
 </div>
 

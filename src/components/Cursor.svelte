@@ -38,6 +38,7 @@
 		left: 0;
 		pointer-events: none;
 		user-select: none;
+		z-index: 10;
 	}
 
 	.pill {
@@ -56,6 +57,5 @@
 
 	.name {
 		position: relative;
-		z-index: 10;
 	}
 </style>

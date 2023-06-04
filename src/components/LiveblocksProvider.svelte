@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { clientSymbol } from '../symbols';
 	import { setContext } from 'svelte';
+	import { clientSymbol } from '$symbols';
 	import type { Client } from '@liveblocks/client';
 
 	export let client: Client;

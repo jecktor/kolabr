@@ -1,4 +1,6 @@
 export * from './useMyPresence';
+export * from './createRoomId';
+export * from './str2color';
 export * from './useOthers';
 export * from './useSelf';
 export * from './useRoom';

@@ -2,7 +2,7 @@ import { onDestroy } from 'svelte';
 import { writable } from 'svelte/store';
 import { useRoom } from './useRoom';
 import type { Others } from '@liveblocks/client';
-import type { Presence, UserMeta } from '../types';
+import type { Presence, UserMeta } from '$types';
 
 /**
  * Works similarly to `liveblocks-react` useOthers

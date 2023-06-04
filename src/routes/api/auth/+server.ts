@@ -1,10 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { authorize } from '@liveblocks/node';
+import { str2Color } from '$utils';
 
 const API_KEY = import.meta.env.VITE_LIVEBLOCKS_SECRET_KEY as string;
 
-export async function POST({ request }) {
-	const { room } = await request.json();
+export async function POST(req) {
+	const { room } = await req.request.json();
+	const session = await req.locals.getSession();
+	const user = session?.user;
 
 	if (!API_KEY) {
 		return json(
@@ -15,21 +18,18 @@ export async function POST({ request }) {
 		);
 	}
 
-	if (!room) {
+	if (!room || !user) {
 		return new Response(undefined, { status: 403 });
 	}
-
-	// For now, this generates random users
-	// and sets their info from the authentication endpoint
 
 	const response = await authorize({
 		room: room,
 		secret: API_KEY,
-		userId: `user-${Math.floor(Math.random() * 100)}`,
+		userId: crypto.randomUUID(),
 		userInfo: {
-			name: 'Guest',
-			picture: `https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`,
-			color: '#ffaa00'
+			name: user?.name,
+			picture: user?.image,
+			color: str2Color(user?.email || 'Guest')
 		}
 	});
 

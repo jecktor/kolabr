@@ -1,6 +1,6 @@
 import { getContext } from 'svelte';
-import { roomSymbol } from '../symbols';
-import type { LiveRoom } from '../types';
+import { roomSymbol } from '$symbols';
+import type { LiveRoom } from '$types';
 
 /**
  * Works similarly to `liveblocks-react` useRoom

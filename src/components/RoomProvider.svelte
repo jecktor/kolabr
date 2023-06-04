@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getContext, onDestroy, setContext } from 'svelte';
-	import { clientSymbol, roomSymbol } from '../symbols';
+	import { clientSymbol, roomSymbol } from '$symbols';
 	import type { Client } from '@liveblocks/client';
-	import type { Presence, Storage, UserMeta, LiveRoom } from '../types';
+	import type { Presence, Storage, UserMeta, LiveRoom } from '$types';
 
 	export let id: string;
 
