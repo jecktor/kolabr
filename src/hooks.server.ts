@@ -7,7 +7,16 @@ import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 const prisma = new PrismaClient();
 
 export const handle = SvelteKitAuth({
-	adapter: PrismaAdapter(prisma),
+	adapter: {
+		...PrismaAdapter(prisma),
+		linkAccount: async ({ ...data }) => {
+			if (data.expires_at) {
+				delete data.expires_at;
+			}
+
+			prisma.account.create({ data });
+		}
+	},
 	providers: [
 		GoogleProvider({
 			clientId: GOOGLE_CLIENT_ID,
