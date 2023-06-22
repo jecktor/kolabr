@@ -1,7 +1,7 @@
 <script>
 	export let picture = '';
 	export let name = '';
-	export let color = '#ffffff';
+	export let color = '';
 
 	const IMAGE_SIZE = 48;
 </script>
@@ -26,8 +26,8 @@
 		border-radius: 90px;
 		width: 56px;
 		height: 56px;
-		background-color: #9ca3af;
 		margin-left: -0.75rem;
+		padding: 1px;
 	}
 
 	.avatar:before {

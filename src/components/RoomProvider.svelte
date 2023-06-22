@@ -14,7 +14,7 @@
 
 	if (client) {
 		const room = client.enter<Presence, Storage, UserMeta>(id, {
-			initialPresence: { cursor: null },
+			initialPresence: { cursor: null, focusedId: null },
 			initialStorage: {}
 		});
 

@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$utils';
+	import type { BoardInfo, Lane, InputEvent } from '$types';
+
 	import Cursor from './Cursor.svelte';
 	import Avatar from './Avatar.svelte';
-	import { useMyPresence, useOthers, useSelf } from '$utils';
+	import Selection from './Selection.svelte';
 
 	/**
 	 * Liveblocks allows each user to have "presence", essentially a set of
@@ -18,13 +21,27 @@
 
 	// Set a default value for presence
 	myPresence.update({
-		cursor: null
+		cursor: null,
+		focusedId: null
 	});
+
+	const lanes = useList<Lane>('lanes', [
+	]);
+
+	const boardInfo = useObject<BoardInfo>('infoStorage', {
+		name: 'New board'
+	});
+
+	function changeBoardName(newName: string) {
+		$boardInfo.update({ name: newName });
+	}
 
 	// Update cursor presence to current pointer location
 	function handlePointerMove(event: PointerEvent) {
-		event.preventDefault();
+		if ($myPresence.focusedId) return;
+
 		myPresence.update({
+			focusedId: null,
 			cursor: {
 				x: Math.round(event.clientX),
 				y: Math.round(event.clientY)
@@ -35,11 +52,21 @@
 	// When the pointer leaves the page, set cursor presence to null
 	function handlePointerLeave() {
 		myPresence.update({
+			...$myPresence,
 			cursor: null
 		});
 	}
 
+	function handleSelectionFocus(event: InputEvent) {
+		myPresence.update({ cursor: null, focusedId: event.currentTarget.id });
+	}
+
+	function handleSelectionBlur() {
+		myPresence.update({ cursor: null, focusedId: null });
+	}
+
 	$: hasMoreUsers = $others ? [...$others].length > 3 : false;
+	$: boardReady = $boardInfo ? Object.keys($boardInfo.toImmutable()).length > 0 : false;
 </script>
 
 <!-- Live cursors -->
@@ -70,6 +97,36 @@
 		{#if $self && $myPresence}
 			<div class="current_user_container">
 				<Avatar picture={$self.info.picture} name={$self.info.name} color={$self.info.color} />
+			</div>
+		{/if}
+
+		{#if boardReady}
+			<h1>{$boardInfo.get('name')}</h1>
+			<Selection id="input-test" {others}>
+				<input
+					id="input-test"
+					type="text"
+					value={$boardInfo.get('name')}
+					on:focus={handleSelectionFocus}
+					on:blur={handleSelectionBlur}
+					on:input={(e) => changeBoardName(e.currentTarget.value)}
+				/>
+			</Selection>
+			<div class="lanes">
+				{#each [...$lanes] as { id: laneId, name: laneName, tickets } (laneId)}
+					<div class="lane">
+						<h2>{laneName}</h2>
+						{#each tickets as { id: ticketId, name: ticketName, description, tags } (ticketId)}
+							<div class="ticket">
+								<strong>{ticketName}</strong>
+								<p>{description}</p>
+								{#each tags as { id: tagId, name: tagName } (tagId)}
+									<span>{tagName}</span>
+								{/each}
+							</div>
+						{/each}
+					</div>
+				{/each}
 			</div>
 		{/if}
 	</div>

@@ -1,10 +1,11 @@
-import type { Room } from '@liveblocks/client';
+import type { Room, LiveObject, LiveList } from '@liveblocks/client';
 
 // Presence represents the properties that will exist on every User in the
 // Room and that will automatically be kept in sync. Accessible through the
 // `user.presence` property. Must be JSON-serializable.
 export type Presence = {
 	cursor: { x: number; y: number } | null;
+	focusedId: string | null;
 };
 
 // Optionally, Storage represents the shared document that persists in the
@@ -12,8 +13,7 @@ export type Presence = {
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 export type Storage = {
-	// animals: LiveList<string>,
-	// ...
+	[key: string]: LiveObject | LiveList;
 };
 
 // Optionally, UserMeta represents static/readonly metadata on each User, as
@@ -34,4 +34,45 @@ export type RoomEvent = {
 	// ...
 };
 
+export type LiveStorage = LiveObject<Storage>;
+
 export type LiveRoom = Room<Presence, Storage, UserMeta, RoomEvent>;
+
+// Misc types
+
+type InputEvent = Event & {
+	currentTarget: EventTarget & HTMLInputElement;
+};
+
+// Temporary types (to be replaced with prisma types).
+
+type Member = {
+	email: string;
+	name: string;
+	image: string;
+};
+
+type Tag = {
+	id: string;
+	name: string;
+};
+
+type Ticket = {
+	id: string;
+	name: string;
+	description: string;
+	deadline: string;
+	members: Memeber[];
+	tags: Tag[];
+};
+
+type Lane = {
+	id: string;
+	name: string;
+	limit: number;
+	tickets: Ticket[];
+};
+
+type BoardInfo = {
+	name: string;
+};

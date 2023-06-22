@@ -53,6 +53,7 @@
 		font-weight: 500;
 		white-space: nowrap;
 		border-radius: 90px;
+		color: white;
 	}
 
 	.name {

@@ -126,4 +126,7 @@
 	.buttonPrimary:hover {
 		box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
 	}
+	header {
+		margin-bottom: 30px;
+	}
 </style>
