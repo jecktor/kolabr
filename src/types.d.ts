@@ -44,7 +44,7 @@ type InputEvent = Event & {
 	currentTarget: EventTarget & HTMLInputElement;
 };
 
-// Temporary types (to be replaced with prisma types).
+// Temporary types
 
 type Member = {
 	email: string;
