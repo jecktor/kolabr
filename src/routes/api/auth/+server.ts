@@ -6,8 +6,7 @@ const API_KEY = import.meta.env.VITE_LIVEBLOCKS_SECRET_KEY as string;
 
 export async function POST(req) {
 	const { room } = await req.request.json();
-	const session = await req.locals.getSession();
-	const user = session?.user;
+	const { user } = await req.locals.auth.validateUser();
 
 	if (!API_KEY) {
 		return json(
@@ -25,11 +24,11 @@ export async function POST(req) {
 	const response = await authorize({
 		room: room,
 		secret: API_KEY,
-		userId: crypto.randomUUID(),
+		userId: user.userId,
 		userInfo: {
-			name: user?.name,
-			picture: user?.image,
-			color: str2Color(user?.email || 'Guest')
+			name: user.name,
+			picture: user.image,
+			color: str2Color(user.userId)
 		}
 	});
 
