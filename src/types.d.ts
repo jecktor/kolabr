@@ -23,7 +23,7 @@ export type UserMeta = {
 	id: string; // Accessible through `user.id`
 	info: {
 		name: string;
-		picture: string;
+		image: string;
 		color: string;
 	};
 };

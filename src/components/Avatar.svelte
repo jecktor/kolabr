@@ -1,5 +1,5 @@
 <script>
-	export let picture = '';
+	export let image = '';
 	export let name = '';
 	export let color = '';
 
@@ -7,11 +7,11 @@
 </script>
 
 <div class="avatar" data-tooltip={name} style={`border: 4px solid ${color};`}>
-	<div class="avatar_picture">
+	<div class="avatar_image">
 		<img
 			alt="Avatar"
 			height={IMAGE_SIZE}
-			src={picture}
+			src={image}
 			width={IMAGE_SIZE}
 			referrerpolicy="no-referrer"
 		/>
@@ -50,12 +50,12 @@
 		opacity: 1;
 	}
 
-	.avatar_picture {
+	.avatar_image {
 		border-radius: 90px;
 		overflow: hidden;
 	}
 
-	.avatar_picture img {
+	.avatar_image img {
 		width: 100%;
 		height: 100%;
 	}

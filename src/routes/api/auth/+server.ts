@@ -27,7 +27,7 @@ export async function POST(req) {
 		userId: user.userId,
 		userInfo: {
 			name: user.name,
-			picture: user.image,
+			image: user.image,
 			color: str2Color(user.userId)
 		}
 	});

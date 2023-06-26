@@ -84,7 +84,7 @@
 		<!-- Show the first 3 users' avatars -->
 		{#if $others}
 			{#each [...$others].slice(0, 3) as { connectionId, info } (connectionId)}
-				<Avatar picture={info.picture} name={info.name} color={info.color} />
+				<Avatar image={info.image} name={info.name} color={info.color} />
 			{/each}
 		{/if}
 
@@ -96,7 +96,7 @@
 		<!-- Show the current user's avatar-->
 		{#if $self && $myPresence}
 			<div class="current_user_container">
-				<Avatar picture={$self.info.picture} name={$self.info.name} color={$self.info.color} />
+				<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
 			</div>
 		{/if}
 
