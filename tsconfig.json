@@ -15,6 +15,7 @@
 			"$lib": ["./src/lib"],
 			"$lib/*": ["src/lib/*"],
 			"$utils": ["src/utils"],
+			"$locales": ["src/locales"],
 			"$types": ["src/types.d.ts"],
 			"$symbols": ["src/symbols.ts"]
 		}

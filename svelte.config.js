@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 import path from 'path';
 
@@ -17,6 +17,7 @@ const config = {
 			$components: path.resolve('./src/components'),
 			$lib: path.resolve('./src/lib'),
 			$utils: path.resolve('./src/utils'),
+			$locales: path.resolve('./src/locales'),
 			$types: path.resolve('./src/types.d.ts'),
 			$symbols: path.resolve('./src/symbols.ts')
 		}
