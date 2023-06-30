@@ -1,20 +1,21 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { t, type TranslationKeys } from '$locales';
 
-	export let form: { message?: string };
+	export let form: { message?: TranslationKeys };
 </script>
 
-<h2>Create an account</h2>
+<h2>{$t('signup')}</h2>
 <form method="post" use:enhance>
-	<label for="name">name</label><br />
+	<label for="name">{$t('name')}</label><br />
 	<input id="name" name="name" required /><br />
-	<label for="email">email</label><br />
+	<label for="email">{$t('email')}</label><br />
 	<input type="email" id="email" name="email" required /><br />
-	<label for="password">password</label><br />
+	<label for="password">{$t('pass')}</label><br />
 	<input type="password" id="password" name="password" /><br />
-	<input type="submit" value="Continue" class="button" required />
+	<input type="submit" value={$t('continues')} class="button" />
 </form>
 {#if form?.message}
-	<p class="error">{form.message || ''}</p>
+	<p class="error">{$t(form.message) || ''}</p>
 {/if}
-<a href="/login" class="link">Sign in</a>
+<a href="/login" class="link">{$t('login')}</a>

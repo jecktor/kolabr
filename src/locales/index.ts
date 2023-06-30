@@ -8,14 +8,14 @@ interface Translations {
 	};
 }
 
-type TranslationKeys = keyof typeof en;
-
 const translations: Translations = { en, es };
+
+export type TranslationKeys = keyof typeof en;
 
 export const locale = writable('en');
 export const locales = Object.keys(translations);
 
-function translate(locale: string, key: TranslationKeys) {
+export function translate(locale: string, key: TranslationKeys) {
 	// Grab the translation from the translations object.
 	const text: string = translations[locale][key];
 

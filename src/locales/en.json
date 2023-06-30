@@ -1,7 +1,8 @@
 {
+	"locale": "English",
 	"actions": "Actions",
 	"confirm": "Confirm password",
-	"continue": "Continue",
+	"continues": "Continue",
 	"copylink": "Copy link",
 	"create": "Create account",
 	"createboard": "Create new board",

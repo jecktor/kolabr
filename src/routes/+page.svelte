@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { t, locale, locales } from '$locales';
-	import type { PageData } from './$types';
+	import { t, locale, locales, translate } from '$locales';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <p>{$t('herotitle')}</p>
@@ -14,7 +13,7 @@
 
 <select bind:value={$locale}>
 	{#each locales as l}
-		<option value={l}>{l}</option>
+		<option value={l}>{translate(l, 'locale')}</option>
 	{/each}
 </select>
 

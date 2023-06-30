@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$utils';
+	import { t } from '$locales';
 	import type { BoardInfo, Lane, InputEvent } from '$types';
 
 	import Cursor from './Cursor.svelte';
@@ -8,7 +9,7 @@
 
 	/**
 	 * Liveblocks allows each user to have "presence", essentially a set of
-	 * properties specific to that users. An example would be the colour they've
+	 * properties specific to that users. An example would be the color they've
 	 * selected, or their cursor's location in coordinates. We can then use
 	 * "others", a list of every other user's "presence", to build an app. We
 	 * can use our custom hooks to watch and edit these.
@@ -25,11 +26,10 @@
 		focusedId: null
 	});
 
-	const lanes = useList<Lane>('lanes', [
-	]);
+	const lanes = useList<Lane>('lanes', []);
 
 	const boardInfo = useObject<BoardInfo>('infoStorage', {
-		name: 'New board'
+		name: $t('newboard')
 	});
 
 	function changeBoardName(newName: string) {

@@ -18,7 +18,7 @@ export const actions: Actions = {
 			typeof password !== 'string'
 		) {
 			return fail(400, {
-				message: 'Invalid input'
+				message: 'invalid'
 			});
 		}
 
@@ -41,12 +41,12 @@ export const actions: Actions = {
 		} catch (error) {
 			if (error.code === 'ER_DUP_ENTRY') {
 				return fail(400, {
-					message: 'Email already in use'
+					message: 'emailinuse'
 				});
 			}
 
 			return fail(500, {
-				message: 'Unknown error occurred'
+				message: 'unknown'
 			});
 		}
 	}

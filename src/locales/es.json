@@ -1,7 +1,8 @@
 {
+	"locale": "Español",
 	"actions": "Acciones",
 	"confirm": "Confirmar contraseña",
-	"continue": "Continuar",
+	"continues": "Continuar",
 	"copylink": "Copiar enlace",
 	"create": "Crear cuenta",
 	"createboard": "Crear nuevo tablero",

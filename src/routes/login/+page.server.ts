@@ -18,7 +18,7 @@ export const actions: Actions = {
 
 		if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
 			return fail(400, {
-				message: 'Invalid input'
+				message: 'invalid'
 			});
 		}
 
@@ -32,14 +32,14 @@ export const actions: Actions = {
 				(error.message === 'AUTH_INVALID_KEY_ID' || error.message === 'AUTH_INVALID_PASSWORD')
 			) {
 				return fail(400, {
-					message: 'Incorrect email or password.'
+					message: 'creds'
 				});
 			}
 
 			// Database connection error
 			console.log(error);
 			return fail(500, {
-				message: 'Unknown error occurred'
+				message: 'unknown'
 			});
 		}
 	}
