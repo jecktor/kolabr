@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$utils';
+	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t } from '$locales';
 	import type { BoardInfo, Lane, InputEvent } from '$types';
 

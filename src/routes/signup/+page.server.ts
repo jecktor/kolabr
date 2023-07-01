@@ -1,5 +1,5 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server';
 import type { PageServerLoad } from './$types';
 
 export const actions: Actions = {

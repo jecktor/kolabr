@@ -1,5 +1,5 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server';
 
 export const load = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
