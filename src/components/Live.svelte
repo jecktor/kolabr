@@ -3,9 +3,7 @@
 	import { t } from '$locales';
 	import type { BoardInfo, Lane, InputEvent } from '$types';
 
-	import Cursor from './Cursor.svelte';
-	import Avatar from './Avatar.svelte';
-	import Selection from './Selection.svelte';
+	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
 
 	/**
 	 * Liveblocks allows each user to have "presence", essentially a set of
