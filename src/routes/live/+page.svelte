@@ -3,7 +3,8 @@
 	import { type Client, createClient } from '@liveblocks/client';
 	import { createRoomId } from '$utils';
 
-	import { LiveblocksProvider, RoomProvider, Live } from '$components';
+	import { LiveblocksProvider, RoomProvider } from '$lib/liveblocks';
+	import { Live } from '$components';
 
 	let id: string;
 	let client: Client;

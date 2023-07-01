@@ -1,6 +1,10 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server';
-import type { PageServerLoad } from './$types';
+
+export const load = async ({ locals }) => {
+	const session = await locals.auth.validate();
+	if (session) throw redirect(302, '/dashboard');
+};
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
@@ -50,10 +54,4 @@ export const actions: Actions = {
 			});
 		}
 	}
-};
-
-export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/');
-	return {};
 };
