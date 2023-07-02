@@ -1,3 +1,5 @@
+import { randomId } from './randomId';
+
 export function createRoomId() {
 	let id = new URLSearchParams(window.location.search).get('room');
 
@@ -7,8 +9,4 @@ export function createRoomId() {
 	}
 
 	return id;
-}
-
-function randomId() {
-	return 'xxxxxxxxxxxxxxxxxxxxx'.replace(/[x]/g, () => ((Math.random() * 16) | 0).toString(16));
 }

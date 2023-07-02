@@ -36,7 +36,9 @@ export const actions: Actions = {
 				attributes: {
 					name,
 					email,
-					image: `https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`
+					image: `https://storage.googleapis.com/kolabr-avatars/default/${Math.floor(
+						Math.random() * 30
+					)}.png`
 				}
 			});
 
