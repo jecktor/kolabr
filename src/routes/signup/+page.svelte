@@ -13,9 +13,9 @@
 	<input type="email" id="email" name="email" required /><br />
 	<label for="password">{$t('pass')}</label><br />
 	<input type="password" id="password" name="password" /><br />
-	<input type="submit" value={$t('continues')} class="button" />
+	<input type="submit" value={$t('continues')} />
 </form>
 {#if form?.message}
-	<p class="error">{$t(form.message) || ''}</p>
+	<p>{$t(form.message)}</p>
 {/if}
-<a href="/login" class="link">{$t('login')}</a>
+<a href="/login">{$t('login')}</a>

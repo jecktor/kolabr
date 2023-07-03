@@ -1,5 +1,7 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { get } from 'svelte/store';
 import { auth } from '$lib/server';
+import { locale } from '$locales';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -36,6 +38,7 @@ export const actions: Actions = {
 				attributes: {
 					name,
 					email,
+					lang: get(locale),
 					image: `https://storage.googleapis.com/kolabr-avatars/default/${Math.floor(
 						Math.random() * 30
 					)}.png`
@@ -44,8 +47,8 @@ export const actions: Actions = {
 
 			const session = await auth.createSession(user.userId);
 			locals.auth.setSession(session);
-		} catch (error) {
-			if (error.code === 'ER_DUP_ENTRY') {
+		} catch (e) {
+			if ((e as { code: string }).code === 'ER_DUP_ENTRY') {
 				return fail(400, {
 					message: 'emailinuse'
 				});
