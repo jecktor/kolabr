@@ -5,6 +5,7 @@ declare namespace Lucia {
 		name: string;
 		email: string;
 		image: string;
+		lang: string;
 	};
 }
 

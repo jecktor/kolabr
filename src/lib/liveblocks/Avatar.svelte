@@ -53,6 +53,7 @@
 	.avatar_image {
 		border-radius: 90px;
 		overflow: hidden;
+		background: white;
 	}
 
 	.avatar_image img {

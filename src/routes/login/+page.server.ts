@@ -24,10 +24,10 @@ export const actions: Actions = {
 			const key = await auth.useKey('email', email, password);
 			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);
-		} catch (error) {
+		} catch (e) {
 			if (
-				error instanceof LuciaError &&
-				(error.message === 'AUTH_INVALID_KEY_ID' || error.message === 'AUTH_INVALID_PASSWORD')
+				e instanceof LuciaError &&
+				(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
 			) {
 				return fail(400, {
 					message: 'creds'
@@ -35,7 +35,6 @@ export const actions: Actions = {
 			}
 
 			// Database connection error
-			console.log(error);
 			return fail(500, {
 				message: 'unknown'
 			});
