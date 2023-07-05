@@ -70,6 +70,12 @@ export const actions: Actions = {
 			});
 		}
 
+		if (name.length > 32) {
+			return fail(400, {
+				message: 'namelong'
+			});
+		}
+
 		try {
 			await auth.updateUserAttributes(user.userId, {
 				name
@@ -126,6 +132,18 @@ export const actions: Actions = {
 		if (!pass || !newpass || typeof pass !== 'string' || typeof newpass !== 'string') {
 			return fail(400, {
 				message: 'invalid'
+			});
+		}
+
+		if (newpass.length < 8) {
+			return fail(400, {
+				message: 'passshort'
+			});
+		}
+
+		if (newpass.length > 64) {
+			return fail(400, {
+				message: 'passlong'
 			});
 		}
 
