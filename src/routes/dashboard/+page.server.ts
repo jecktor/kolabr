@@ -4,13 +4,18 @@ import { auth } from '$lib/server';
 import { db } from '$lib/server';
 import { randomId } from '$utils';
 import { locale, translate } from '$locales';
+import type { Board } from '$types';
 
 export const load = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
 	if (!user) throw redirect(302, '/login');
 
+	const [results] = await db.execute('CALL get_user_boards(?)', [user.userId]);
+	const boards = (results as Board[][])[0];
+
 	return {
-		user
+		user,
+		boards
 	};
 };
 
@@ -25,16 +30,18 @@ export const actions: Actions = {
 		const { user } = await locals.auth.validateUser();
 		if (!user) throw redirect(302, '/login');
 
+		const boardId = randomId();
+
 		try {
-			await db.execute('CALL create_board(?,?,?,?)', [
-				randomId(),
+			await db.execute('CALL create_board(?,?,?)', [
+				boardId,
 				translate(get(locale), 'newboard'),
-				new Date(),
 				user.userId
 			]);
-		} catch (error) {
-			console.error(error);
+		} catch (e) {
 			return fail(500);
 		}
+
+		throw redirect(302, `/board/${boardId}`);
 	}
 };

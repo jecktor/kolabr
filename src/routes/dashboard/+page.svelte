@@ -20,3 +20,25 @@
 		<button type="submit">{$t('createboard')}</button>
 	</form>
 </div>
+
+{#if data.boards.length > 0}
+	<div>
+		<h2>{$t('recent')}</h2>
+		<table>
+			<tr>
+				<td>{$t('name')}</td>
+				<td>{$t('lastedited')}</td>
+				<td>{$t('owner')}</td>
+			</tr>
+			{#each data.boards as board (board.id)}
+				<a href={`/board/${board.id}`}>
+					<tr>
+						<td>{board.name}</td>
+						<td>{board.last_edited}</td>
+						<td>{board.owner_name}</td>
+					</tr>
+				</a>
+			{/each}
+		</table>
+	</div>
+{/if}
