@@ -28,6 +28,24 @@ export const actions: Actions = {
 			});
 		}
 
+		if (password.length < 8) {
+			return fail(400, {
+				message: 'passshort'
+			});
+		}
+
+		if (password.length > 64) {
+			return fail(400, {
+				message: 'passlong'
+			});
+		}
+
+		if (name.length > 32) {
+			return fail(400, {
+				message: 'namelong'
+			});
+		}
+
 		try {
 			const user = await auth.createUser({
 				primaryKey: {

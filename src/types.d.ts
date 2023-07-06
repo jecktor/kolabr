@@ -40,39 +40,52 @@ export type LiveRoom = Room<Presence, Storage, UserMeta, RoomEvent>;
 
 // Misc types
 
-type InputEvent = Event & {
+export type InputEvent = Event & {
 	currentTarget: EventTarget & HTMLInputElement;
 };
 
-// Temporary types
+// Board types
 
-type Member = {
-	email: string;
-	name: string;
-	image: string;
-};
-
-type Tag = {
+export type Tag = {
 	id: string;
 	name: string;
 };
 
-type Ticket = {
+export type Ticket = {
 	id: string;
 	name: string;
 	description: string;
 	deadline: string;
-	members: Memeber[];
 	tags: Tag[];
 };
 
-type Lane = {
+export type Lane = {
 	id: string;
 	name: string;
 	limit: number;
 	tickets: Ticket[];
 };
 
-type BoardInfo = {
+export type BoardInfo = {
 	name: string;
+	last_edited: string;
+};
+
+export type Board = {
+	id: string;
+	name: string;
+	last_edited: string;
+	owner_name: string;
+};
+
+export type LaneResults = {
+	lane_id: string;
+	lane_name: string;
+	lane_limit: number;
+	ticket_id: string;
+	ticket_name: string;
+	ticket_description: string;
+	ticket_deadline: string;
+	tag_id: string;
+	tag_name: string;
 };

@@ -62,4 +62,4 @@
 	<p>{$t(form.message)}</p>
 {/if}
 
-<a href="/">index</a>
+<a href="/dashboard">Dashboard</a>
