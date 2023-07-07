@@ -14,6 +14,8 @@
 			"$components": ["src/components"],
 			"$lib": ["./src/lib"],
 			"$lib/*": ["src/lib/*"],
+			"$scss": ["src/scss"],
+			"$scss/*": ["src/scss/*"],
 			"$utils": ["src/utils"],
 			"$locales": ["src/locales"],
 			"$types": ["src/types.d.ts"],
