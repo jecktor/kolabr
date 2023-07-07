@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
-	import { t } from '$locales';
-	import type { BoardInfo, Lane, InputEvent } from '$types';
+	import type { BoardInfo, Lane, InputEvent, Board } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
+
+	export let board: Board;
+	export let boardLanes: Lane[];
 
 	/**
 	 * Liveblocks allows each user to have "presence", essentially a set of
@@ -24,10 +26,11 @@
 		focusedId: null
 	});
 
-	const lanes = useList<Lane>('lanes', []);
+	const lanes = useList<Lane>('lanes', boardLanes);
 
 	const boardInfo = useObject<BoardInfo>('infoStorage', {
-		name: $t('newboard')
+		name: board.name,
+		last_edited: board.last_edited
 	});
 
 	function changeBoardName(newName: string) {
@@ -66,6 +69,8 @@
 	$: hasMoreUsers = $others ? [...$others].length > 3 : false;
 	$: boardReady = $boardInfo ? Object.keys($boardInfo.toImmutable()).length > 0 : false;
 </script>
+
+<a href="/dashboard">Dashboard</a>
 
 <!-- Live cursors -->
 <main on:pointerleave={handlePointerLeave} on:pointermove={handlePointerMove}>
