@@ -37,6 +37,7 @@
 		"@popperjs/core": "^2.11.8",
 		"bootstrap": "^5.3.0",
 		"lucia-auth": "^1.8.0",
-		"mysql2": "^3.4.1"
+		"mysql2": "^3.4.1",
+		"svelte-icons": "^2.1.0"
 	}
 }

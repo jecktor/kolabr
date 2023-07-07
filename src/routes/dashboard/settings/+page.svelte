@@ -61,5 +61,3 @@
 {#if form?.message}
 	<p>{$t(form.message)}</p>
 {/if}
-
-<a href="/dashboard">Dashboard</a>
