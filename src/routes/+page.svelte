@@ -87,7 +87,7 @@
 		position: absolute;
 		width: 123px;
 		height: 123px;
-		left: 983px;
+		left: 750px;
 		top: 142px;
 		background: #fb37ff;
 		filter: blur(100px);
@@ -135,44 +135,32 @@
 		height: auto;
 	}
 
+	.paragraph {
+		position: absolute;
+		width: 820px;
+		height: 190px;
+		left: 80px;
+		top: 989px;
+	}
+
+	.d {
+		text-align:left;
+		vertical-align:text-top;
+		line-height:auto;
+		border-style:hidden;
+		outline:none;
+		width:560px;
+		font-family: 'Inter', sans-serif;
+		font-style: normal;
+		font-weight: 600;
+		font-size: 48px;
+		line-height: 58px;
+		color: #212121;
+	}
+
+	.e {}
+
 	@media (max-width: 768px) {
-		.logo {
-			left: 20px;
-			top: 15px;
-			width: 100px;
-		}
-
-		.buttons-container {
-			top: 15px;
-			right: 20px;
-		}
-
-		.button1,
-		.button2 {
-			width: 100px;
-		}
-
-		.a {
-			left: 20px;
-			top: 40px;
-			width: calc(100% - 40px);
-		}
-
-		.b {
-			left: 20px;
-			top: 380px;
-			width: calc(100% - 40px);
-		}
-
-		.button3 {
-			left: 20px;
-			top: 460px;
-		}
-
-		.c {
-			width: 100%;
-			max-width: 300px;
-		}
 	}
 </style>
 <section class="landing">
@@ -186,4 +174,9 @@
 	<div class="b">{$t('herodesc')}</div>
 	<div class="c"><img src="Group 12.png" alt=""></div>
 	<a class="button3" href="/login">{$t('getstarted')}</a>
+	<div class='paragraph'>
+		<div class="d">{$t('feat1title')}</div>
+		<div class="e">{$t('feat1desc')}</div>
+	</div>
+		
 </section>
