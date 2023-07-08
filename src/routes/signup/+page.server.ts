@@ -13,30 +13,39 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const name = form.get('name');
 		const email = form.get('email');
-		const password = form.get('password');
+		const pass = form.get('pass');
+		const passconfirm = form.get('passconfirm');
 
 		if (
 			!name ||
-			!password ||
 			!email ||
+			!pass ||
+			!passconfirm ||
 			typeof name !== 'string' ||
 			typeof email !== 'string' ||
-			typeof password !== 'string'
+			typeof pass !== 'string' ||
+			typeof passconfirm !== 'string'
 		) {
 			return fail(400, {
 				message: 'invalid'
 			});
 		}
 
-		if (password.length < 8) {
+		if (pass.length < 8) {
 			return fail(400, {
 				message: 'passshort'
 			});
 		}
 
-		if (password.length > 64) {
+		if (pass.length > 64) {
 			return fail(400, {
 				message: 'passlong'
+			});
+		}
+
+		if (pass !== passconfirm) {
+			return fail(400, {
+				message: 'notsamepass'
 			});
 		}
 
@@ -51,7 +60,7 @@ export const actions: Actions = {
 				primaryKey: {
 					providerId: 'email',
 					providerUserId: email,
-					password
+					password: pass
 				},
 				attributes: {
 					name,

@@ -11,8 +11,10 @@
 	<input id="name" name="name" required /><br />
 	<label for="email">{$t('email')}</label><br />
 	<input type="email" id="email" name="email" required /><br />
-	<label for="password">{$t('pass')}</label><br />
-	<input type="password" id="password" name="password" /><br />
+	<label for="pass">{$t('pass')}</label><br />
+	<input type="password" id="pass" name="pass" required /><br />
+	<label for="passconfirm">{$t('passconfirm')}</label><br />
+	<input type="password" id="passconfirm" name="passconfirm" required /><br />
 	<input type="submit" value={$t('continues')} />
 </form>
 {#if form?.message}
