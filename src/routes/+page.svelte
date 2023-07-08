@@ -169,14 +169,15 @@
 		<a class="button1" href="/login">{$t('login')}</a>
 		<a class="button2" href="/signup">{$t('signup')}</a>
 </div>
+<div>
 	<div class='ellipse132'></div>
-	<div class="a">{$t('herotitle')}</div>
-	<div class="b">{$t('herodesc')}</div>
+	<h1 class="a">{$t('herotitle')}</h1>
+	<h3 class="b">{$t('herodesc')}</h3>
 	<div class="c"><img src="Group 12.png" alt=""></div>
 	<a class="button3" href="/login">{$t('getstarted')}</a>
 	<div class='paragraph'>
 		<div class="d">{$t('feat1title')}</div>
 		<div class="e">{$t('feat1desc')}</div>
 	</div>
-		
+</div>	
 </section>
