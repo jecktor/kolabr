@@ -38,10 +38,10 @@
 
 	.selection_name {
 		position: absolute;
-		top: -29px;
+		bottom: -29px;
 		padding: 0 6px;
 		border-radius: 3px;
-		font-size: 12px;
+		font-size: 1.2rem;
 		line-height: 20px;
 		height: 20px;
 		color: white;
