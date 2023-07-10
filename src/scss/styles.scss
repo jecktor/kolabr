@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
@@ -22,12 +23,20 @@ $theme-colors: map-merge(
 	--base-700: #212121;
 }
 
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
 html {
 	font-size: 62.5%;
 }
 
 body {
 	font-size: 1.6rem;
+	font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+	-webkit-text-size-adjust: 100%;
 }
 
 .btn-primary {
@@ -42,8 +51,4 @@ body {
 	width: 20px;
 	height: 20px;
 	line-height: 1;
-}
-
-body {
-	zoom: 75%;
 }
