@@ -2,9 +2,94 @@
 	import { t } from '$locales';
 </script>
 
-<style>
-	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+<section class="landing">
+	<p class="ellipse132" />
+	<p class="ellipse133" />
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<img class="logo img-fluid" src="Logo.png" alt="" />
+			</div>
+			<div class="col-md-6 d-flex align-items-center justify-content-end">
+				<div class="buttons-container">
+					<a class="button1 btn btn-secondary" href="/login">{$t('login')}</a>
+					<a class="button2 btn btn-secondary" href="/signup">{$t('signup')}</a>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<h1 class="a">{$t('herotitle')}</h1>
+				<h3 class="b">{$t('herodesc')}</h3>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<img class="img1 img-fluid img-responsive" src="Group 12.png" alt="" />
+			</div>
+		</div>
+		<div class="row justify-content-center mt-4">
+			<div class="col-md-6 text-center">
+				<a class="button3 btn btn-secondary" href="/login">{$t('getstarted')}</a>
+			</div>
+		</div>
+		<div class="row justify-content-center mt-4">
+			<div class="col-md-8 text-center">
+				<div class="paragraph">
+					<h1 class="d">{$t('feat1title')}</h1>
+					<h3 class="e">{$t('feat1desc')}</h3>
+				</div>
+				<div class="paragraph2">
+					<h1 class="d">{$t('feat2title')}</h1>
+					<h3 class="e">{$t('feat2desc')}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center mt-4">
+			<div class="col-md-8 text-center">
+				<p class="rectangle316" />
+			</div>
+		</div>
+		<div class="row justify-content-center mt-4">
+			<div class="col-md-2 text-center">
+				<img class="img2 img-fluid img-responsive" src="Group 6.png" alt="" />
+			</div>
+			<div class="col-md-4 text-center">
+				<img class="img3 img-fluid img-responsive" src="Group 11.png" alt="" />
+			</div>
+			<div class="col-md-6 text-center">
+				<div class="paragraph3">
+					<h1 class="d f">{$t('feat3title')}</h1>
+					<h3 class="e f">{$t('feat3desc')}</h3>
+				</div>
+				<div class="paragraph4">
+					<h1 class="d f">{$t('feat4title')}</h1>
+					<h3 class="e f">{$t('feat4desc')}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center mt-4">
+			<div class="col-md-8 text-center">
+				<img class="img4 img-fluid img-responsive" src="Group 10.png" alt="" />
+			</div>
+		</div>
+	</div>
+</section>
+<footer class="footer">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 text-center">
+				<div class="paragraph5">
+					<h1 class="d g">{$t('footertitle')}</h1>
+					<h3 class="e g">{$t('footerdesc')}</h3>
+				</div>
+				<p class="h">Kolabr &copy; 2023</p>
+			</div>
+		</div>
+	</div>
+</footer>
 
+<style>
 	.landing {
 		background-color: #ffffff;
 		height: 10px;
@@ -94,7 +179,7 @@
 		height: 123px;
 		left: 1311px;
 		top: 671px;
-		background: #18B2DE;
+		background: #18b2de;
 		filter: blur(100px);
 	}
 
@@ -161,10 +246,10 @@
 	}
 
 	.img-responsive:hover {
-        transform: scale(1.1);
+		transform: scale(1.1);
 		transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        cursor: pointer;
-    }
+		cursor: pointer;
+	}
 
 	.paragraph {
 		position: absolute;
@@ -243,7 +328,7 @@
 		height: 53px;
 		left: 218px;
 		top: 1681px;
-		background: linear-gradient(93.51deg, #9B51E0 2.84%, #3081ED 99.18%);
+		background: linear-gradient(93.51deg, #9b51e0 2.84%, #3081ed 99.18%);
 		filter: blur(100px);
 		border-radius: 10px;
 	}
@@ -255,7 +340,7 @@
 		height: 454px;
 		left: 80px;
 		top: 2499px;
-		border-top: 1px solid #D3D3D3;
+		border-top: 1px solid #d3d3d3;
 	}
 
 	.h {
@@ -270,7 +355,7 @@
 		font-size: 20px;
 		line-height: 24px;
 		text-align: center;
-		color: #7A7A7A;
+		color: #7a7a7a;
 	}
 
 	@media (max-width: 430px) {
@@ -280,7 +365,7 @@
 			height: 28px;
 			left: 15px;
 			top: 13px;
-		}	
+		}
 		.buttons-container {
 			position: relative;
 			top: 13px;
@@ -292,7 +377,9 @@
 			gap: 8px;
 		}
 
-		.button1,.button2,.button3 {
+		.button1,
+		.button2,
+		.button3 {
 			display: flex;
 			align-items: center;
 			padding: 10px 16px;
@@ -308,13 +395,13 @@
 			border: none;
 		}
 
-		.button1{
+		.button1 {
 			position: absolute;
 			left: 215px;
 			width: 89px;
 			height: 38px;
 		}
-		.button2{
+		.button2 {
 			background-color: #f4ca64;
 			color: #fcfef4;
 			position: absolute;
@@ -325,90 +412,3 @@
 		}
 	}
 </style>
-
-<section class="landing">
-<p class="ellipse132"></p>
-<p class="ellipse133"></p>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <img class="logo img-fluid" src="Logo.png" alt="">
-      </div>
-      <div class="col-md-6 d-flex align-items-center justify-content-end">
-        <div class="buttons-container">
-          <a class="button1 btn btn-secondary" href="/login">{$t('login')}</a>
-          <a class="button2 btn btn-secondary" href="/signup">{$t('signup')}</a>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-md-8 ">
-        <h1 class="a">{$t('herotitle')}</h1>
-        <h3 class="b">{$t('herodesc')}</h3>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <img class="img1 img-fluid img-responsive" src="Group 12.png" alt="">
-      </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-6 text-center">
-        <a class="button3 btn btn-secondary" href="/login">{$t('getstarted')}</a>
-      </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8 text-center">
-        <div class="paragraph">
-          <h1 class="d">{$t('feat1title')}</h1>
-          <h3 class="e">{$t('feat1desc')}</h3>
-        </div>
-        <div class="paragraph2">
-          <h1 class="d">{$t('feat2title')}</h1>
-          <h3 class="e">{$t('feat2desc')}</h3>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8 text-center">
-        <p class="rectangle316"></p>
-      </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-2 text-center">
-        <img class="img2 img-fluid img-responsive" src="Group 6.png" alt="">
-      </div>
-      <div class="col-md-4 text-center">
-        <img class="img3 img-fluid img-responsive" src="Group 11.png" alt="">
-      </div>
-      <div class="col-md-6 text-center">
-        <div class="paragraph3">
-          <h1 class="d f">{$t('feat3title')}</h1>
-          <h3 class="e f">{$t('feat3desc')}</h3>
-        </div>
-        <div class="paragraph4">
-          <h1 class="d f">{$t('feat4title')}</h1>
-          <h3 class="e f">{$t('feat4desc')}</h3>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8 text-center">
-        <img class="img4 img-fluid img-responsive" src="Group 10.png" alt="">
-      </div>
-    </div>
-  </div>
-</section>
-<footer class="footer">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 text-center">
-        <div class="paragraph5">
-          <h1 class="d g">{$t('footertitle')}</h1>
-          <h3 class="e g">{$t('footerdesc')}</h3>
-        </div>
-        <p class="h">Kolabr &copy; 2023</p>
-      </div>
-    </div>
-  </div>
-</footer>

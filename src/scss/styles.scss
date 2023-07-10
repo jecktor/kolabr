@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
@@ -24,6 +25,8 @@ $theme-colors: map-merge(
 
 html {
 	font-size: 62.5%;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
