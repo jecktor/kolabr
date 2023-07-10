@@ -25,12 +25,12 @@ $theme-colors: map-merge(
 
 html {
 	font-size: 62.5%;
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen,
-		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
 	font-size: 1.6rem;
+	font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+	-webkit-text-size-adjust: 100%;
 }
 
 .btn-primary {
@@ -48,5 +48,19 @@ body {
 }
 
 body {
-	zoom: 75%;
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+	}
+
+	:root {
+		--base-100: #ffffff;
+		--base-200: #f8f8f8;
+		--base-300: #d3d3d3;
+		--base-400: #a6a6a6;
+		--base-500: #7a7a7a;
+		--base-600: #4d4d4d;
+		--base-700: #212121;
+	}
 }
