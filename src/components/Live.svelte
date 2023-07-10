@@ -1,26 +1,21 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
-	import type { BoardInfo, Lane, InputEvent, Board } from '$types';
+	import { t, translateDate } from '$locales';
+	import type { LiveList } from '@liveblocks/client';
+	import type { BoardInfo, Lane, InputEvent, Board as TBoard } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
+	import FaArrowLeft from 'svelte-icons/fa/FaArrowLeft.svelte';
+	import FaShareAlt from 'svelte-icons/fa/FaShareAlt.svelte';
+	import Board from './Board.svelte';
 
-	export let board: Board;
+	export let board: TBoard;
 	export let boardLanes: Lane[];
-
-	/**
-	 * Liveblocks allows each user to have "presence", essentially a set of
-	 * properties specific to that users. An example would be the color they've
-	 * selected, or their cursor's location in coordinates. We can then use
-	 * "others", a list of every other user's "presence", to build an app. We
-	 * can use our custom hooks to watch and edit these.
-	 *
-	 */
 
 	const myPresence = useMyPresence();
 	const self = useSelf();
 	const others = useOthers();
 
-	// Set a default value for presence
 	myPresence.update({
 		cursor: null,
 		focusedId: null
@@ -34,10 +29,12 @@
 	});
 
 	function changeBoardName(newName: string) {
-		$boardInfo.update({ name: newName });
+		$boardInfo.update({
+			name: newName,
+			last_edited: new Date().toString()
+		});
 	}
 
-	// Update cursor presence to current pointer location
 	function handlePointerMove(event: PointerEvent) {
 		if ($myPresence.focusedId) return;
 
@@ -50,7 +47,6 @@
 		});
 	}
 
-	// When the pointer leaves the page, set cursor presence to null
 	function handlePointerLeave() {
 		myPresence.update({
 			...$myPresence,
@@ -58,108 +54,142 @@
 		});
 	}
 
-	function handleSelectionFocus(event: InputEvent) {
-		myPresence.update({ cursor: null, focusedId: event.currentTarget.id });
+	function handleSelectionFocus(e: InputEvent) {
+		myPresence.update({ cursor: null, focusedId: e.currentTarget.id });
 	}
 
 	function handleSelectionBlur() {
 		myPresence.update({ cursor: null, focusedId: null });
 	}
 
+	function handleBoardUpdate(newLanes: LiveList<Lane>) {
+		newLanes.forEach((lane, idx) => $lanes.set(idx, { ...lane, id: `${lane.id}-${idx}` }));
+	}
+
 	$: hasMoreUsers = $others ? [...$others].length > 3 : false;
 	$: boardReady = $boardInfo ? Object.keys($boardInfo.toImmutable()).length > 0 : false;
+	$: lastEdit = translateDate(boardReady ? $boardInfo.get('last_edited') : '');
 </script>
 
-<a href="/dashboard">Dashboard</a>
-
-<!-- Live cursors -->
-<main on:pointerleave={handlePointerLeave} on:pointermove={handlePointerMove}>
-	{#if $others}
-		{#each [...$others] as { connectionId, presence, info } (connectionId)}
-			{#if presence.cursor}
-				<Cursor name={info.name} color={info.color} x={presence.cursor.x} y={presence.cursor.y} />
-			{/if}
-		{/each}
-	{/if}
-
-	<!-- Avatars -->
-	<div class="avatars">
-		<!-- Show the first 3 users' avatars -->
+{#if boardReady}
+	<div class="board" on:pointerleave={handlePointerLeave} on:pointermove={handlePointerMove}>
+		<!-- Live cursors -->
 		{#if $others}
-			{#each [...$others].slice(0, 3) as { connectionId, info } (connectionId)}
-				<Avatar image={info.image} name={info.name} color={info.color} />
+			{#each [...$others] as { connectionId, presence, info } (connectionId)}
+				{#if presence.cursor}
+					<Cursor name={info.name} color={info.color} x={presence.cursor.x} y={presence.cursor.y} />
+				{/if}
 			{/each}
 		{/if}
 
-		<!-- Show the amount of people online past the third user -->
-		{#if hasMoreUsers}
-			<div class="more">+ {[...$others].length - 3}</div>
-		{/if}
-
-		<!-- Show the current user's avatar-->
-		{#if $self && $myPresence}
-			<div class="current_user_container">
-				<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
-			</div>
-		{/if}
-
-		{#if boardReady}
-			<h1>{$boardInfo.get('name')}</h1>
-			<Selection id="input-test" {others}>
-				<input
-					id="input-test"
-					type="text"
-					value={$boardInfo.get('name')}
-					on:focus={handleSelectionFocus}
-					on:blur={handleSelectionBlur}
-					on:input={(e) => changeBoardName(e.currentTarget.value)}
-				/>
-			</Selection>
-			<div class="lanes">
-				{#each [...$lanes] as { id: laneId, name: laneName, tickets } (laneId)}
-					<div class="lane">
-						<h2>{laneName}</h2>
-						{#each tickets as { id: ticketId, name: ticketName, description, tags } (ticketId)}
-							<div class="ticket">
-								<strong>{ticketName}</strong>
-								<p>{description}</p>
-								{#each tags as { id: tagId, name: tagName } (tagId)}
-									<span>{tagName}</span>
-								{/each}
-							</div>
-						{/each}
+		<header>
+			<div class="header_node">
+				<a class="back" href="/dashboard">
+					<div class="icon">
+						<FaArrowLeft />
 					</div>
-				{/each}
+				</a>
+				<div class="board_info">
+					<Selection id="board-name" {others}>
+						<input
+							id="board-name"
+							type="text"
+							value={$boardInfo.get('name')}
+							on:focus={handleSelectionFocus}
+							on:blur={handleSelectionBlur}
+							on:input={(e) => changeBoardName(e.currentTarget.value)}
+						/>
+					</Selection>
+					<time datetime={$boardInfo.get('last_edited')}>
+						{lastEdit}
+					</time>
+				</div>
 			</div>
-		{/if}
+			<div class="header_node">
+				<!-- Avatars -->
+				<div class="avatars">
+					<!-- Show the first 3 users' avatars -->
+					{#if $others && $self}
+						{#each [...$others].slice(0, 3) as { connectionId, info, id } (connectionId)}
+							{#if $self.id !== id}
+								<Avatar image={info.image} name={info.name} color={info.color} />
+							{/if}
+						{/each}
+					{/if}
+
+					<!-- Show the amount of people online past the third user -->
+					{#if hasMoreUsers}
+						<div class="more">+ {[...$others].length - 3}</div>
+					{/if}
+				</div>
+
+				<!-- Show the current user's avatar-->
+				{#if $self && $myPresence}
+					<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
+				{/if}
+
+				<button class="btn btn-primary d-flex gap-2 align-items-center">
+					<span>{$t('share')}</span>
+					<div class="icon">
+						<FaShareAlt />
+					</div>
+				</button>
+			</div>
+		</header>
+
+		<main>
+			<Board lanes={$lanes} onFinalUpdate={handleBoardUpdate} />
+		</main>
 	</div>
-</main>
+{/if}
 
 <style>
-	main {
+	.board {
 		position: absolute;
-		top: 0;
-		left: 0;
+		inset: 0;
 		width: 100vw;
 		height: 100vh;
-		display: flex;
-		place-content: center;
-		place-items: center;
 		touch-action: none;
+	}
+
+	header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-inline: 40px;
+		padding-block: 12px;
+		border-bottom: 1px solid var(--base-300);
+	}
+
+	.back {
+		padding: 10px;
+		color: var(--base-700);
+		background-color: var(--base-200);
+		border: 1px solid var(--base-300);
+		border-radius: 6px;
+	}
+
+	.header_node {
+		display: flex;
+		align-items: center;
+		gap: 25px;
+	}
+
+	.board_info input {
+		border: none;
+		outline: none;
+		padding: 0;
+		font-size: 1.8rem;
+		font-weight: 700;
+	}
+
+	.board_info time {
+		font-size: 1.4rem;
+		color: var(--base-600);
 	}
 
 	.avatars {
 		display: flex;
-		flex-direction: row;
-		padding-left: 0.75rem;
-	}
-
-	.current_user_container {
-		position: relative;
-	}
-
-	.current_user_container:not(:first-child) {
-		margin-left: 2rem;
 	}
 
 	.more {
@@ -167,12 +197,12 @@
 		place-content: center;
 		place-items: center;
 		position: relative;
-		border: 4px solid #fff;
+		border: 4px solid var(--base-300);
 		border-radius: 9999px;
 		width: 56px;
 		height: 56px;
-		background-color: #9ca3af;
+		background-color: var(--base-200);
 		margin-left: -0.75rem;
-		color: #fff;
+		color: var(--base-600);
 	}
 </style>

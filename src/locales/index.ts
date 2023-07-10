@@ -1,4 +1,4 @@
-import { derived, writable } from 'svelte/store';
+import { derived, writable, get } from 'svelte/store';
 import * as en from './en.json';
 import * as es from './es.json';
 
@@ -22,6 +22,16 @@ export function translate(locale: string, key: TranslationKeys) {
 	if (!text) throw new Error(`No translation found for ${locale}.${key}`);
 
 	return text;
+}
+
+export function translateDate(date: Date | string) {
+	return new Date(date).toLocaleDateString(get(locale), {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit'
+	});
 }
 
 export const t = derived(locale, ($locale) => (key: TranslationKeys) => translate($locale, key));

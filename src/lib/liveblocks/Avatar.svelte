@@ -28,17 +28,18 @@
 		height: 56px;
 		margin-left: -0.75rem;
 		padding: 1px;
+		background: white;
 	}
 
 	.avatar:before {
 		content: attr(data-tooltip);
 		position: absolute;
-		bottom: 100%;
+		bottom: -100%;
 		opacity: 0;
 		transition: opacity 0.15s ease;
 		padding: 5px 10px;
 		color: white;
-		font-size: 0.75rem;
+		font-size: 1.2rem;
 		border-radius: 8px;
 		margin-bottom: 10px;
 		z-index: 1;
@@ -53,7 +54,6 @@
 	.avatar_image {
 		border-radius: 90px;
 		overflow: hidden;
-		background: white;
 	}
 
 	.avatar_image img {
