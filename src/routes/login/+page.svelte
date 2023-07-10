@@ -13,37 +13,22 @@
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		padding: 40px;
 		gap: 25px;
 		width: 100%;
 		max-width: 498px;
-		height: 327px;
+		margin: auto;
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
+		position: relative;
+		top: 50%;
 	}
+
 	.btn-primary {
 		width: 100%;
 	}
-	.ellipse132 {
-		position: absolute;
-		width: 123px;
-		height: 123px;
-		left: 532px;
-		top: 746px;
-		background: #18B2DE;
-		filter: blur(100px);
-	}
-	.ellipse133 {
-		position: absolute;
-		width: 123px;
-		height: 123px;
-		left: 1073px;
-		top: 227px;
-		background: #FB37FF;
-		filter: blur(100px);
-	}
+
 	.a {
 		margin-top: 20px;
 		width: 100px;
@@ -54,6 +39,7 @@
 		font-size: 32px;
 		line-height: 20px;
 	}
+
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -63,29 +49,26 @@
 	}
 </style>
 
-<div class="d-flex align-items-center vh-100">
-	
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-md-6">
-				<div class="login-wrapper">
-					<h2 class="a">{$t('login')}</h2>
-					<form method="post" use:enhance>
-						<div class="form-group mb-4">
-							<label class="b" for="email">{$t("email")}</label>
-							<input type="email" id="email" name="email" class="form-control" required>
-						</div>
-						<div class="form-group mb-4">
-							<label class="b" for="password">{$t("pass")}</label>
-							<input type="password" id="password" name="password" class="form-control" required>
-						</div>
-						<button type="submit" class="btn btn-primary btn-lg btn-block">{$t("continues")}</button>
-					</form>
-					{#if form?.message}
-					<p>{$t(form.message)}</p>
-					{/if}
-					<a class="text-center" href="/signup">Create an account</a>
-				</div>
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<div class="login-wrapper">
+				<h2 class="a">{$t('login')}</h2>
+				<form method="post" use:enhance>
+					<div class="form-group mb-4">
+						<label class="b" for="email">{$t("email")}</label>
+						<input type="email" id="email" name="email" class="form-control" required>
+					</div>
+					<div class="form-group mb-4">
+						<label class="b" for="password">{$t("pass")}</label>
+						<input type="password" id="password" name="password" class="form-control" required>
+					</div>
+					<button type="submit" class="btn btn-primary btn-lg btn-block">{$t("continues")}</button>
+				</form>
+				{#if form?.message}
+				<p>{$t(form.message)}</p>
+				{/if}
+				<a class="text-center" href="/signup">Create an account</a>
 			</div>
 		</div>
 	</div>

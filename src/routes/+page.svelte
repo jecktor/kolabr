@@ -78,26 +78,6 @@
 		outline: none;
 	}
 
-	.ellipse132 {
-		position: absolute;
-		width: 123px;
-		height: 123px;
-		left: 983px;
-		top: 142px;
-		background: #fb37ff;
-		filter: blur(100px);
-	}
-
-	.ellipse133 {
-		position: absolute;
-		width: 123px;
-		height: 123px;
-		left: 1311px;
-		top: 671px;
-		background: #18B2DE;
-		filter: blur(100px);
-	}
-
 	.a {
 		position: absolute;
 		width: 807px;
@@ -237,17 +217,6 @@
 		text-align: center;
 	}
 
-	.rectangle316 {
-		position: absolute;
-		width: 1292px;
-		height: 53px;
-		left: 218px;
-		top: 1681px;
-		background: linear-gradient(93.51deg, #9B51E0 2.84%, #3081ED 99.18%);
-		filter: blur(100px);
-		border-radius: 10px;
-	}
-
 	.footer {
 		box-sizing: border-box;
 		position: absolute;
@@ -326,9 +295,6 @@
 	}
 </style>
 
-<p class="ellipse132"></p>
-<p class="ellipse133"></p>
-<p class="rectangle316"></p>
 <section class="landing">
   <div class="container">
     <div class="row justify-content-center">
