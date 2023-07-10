@@ -48,7 +48,7 @@
 		left: 15px;
 		padding-block: 3px;
 		padding-inline: 10px;
-		font-size: 14px;
+		font-size: 1.4rem;
 		line-height: 20px;
 		font-weight: 500;
 		white-space: nowrap;
