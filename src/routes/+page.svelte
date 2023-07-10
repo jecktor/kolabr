@@ -327,7 +327,10 @@
 </style>
 
 <section class="landing">
+
   <div class="container">
+	<p class="ellipse132"></p>
+	<p class="ellipse133"></p>
     <div class="row justify-content-center">
       <div class="col-md-6">
         <img class="logo img-fluid" src="Logo.png" alt="">
@@ -340,7 +343,7 @@
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-md-8 text-center">
+      <div class="col-md-8 ">
         <h1 class="a">{$t('herotitle')}</h1>
         <h3 class="b">{$t('herodesc')}</h3>
       </div>
