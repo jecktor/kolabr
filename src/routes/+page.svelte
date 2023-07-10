@@ -326,9 +326,10 @@
 	}
 </style>
 
-<section class="landing">
 <p class="ellipse132"></p>
 <p class="ellipse133"></p>
+<p class="rectangle316"></p>
+<section class="landing">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -367,11 +368,6 @@
           <h1 class="d">{$t('feat2title')}</h1>
           <h3 class="e">{$t('feat2desc')}</h3>
         </div>
-      </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8 text-center">
-        <p class="rectangle316"></p>
       </div>
     </div>
     <div class="row justify-content-center mt-4">
