@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
-	import type { LiveList } from '@liveblocks/client';
 	import type { BoardInfo, Lane, InputEvent, Board as TBoard } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
@@ -62,8 +61,10 @@
 		myPresence.update({ cursor: null, focusedId: null });
 	}
 
-	function handleBoardUpdate(newLanes: LiveList<Lane>) {
-		newLanes.forEach((lane, idx) => $lanes.set(idx, { ...lane, id: `${lane.id}-${idx}` }));
+	function handleBoardUpdate(newLanes: Lane[]) {
+		newLanes.forEach((lane, idx) =>
+			$lanes.set(idx, { ...lane, id: `${lane.id.split('-')[0]}-${idx}` })
+		);
 	}
 
 	$: hasMoreUsers = $others ? [...$others].length > 3 : false;
@@ -138,7 +139,7 @@
 		</header>
 
 		<main>
-			<Board lanes={$lanes} onFinalUpdate={handleBoardUpdate} />
+			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} />
 		</main>
 	</div>
 {/if}
