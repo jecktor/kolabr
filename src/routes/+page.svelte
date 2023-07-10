@@ -327,44 +327,86 @@
 </style>
 
 <section class="landing">
-	<img class="logo img-fluid" src="Logo.png" alt="">
-	<div class="buttons-container">
-		<a class="button1 btn btn-secondary" href="/login">{$t('login')}</a>
-		<a class="button2 btn btn-secondary" href="/signup">{$t('signup')}</a>
-	</div>
-	<div class="container">
-		<p class="ellipse132"></p>
-		<p class="ellipse133"></p>
-		<h1 class="a">{$t('herotitle')}</h1>
-		<h3 class="b">{$t('herodesc')}</h3>
-		<img class="img1 img-fluid img-responsive" src="Group 12.png" alt="">
-	</div>
-	<a class="button3 btn btn-secondary" href="/login">{$t('getstarted')}</a>
-	<div class="paragraph">
-		<h1 class="d">{$t('feat1title')}</h1>
-		<h3 class="e">{$t('feat1desc')}</h3>
-	</div>
-	<div class="paragraph2">
-		<h1 class="d">{$t('feat2title')}</h1>
-		<h3 class="e">{$t('feat2desc')}</h3>
-	</div>
-	<p class="rectangle316"></p>
-	<img class="img2 img-fluid img-responsive" src="Group 6.png" alt="">
-	<img class="img3 img-fluid img-responsive" src="Group 11.png" alt="">
-	<div class="paragraph3">
-		<h1 class="d f">{$t('feat3title')}</h1>
-		<h3 class="e f">{$t('feat3desc')}</h3>
-	</div>
-	<div class="paragraph4">
-		<h1 class="d f">{$t('feat4title')}</h1>
-		<h3 class="e f">{$t('feat4desc')}</h3>
-	</div>
-	<img class="img4 img-fluid img-responsive" src="Group 10.png" alt="">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <img class="logo img-fluid" src="Logo.png" alt="">
+      </div>
+      <div class="col-md-6 d-flex align-items-center justify-content-end">
+        <div class="buttons-container">
+          <a class="button1 btn btn-secondary" href="/login">{$t('login')}</a>
+          <a class="button2 btn btn-secondary" href="/signup">{$t('signup')}</a>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h1 class="a">{$t('herotitle')}</h1>
+        <h3 class="b">{$t('herodesc')}</h3>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <img class="img1 img-fluid img-responsive" src="Group 12.png" alt="">
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-6 text-center">
+        <a class="button3 btn btn-secondary" href="/login">{$t('getstarted')}</a>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8 text-center">
+        <div class="paragraph">
+          <h1 class="d">{$t('feat1title')}</h1>
+          <h3 class="e">{$t('feat1desc')}</h3>
+        </div>
+        <div class="paragraph2">
+          <h1 class="d">{$t('feat2title')}</h1>
+          <h3 class="e">{$t('feat2desc')}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8 text-center">
+        <p class="rectangle316"></p>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-2 text-center">
+        <img class="img2 img-fluid img-responsive" src="Group 6.png" alt="">
+      </div>
+      <div class="col-md-4 text-center">
+        <img class="img3 img-fluid img-responsive" src="Group 11.png" alt="">
+      </div>
+      <div class="col-md-6 text-center">
+        <div class="paragraph3">
+          <h1 class="d f">{$t('feat3title')}</h1>
+          <h3 class="e f">{$t('feat3desc')}</h3>
+        </div>
+        <div class="paragraph4">
+          <h1 class="d f">{$t('feat4title')}</h1>
+          <h3 class="e f">{$t('feat4desc')}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8 text-center">
+        <img class="img4 img-fluid img-responsive" src="Group 10.png" alt="">
+      </div>
+    </div>
+  </div>
 </section>
 <footer class="footer">
-	<div class="paragraph5">
-		<h1 class="d g">{$t('footertitle')}</h1>
-		<h3 class="e g">{$t('footerdesc')}</h3>
-	</div>
-	<p class="h">Kolabr &copy; 2023</p>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <div class="paragraph5">
+          <h1 class="d g">{$t('footertitle')}</h1>
+          <h3 class="e g">{$t('footerdesc')}</h3>
+        </div>
+        <p class="h">Kolabr &copy; 2023</p>
+      </div>
+    </div>
+  </div>
 </footer>
