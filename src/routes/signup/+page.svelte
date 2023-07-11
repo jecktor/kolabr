@@ -22,7 +22,7 @@
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
 		position: relative;
-		top: 40%;
+		top: 30%;
 	}
 
 	.btn-primary {
@@ -31,7 +31,7 @@
 
 	.a {
 		margin-top: 20px;
-		width: 120px;
+		width: 100%;
 		height: 20px;
 		font-family: 'Inter';
 		font-style: normal;
@@ -94,7 +94,7 @@
 					<button type="submit" class="button btn btn-secondary btn-lg btn-block">{$t('continues')}</button>
 				</form>
 				{#if form?.message}
-					<p class="b">{$t(form.message)}</p>
+					<p class="b alert alert-danger">{$t(form.message)}</p>
 				{/if}
 				<a href="/login" class="b text-center link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{$t('login')}</a>
 			</div>
