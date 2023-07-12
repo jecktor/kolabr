@@ -14,79 +14,10 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		position: relative;
 	}
 
-	.logo {
-		background-color: #ffffff;
-		height: 28px;
-		width: 128px;
-		padding: 0;
-		position: absolute;
-		top: 25px;
-		left: 80px;
-	}
-
-	.buttons-container {
-		position: absolute;
-		top: 25px;
-		left: 85%;
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		gap: 8px;
-	}
-
-	.container {
-		width: 100%;
-	}
-
-	.button1,
-	.button2,
-	.button3 {
-		width: auto;
-		height: auto;
-		display: flex;
-		align-items: center;
-		padding: 10px 16px;
-		gap: 8px;
-		background: #fdf3d7;
-		border-radius: 6px;
-		font-family: 'Inter', sans-serif;
-		font-weight: 600;
-		font-size: 16px;
-		line-height: 18px;
-		color: #caa53d;
-		text-decoration: none;
-		border: none;
-	}
-
-	.button2 {
-		background-color: #f4ca64;
-		color: #fcfef4;
-		margin-left: 20px;
-	}
-
-	.button3 {
-		position: absolute;
-		width: 218px;
-		height: 60px;
-		left: 80px;
-		top: 729px;
-		font-size: 24px;
-		background-color: #f4ca64;
-		color: #fcfef4;
-		padding: 16px 24px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 8px;
-		border-style: hidden;
-		outline: none;
-	}
 
 	.a {
-		position: absolute;
 		width: 807px;
 		height: 328px;
 		left: 80px;
@@ -100,7 +31,6 @@
 	}
 
 	.b {
-		position: absolute;
 		width: 637px;
 		height: 72px;
 		left: 80px;
@@ -114,7 +44,6 @@
 	}
 
 	.img1 {
-		position: absolute;
 		width: 468px;
 		height: 427px;
 		left: 921px;
@@ -124,7 +53,6 @@
 	}
 
 	.img2 {
-		position: absolute;
 		width: 98px;
 		height: 62px;
 		left: 780px;
@@ -132,7 +60,6 @@
 	}
 
 	.img3 {
-		position: absolute;
 		width: 632px;
 		height: 708px;
 		left: 995px;
@@ -140,7 +67,6 @@
 	}
 
 	.img4 {
-		position: absolute;
 		width: 498px;
 		height: 396px;
 		left: 177px;
@@ -154,7 +80,6 @@
     }
 
 	.paragraph {
-		position: absolute;
 		width: 820px;
 		height: 190px;
 		left: 80px;
@@ -162,7 +87,6 @@
 	}
 
 	.paragraph2 {
-		position: absolute;
 		width: 820px;
 		height: 190px;
 		left: 80px;
@@ -170,7 +94,6 @@
 	}
 
 	.paragraph3 {
-		position: absolute;
 		width: 820px;
 		height: 226px;
 		left: 828px;
@@ -178,7 +101,6 @@
 	}
 
 	.paragraph4 {
-		position: absolute;
 		width: 820px;
 		height: 190px;
 		left: 828px;
@@ -186,7 +108,6 @@
 	}
 
 	.paragraph5 {
-		position: absolute;
 		width: 853px;
 		height: 190px;
 		left: 358px;
@@ -235,7 +156,6 @@
 	}
 
 	.h {
-		position: absolute;
 		width: 140px;
 		height: 24px;
 		left: 714px;
@@ -248,11 +168,79 @@
 		text-align: center;
 		color: #7A7A7A;
 	}
-	
-	
+
+	header {
+		height: 84px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-inline: 40px;
+		padding-block: 12px;
+	}
+	.header_node {
+		display: flex;
+		align-items: center;
+		gap: 25px;
+	}
+	.header_node  {
+		color: var(--base-600);
+	}
+	.logo {
+		background-color: #ffffff;
+		height: 28px;
+		align-items: center;
+	}
+	.user {
+		width: auto;
+		height: 40px auto;
+		border-radius: 90px;
+		
+	}
+	.button1,
+	.button2,
+	.button3 {
+		background: #fdf3d7;
+		font-family: 'Inter', sans-serif;
+		font-size: 16px;
+		color: #caa53d;
+		border-style: none;
+	}
+	.button2 {
+		background-color: #f4ca64;
+		color: #fcfef4;
+	}
+	.button3 {
+		width: 218px;
+		height: 60px;
+		left: 80px;
+		top: 729px;
+		font-size: 24px;
+		background-color: #f4ca64;
+		color: #fcfef4;
+		padding: 16px 24px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		border-style: hidden;
+		outline: none;
+	}
 </style>
 
-<section class="landing">
+<header>
+	<div class="header_node">
+		<a href="/#">
+			<img class="logo img-fluid" src="Logo.png" alt="logo" />
+		</a>
+	</div>
+	<div class="header_node">
+		<div class="user">
+			<a class="button1 btn btn-secondary" href="/login">{$t('login')}</a>
+          	<a class="button2 btn btn-secondary" href="/signup">{$t('signup')}</a>
+		</div>
+	</div>
+</header>
+<article class="landing">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -317,7 +305,7 @@
       </div>
     </div>
   </div>
-</section>
+</article>
 <footer class="footer">
   <div class="container">
     <div class="row justify-content-center">
@@ -330,4 +318,4 @@
       </div>
     </div>
   </div>
-</footer>
+</footer> 
