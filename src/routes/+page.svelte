@@ -30,15 +30,22 @@
 	.buttons-container {
 		position: absolute;
 		top: 25px;
-		right: 80px;
+		left: 85%;
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		gap: 8px;
 	}
 
+	.container {
+		width: 100%;
+	}
+
 	.button1,
 	.button2,
 	.button3 {
+		width: auto;
+		height: auto;
 		display: flex;
 		align-items: center;
 		padding: 10px 16px;
@@ -241,58 +248,8 @@
 		text-align: center;
 		color: #7A7A7A;
 	}
-
-	@media (max-width: 430px) {
-		.logo {
-			position: absolute;
-			width: 128px;
-			height: 28px;
-			left: 15px;
-			top: 13px;
-		}	
-		.buttons-container {
-			position: relative;
-			top: 13px;
-			left: 215px;
-			width: 100%;
-			height: 38px;
-			display: flex;
-			flex-direction: row;
-			gap: 8px;
-		}
-
-		.button1,.button2,.button3 {
-			display: flex;
-			align-items: center;
-			padding: 10px 16px;
-			gap: 8px;
-			background: #fdf3d7;
-			border-radius: 6px;
-			font-family: 'Inter', sans-serif;
-			font-weight: 600;
-			font-size: 16px;
-			line-height: 18px;
-			color: #caa53d;
-			text-decoration: none;
-			border: none;
-		}
-
-		.button1{
-			position: absolute;
-			left: 215px;
-			width: 89px;
-			height: 38px;
-		}
-		.button2{
-			background-color: #f4ca64;
-			color: #fcfef4;
-			position: absolute;
-			left: 322px;
-			width: 91px;
-			height: 38px;
-			margin-right: 10px;
-		}
-	}
+	
+	
 </style>
 
 <section class="landing">
