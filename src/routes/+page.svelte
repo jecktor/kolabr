@@ -5,36 +5,21 @@
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-	.landing {
-		background-color: #ffffff;
-		height: 10px;
-		width: auto;
-		padding: 0px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-
 	.a {
-		width: 807px;
-		height: 328px;
-		left: 80px;
-		top: 237px;
+		width: 807px auto;
+		height: 328px auto;
 		color: #212121;
 		font-family: 'Inter', sans-serif;
 		font-weight: 600;
-		font-size: 72px;
+		font-size: 68px;
 		line-height: 82px;
 		letter-spacing: -2px;
+		text-align: left;
 	}
 
 	.b {
-		width: 637px;
-		height: 72px;
-		left: 80px;
-		top: 589px;
+		width: 637px auto;
+		height: 72px auto;
 		color: #4d4d4d;
 		text-align: left;
 		font-size: 24px;
@@ -44,12 +29,10 @@
 	}
 
 	.img1 {
-		width: 468px;
-		height: 427px;
-		left: 921px;
-		top: 245px;
-		max-width: 100%;
+		width: 100%;
+		max-width: 468px;
 		height: auto;
+		max-height: 427px;
 	}
 
 	.img2 {
@@ -72,12 +55,6 @@
 		left: 177px;
 		top: 1811px;
 	}
-
-	.img-responsive:hover {
-        transform: scale(1.1);
-		transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        cursor: pointer;
-    }
 
 	.paragraph {
 		width: 820px;
@@ -170,12 +147,14 @@
 	}
 
 	header {
-		height: 84px;
+		height: 20%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding-inline: 40px;
-		padding-block: 12px;
+		padding-block: 22px;
+		margin-bottom: 10%;
+		width: 100%;
 	}
 	.header_node {
 		display: flex;
@@ -190,11 +169,10 @@
 		height: 28px;
 		align-items: center;
 	}
-	.user {
+	.buttons {
 		width: auto;
 		height: 40px auto;
 		border-radius: 90px;
-		
 	}
 	.button1,
 	.button2,
@@ -204,6 +182,10 @@
 		font-size: 16px;
 		color: #caa53d;
 		border-style: none;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		outline: none;
 	}
 	.button2 {
 		background-color: #f4ca64;
@@ -212,8 +194,6 @@
 	.button3 {
 		width: 218px;
 		height: 60px;
-		left: 80px;
-		top: 729px;
 		font-size: 24px;
 		background-color: #f4ca64;
 		color: #fcfef4;
@@ -234,13 +214,27 @@
 		</a>
 	</div>
 	<div class="header_node">
-		<div class="user">
+		<div class="buttons">
 			<a class="button1 btn btn-secondary" href="/login">{$t('login')}</a>
           	<a class="button2 btn btn-secondary" href="/signup">{$t('signup')}</a>
 		</div>
 	</div>
 </header>
-<article class="landing">
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<h1 class="a">{$t('herotitle')}</h1><br>
+		<h3 class="b">{$t('herodesc')}</h3><br>
+	</div>
+	<div class="col-md-8">
+		<a class="button3 btn btn-secondary" href="/login">{$t('getstarted')}</a>
+	</div>
+	<div class="row justify-content-center text-center">
+		<div class="col-md-6">
+			<img class="img1 img-fluid img-responsive" src="Group 12.png" alt="">
+		</div>
+	</div>
+</div>
+<!-- <article class="landing">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -318,4 +312,4 @@
       </div>
     </div>
   </div>
-</footer> 
+</footer>  -->
