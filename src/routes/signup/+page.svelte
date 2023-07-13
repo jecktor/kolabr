@@ -9,6 +9,12 @@
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+	}
 	.signup-wrapper {
 		box-sizing: border-box;
 		display: flex;
@@ -17,18 +23,10 @@
 		gap: 25px;
 		width: 100%;
 		max-width: 498px;
-		margin: auto;
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
-		position: relative;
-		top: 10%;
 	}
-
-	.btn-primary {
-		width: 100%;
-	}
-
 	.a {
 		margin-top: 20px;
 		width: 100%;
@@ -39,13 +37,13 @@
 		font-size: 32px;
 		line-height: 20px;
 	}
-
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
 		font-weight: 400;
 		font-size: 16px;
 		line-height: 20px;
+		margin-bottom: 5%;
 	}
 	.c {
 		width: 100%;
