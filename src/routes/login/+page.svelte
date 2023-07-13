@@ -22,7 +22,7 @@
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
 		position: relative;
-		top: 45%;
+		top: 20%;
 	}
 	.a {
 		margin-top: 20px;
@@ -62,6 +62,7 @@
 		border: none;
 		width: 100%;
 	}
+	
 </style>
 
 <div class="container">

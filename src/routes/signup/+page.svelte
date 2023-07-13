@@ -22,7 +22,7 @@
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
 		position: relative;
-		top: 30%;
+		top: 10%;
 	}
 
 	.btn-primary {
