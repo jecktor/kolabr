@@ -1,6 +1,7 @@
 {
 	"locale": "Español",
 	"actions": "Acciones",
+	"accessupdate": "Acceso al tablero actualizado",
 	"change": "Cambiar",
 	"confirm": "Confirmar contraseña",
 	"confirmdelete": "Para confirmar escriba 'Eliminar cuenta' en el cuadro",
@@ -15,7 +16,6 @@
 	"desc": "Descripción",
 	"done": "Hecho",
 	"due": "Fecha límite",
-	"earlier": "Anterior",
 	"email": "Correo electrónico",
 	"emailinuse": "Correo electrónico ya registrado",
 	"feat1desc": "Dile adiós a las cadenas interminables de correos electrónicos y la comunicación fragmentada. Kolabr te permite colaborar con los miembros de tu equipo en tiempo real.",
@@ -37,6 +37,7 @@
 	"labels": "Etiquetas",
 	"lang": "Idioma",
 	"lastedited": "Última edición",
+	"linkcopied": "Enlace copiado al portapapeles",
 	"login": "Iniciar sesión",
 	"members": "Miembros",
 	"name": "Nombre",
@@ -49,11 +50,11 @@
 	"nofile": "No se proporcionó ningún archivo",
 	"notsamepass": "Las contraseñas no coinciden",
 	"owner": "Propietario",
+	"ownerboards": "Mis tableros",
 	"pass": "Contraseña",
 	"passconfirm": "Confirmar contraseña",
 	"passlong": "La contraseña es demasiado larga",
 	"passshort": "La contraseña debe contener como mínimo 8 caracteres",
-	"recent": "Últimos 30 días",
 	"samepass": "La nueva contraseña no puede ser la misma que la actual",
 	"search": "Buscar",
 	"settings": "Configuración",
@@ -66,5 +67,7 @@
 	"signout": "Cerrar sesión",
 	"signup": "Registrarse",
 	"ticketlimit": "Límite de tareas",
-	"unknown": "Ocurrió un error desconocido"
+	"unknown": "Ocurrió un error desconocido",
+	"updateaccess": "Actualizar acceso",
+	"userboards": "Otros tableros"
 }

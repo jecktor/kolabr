@@ -76,6 +76,7 @@ export type Board = {
 	name: string;
 	last_edited: string;
 	owner_name: string;
+	owner_id?: string;
 };
 
 export type LaneResults = {

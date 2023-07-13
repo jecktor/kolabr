@@ -1,6 +1,7 @@
 {
 	"locale": "English",
 	"actions": "Actions",
+	"accessupdate": "Board access updated",
 	"change": "Change",
 	"confirm": "Confirm password",
 	"confirmdelete": "To confirm type 'Delete account' in the box",
@@ -15,7 +16,6 @@
 	"desc": "Description",
 	"done": "Done",
 	"due": "Deadline",
-	"earlier": "Earlier",
 	"email": "Email",
 	"emailinuse": "Email already in use",
 	"feat1desc": "Say goodbye to endless email chains and disjointed communication. Kolabr allows you to collaborate with your team members in real time.",
@@ -37,6 +37,7 @@
 	"labels": "Labels",
 	"lang": "Language",
 	"lastedited": "Last edited",
+	"linkcopied": "Link copied to clipboard",
 	"login": "Log in",
 	"members": "Members",
 	"name": "Name",
@@ -49,11 +50,11 @@
 	"nofile": "No file provided",
 	"notsamepass": "Passwords don't match",
 	"owner": "Owner",
+	"ownerboards": "My boards",
 	"pass": "Password",
 	"passconfirm": "Confirm password",
 	"passlong": "Password is too long",
 	"passshort": "Password should be at least 8 characters long",
-	"recent": "Previous 30 days",
 	"samepass": "New password cannot be the same as the current one",
 	"search": "Search",
 	"settings": "Settings",
@@ -66,5 +67,7 @@
 	"signout": "Sign out",
 	"signup": "Sign up",
 	"ticketlimit": "Ticket limit",
-	"unknown": "Unknown error ocurred"
+	"unknown": "Unknown error ocurred",
+	"updateaccess": "Update access",
+	"userboards": "Other boards"
 }
