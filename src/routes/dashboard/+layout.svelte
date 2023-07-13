@@ -7,7 +7,7 @@
 <header>
 	<div class="header_node">
 		<a href="/dashboard">
-			<img class="logo img-fluid" src="Logo.png" alt="logo" />
+			<img class="logo img-fluid" src="../Logo.png" alt="logo" />
 		</a>
 	</div>
 	<div class="header_node">
