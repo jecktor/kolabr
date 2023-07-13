@@ -16,7 +16,7 @@
 
 <div>
 	<form action="?/newboard" method="post">
-		<button type="submit">{$t('createboard')}</button>
+		<button class="btn btn-primary" type="submit">+ {$t('createboard')}</button>
 	</form>
 </div>
 
