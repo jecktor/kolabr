@@ -3,12 +3,14 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import type { Lane as TLane, Ticket } from '$types';
 
+	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import Lane from './Lane.svelte';
 
 	const flipDurationMs = 300;
 
 	export let lanes: TLane[];
 	export let onFinalUpdate: (newLanes: TLane[]) => void;
+	export let onCreateLane: () => void;
 
 	function handleDndConsiderLanes(e: CustomEvent<DndEvent<TLane>>) {
 		lanes = e.detail.items;
@@ -36,6 +38,11 @@
 		</div>
 	{/each}
 </section>
+<button class="newLane" on:click={onCreateLane}>
+	<div class="icon">
+		<FaPlus />
+	</div>
+</button>
 
 <style>
 	.board {
@@ -51,5 +58,12 @@
 		margin: 0.5em;
 		float: left;
 		border: 1px solid #333333;
+	}
+
+	.newLane {
+		position: absolute;
+		top: 70px;
+		float: left;
+		margin: 10px;
 	}
 </style>

@@ -3,15 +3,25 @@ import { db } from '$lib/server';
 import type { Board, Lane, LaneResults, Tag, Ticket } from '$types';
 
 export const load = async ({ locals, params }) => {
-	const session = await locals.auth.validate();
-	if (!session) throw redirect(302, '/login');
+	const { user } = await locals.auth.validateUser();
+	if (!user) throw redirect(302, '/login');
 
 	const [boardResults] = await db.execute('CALL find_board(?)', [params.slug]);
-	const boards = (boardResults as Board[][])[0];
+	const board = (boardResults as Board[][])[0][0];
 
-	if (boards.length === 0) throw error(404, 'Not found');
+	if (!board) throw error(404, 'Not found');
 
-	const [rowsResults] = await db.execute('CALL get_board_lanes(?)', [params.slug]);
+	if (board.owner_id !== user.userId) {
+		const [accessResults] = await db.execute('CALL user_has_access_to_board(?, ?)', [
+			user.userId,
+			board.id
+		]);
+		const { has_access } = (accessResults as [[{ has_access: number }]])[0][0];
+
+		if (has_access !== 1) throw redirect(302, '/dashboard');
+	}
+
+	const [rowsResults] = await db.execute('CALL get_board_lanes(?)', [board.id]);
 	const rows = (rowsResults as LaneResults[][])[0];
 
 	const lanes: Lane[] = [];
@@ -53,7 +63,7 @@ export const load = async ({ locals, params }) => {
 	});
 
 	return {
-		board: boards[0],
+		board,
 		lanes
 	};
 };

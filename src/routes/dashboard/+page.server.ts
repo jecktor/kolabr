@@ -10,12 +10,16 @@ export const load = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
 	if (!user) throw redirect(302, '/login');
 
-	const [results] = await db.execute('CALL get_user_boards(?)', [user.userId]);
-	const boards = (results as Board[][])[0];
+	const [ownerResults] = await db.execute('CALL get_owner_boards(?)', [user.userId]);
+	const ownerBoards = (ownerResults as Board[][])[0];
+
+	const [userResults] = await db.execute('CALL get_user_boards(?)', [user.userId]);
+	const userBoards = (userResults as Board[][])[0];
 
 	return {
 		user,
-		boards
+		ownerBoards,
+		userBoards
 	};
 };
 

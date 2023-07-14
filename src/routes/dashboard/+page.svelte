@@ -20,16 +20,38 @@
 	</form>
 </div>
 
-{#if data.boards.length > 0}
-	<div>
-		<h2>{$t('recent')}</h2>
+{#if data.ownerBoards.length > 0}
+	<section>
+		<h2>{$t('ownerboards')}</h2>
 		<table>
 			<tr>
 				<td>{$t('name')}</td>
 				<td>{$t('lastedited')}</td>
 				<td>{$t('owner')}</td>
 			</tr>
-			{#each data.boards as board (board.id)}
+			{#each data.ownerBoards as board (board.id)}
+				<a href={`/board/${board.id}`}>
+					<tr>
+						<td>{board.name}</td>
+						<td>{board.last_edited}</td>
+						<td>{data.user.name}</td>
+					</tr>
+				</a>
+			{/each}
+		</table>
+	</section>
+{/if}
+
+{#if data.userBoards.length > 0}
+	<section>
+		<h2>{$t('userboards')}</h2>
+		<table>
+			<tr>
+				<td>{$t('name')}</td>
+				<td>{$t('lastedited')}</td>
+				<td>{$t('owner')}</td>
+			</tr>
+			{#each data.userBoards as board (board.id)}
 				<a href={`/board/${board.id}`}>
 					<tr>
 						<td>{board.name}</td>
@@ -39,5 +61,5 @@
 				</a>
 			{/each}
 		</table>
-	</div>
+	</section>
 {/if}

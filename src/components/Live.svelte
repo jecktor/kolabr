@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
+	import { randomId } from '$utils';
 	import type { BoardInfo, Lane, InputEvent, Board as TBoard } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
 	import FaArrowLeft from 'svelte-icons/fa/FaArrowLeft.svelte';
-	import FaShareAlt from 'svelte-icons/fa/FaShareAlt.svelte';
 	import Board from './Board.svelte';
+	import ShareDialog from './ShareDialog.svelte';
 
 	export let board: TBoard;
 	export let boardLanes: Lane[];
@@ -31,6 +32,15 @@
 		$boardInfo.update({
 			name: newName,
 			last_edited: new Date().toString()
+		});
+	}
+
+	function addLane() {
+		$lanes.push({
+			id: randomId(),
+			name: $t('newlane'),
+			limit: 0,
+			tickets: []
 		});
 	}
 
@@ -129,17 +139,12 @@
 					<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
 				{/if}
 
-				<button class="btn btn-primary d-flex gap-2 align-items-center">
-					<span>{$t('share')}</span>
-					<div class="icon">
-						<FaShareAlt />
-					</div>
-				</button>
+				<ShareDialog />
 			</div>
 		</header>
 
 		<main>
-			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} />
+			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} onCreateLane={addLane} />
 		</main>
 	</div>
 {/if}

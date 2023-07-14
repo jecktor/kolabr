@@ -4,6 +4,8 @@
 	import { translateDate } from '$locales';
 	import type { Ticket } from '$types';
 
+	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
+
 	export let name: string;
 	export let tickets: Ticket[];
 	export let onDrop: (newTickets: Ticket[]) => void;
@@ -20,7 +22,10 @@
 
 <div class="wrapper">
 	<div class="lane-title">
-		{name}
+		<span>{name}</span>
+		<div class="icon">
+			<FaEllipsisH />
+		</div>
 	</div>
 	<div
 		class="lane-content"
@@ -63,7 +68,7 @@
 		height: 2.5em;
 		font-weight: bold;
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
 	}
 
