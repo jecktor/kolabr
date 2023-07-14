@@ -2,18 +2,18 @@
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
 	import { translateDate } from '$locales';
-	import type { Ticket } from '$types';
+	import type { Lane, Ticket } from '$types';
 
-	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
+	import EditLane from './EditLane.svelte';
 
-	export let name: string;
-	export let tickets: Ticket[];
+	export let lane: Lane;
+	export let idx: number;
 	export let onDrop: (newTickets: Ticket[]) => void;
 
 	const flipDurationMs = 150;
 
 	function handleDndConsiderTickets(e: CustomEvent<DndEvent<Ticket>>) {
-		tickets = e.detail.items;
+		lane.tickets = e.detail.items;
 	}
 	function handleDndFinalizeTickets(e: CustomEvent<DndEvent<Ticket>>) {
 		onDrop(e.detail.items);
@@ -22,18 +22,16 @@
 
 <div class="wrapper">
 	<div class="lane-title">
-		<span>{name}</span>
-		<div class="icon">
-			<FaEllipsisH />
-		</div>
+		<span>{lane.name}</span>
+		<EditLane {lane} {idx} />
 	</div>
 	<div
 		class="lane-content"
-		use:dndzone={{ items: tickets, flipDurationMs, zoneTabIndex: -1 }}
+		use:dndzone={{ items: lane.tickets, flipDurationMs, zoneTabIndex: -1 }}
 		on:consider={handleDndConsiderTickets}
 		on:finalize={handleDndFinalizeTickets}
 	>
-		{#each tickets as { id, name, description, deadline, tags } (id)}
+		{#each lane.tickets as { id, name, description, deadline, tags } (id)}
 			<div class="ticket" animate:flip={{ duration: flipDurationMs }}>
 				<p>{name}</p>
 				{#if description}

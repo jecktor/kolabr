@@ -14,7 +14,7 @@ import { LiveList, type Lson } from '@liveblocks/client';
  * console.log([...$list])
  */
 
-export function useList<T extends Lson>(key: string, initialValue: T[]) {
+export function useList<T extends Lson>(key: string, initialValue?: T[]) {
 	const room = useRoom();
 	const rootStore = useStorage();
 	const newStore = writable<LiveList<T>>();

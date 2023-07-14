@@ -6,6 +6,7 @@
 	import Modal from './Modal.svelte';
 
 	let message: TranslationKeys | undefined;
+	let accessInput: HTMLInputElement;
 
 	let show = false;
 
@@ -13,14 +14,13 @@
 		navigator.clipboard.writeText($page.url.href).then(() => (message = 'linkcopied'));
 	}
 
-	function changeAccess(e: SubmitEvent) {
-		const form = new FormData(e.currentTarget as HTMLFormElement);
-		const access = form.get('access');
-		const board = $page.url.href.split('/').pop();
+	function updateAccess() {
+		const boardId = $page.url.href.split('/').pop();
+		const access = accessInput.value;
 
 		const opts = {
 			method: 'POST',
-			body: JSON.stringify({ access, board }),
+			body: JSON.stringify({ access, boardId }),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -42,15 +42,19 @@
 
 <Modal bind:show>
 	<h2>{$t('shareboard')}</h2>
-	<form on:submit|preventDefault={changeAccess}>
-		<div>
-			<label for="access">{$t('shareaccess')}</label>
-			<input type="text" name="access" id="access" placeholder={$t('shareemail')} />
-			<input type="submit" value={$t('updateaccess')} />
-		</div>
-		<label for="access">{$t('sharelink')}</label>
-		<button on:click={copyUrl} type="button">{$t('copylink')}</button>
-	</form>
+	<div>
+		<label for="access">{$t('shareaccess')}</label>
+		<input
+			bind:this={accessInput}
+			type="text"
+			name="access"
+			id="access"
+			placeholder={$t('shareemail')}
+		/>
+		<button on:click={updateAccess}>{$t('updateaccess')}</button>
+	</div>
+	<label for="access">{$t('sharelink')}</label>
+	<button on:click={copyUrl}>{$t('copylink')}</button>
 	{#if message}
 		<p>{$t(message)}</p>
 	{/if}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
-	import { t, translateDate } from '$locales';
-	import { randomId } from '$utils';
+	import { translateDate } from '$locales';
 	import type { BoardInfo, Lane, InputEvent, Board as TBoard } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
@@ -32,15 +31,6 @@
 		$boardInfo.update({
 			name: newName,
 			last_edited: new Date().toString()
-		});
-	}
-
-	function addLane() {
-		$lanes.push({
-			id: randomId(),
-			name: $t('newlane'),
-			limit: 0,
-			tickets: []
 		});
 	}
 
@@ -144,7 +134,7 @@
 		</header>
 
 		<main>
-			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} onCreateLane={addLane} />
+			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} />
 		</main>
 	</div>
 {/if}

@@ -14,7 +14,7 @@ import { LiveObject, type LsonObject } from '@liveblocks/client';
  * console.log($obj.get('name'))
  */
 
-export function useObject<T extends LsonObject>(key: string, initialValue: T) {
+export function useObject<T extends LsonObject>(key: string, initialValue?: T) {
 	const room = useRoom();
 	const rootStore = useStorage();
 	const newStore = writable<LiveObject<T>>();

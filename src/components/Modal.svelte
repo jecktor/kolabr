@@ -3,22 +3,25 @@
 
 	let dialog: HTMLDialogElement;
 
+	$: dialog && document.body.appendChild(dialog);
 	$: if (dialog && show) dialog.showModal();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<dialog
-	class="dialog"
-	bind:this={dialog}
-	on:close={() => (show = false)}
-	on:click|self={() => dialog.close()}
->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation>
-		<slot />
-	</div>
-</dialog>
+{#if show}
+	<dialog
+		class="dialog"
+		bind:this={dialog}
+		on:close={() => (show = false)}
+		on:click|self={() => dialog.close()}
+	>
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<div on:click|stopPropagation>
+			<slot />
+		</div>
+	</dialog>
+{/if}
 
 <style>
 	.dialog {
