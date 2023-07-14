@@ -22,7 +22,7 @@
 		padding: 40px;
 		gap: 25px;
 		width: 100%;
-		max-width: 498px;
+		max-width: 600px;
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
@@ -67,9 +67,9 @@
 	}
 </style>
 
-<div class="container">
+<div class="container signup">
 	<div class="row justify-content-center">
-		<div class="col-md-6">
+		<div>
 			<div class="signup-wrapper">
 				<h2 class="a">{$t('signup')}</h2>
 				<form method="post" use:enhance>

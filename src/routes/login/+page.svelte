@@ -22,7 +22,7 @@
 		padding: 40px;
 		gap: 25px;
 		width: 100%;
-		max-width: 498px;
+		max-width: 600px;
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 12px;
@@ -65,12 +65,11 @@
 		border: none;
 		width: 100%;
 	}
-	
 </style>
 
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-6">
+		<div>
 			<div class="login-wrapper">
 				<h2 class="a">{$t('login')}</h2>
 				<form method="post" use:enhance>
