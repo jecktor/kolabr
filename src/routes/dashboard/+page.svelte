@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { t } from '$locales';
+	import { t, translateDate } from '$locales';
 
 	export let data;
 </script>
@@ -28,15 +28,15 @@
 				<td>{$t('name')}</td>
 				<td>{$t('lastedited')}</td>
 				<td>{$t('owner')}</td>
+				<td>{$t('actions')}</td>
 			</tr>
 			{#each data.ownerBoards as board (board.id)}
-				<a href={`/board/${board.id}`}>
-					<tr>
-						<td>{board.name}</td>
-						<td>{board.last_edited}</td>
-						<td>{data.user.name}</td>
-					</tr>
-				</a>
+				<tr>
+					<td><a href={`/board/${board.id}`}>{board.name}</a></td>
+					<td>{translateDate(board.last_edited)}</td>
+					<td>{data.user.name}</td>
+					<td><button>Copy link</button><button>Delete</button></td>
+				</tr>
 			{/each}
 		</table>
 	</section>
@@ -50,15 +50,15 @@
 				<td>{$t('name')}</td>
 				<td>{$t('lastedited')}</td>
 				<td>{$t('owner')}</td>
+				<td>{$t('actions')}</td>
 			</tr>
 			{#each data.userBoards as board (board.id)}
-				<a href={`/board/${board.id}`}>
-					<tr>
-						<td>{board.name}</td>
-						<td>{board.last_edited}</td>
-						<td>{board.owner_name}</td>
-					</tr>
-				</a>
+				<tr>
+					<td><a href={`/board/${board.id}`}>{board.name}</a></td>
+					<td>{translateDate(board.last_edited)}</td>
+					<td>{data.user.name}</td>
+					<td><button>Copy link</button><button>Delete</button></td>
+				</tr>
 			{/each}
 		</table>
 	</section>
