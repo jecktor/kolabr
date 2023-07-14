@@ -218,7 +218,7 @@
 			color: #fcfef4;
 		}
 		.button3 {
-			width: 129px;
+			width: 135px;
 			height: 40px;
 			background-color: #f4ca64;
 			color: #fcfef4;
