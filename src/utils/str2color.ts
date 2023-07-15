@@ -2,13 +2,11 @@
  * Generates an hsl color from a string consistently.
  */
 
-export function str2Color(string: string, saturation = 100, lightness = 75) {
-	let hash = 0;
-
-	for (let i = 0; i < string.length; i++) {
-		hash = string.charCodeAt(i) + ((hash << 5) - hash);
-		hash = hash & hash;
-	}
-
-	return `hsl(${hash % 360}, ${saturation}%, ${lightness}%)`;
+export function str2Color(str: string) {
+	const hash = str.split('').reduce((acc, char) => {
+		acc = (acc << 5) - acc + char.charCodeAt(0);
+		return acc & acc;
+	}, 0);
+	const hue = Math.abs(hash % 360);
+	return `hsl(${hue}, 50%, 80%)`;
 }
