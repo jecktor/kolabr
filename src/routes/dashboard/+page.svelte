@@ -56,7 +56,7 @@
 				<tr>
 					<td><a href={`/board/${board.id}`}>{board.name}</a></td>
 					<td>{translateDate(board.last_edited)}</td>
-					<td>{data.user.name}</td>
+					<td>{board.owner_name}</td>
 					<td><button>Copy link</button><button>Delete</button></td>
 				</tr>
 			{/each}
