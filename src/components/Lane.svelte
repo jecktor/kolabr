@@ -1,16 +1,24 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
-	import { translateDate } from '$locales';
+	import { t } from '$locales';
 	import type { Lane, Ticket } from '$types';
 
 	import EditLane from './EditLane.svelte';
+	import EditTicket from './EditTicket.svelte';
 
 	export let lane: Lane;
 	export let idx: number;
 	export let onDrop: (newTickets: Ticket[]) => void;
 
 	const flipDurationMs = 150;
+	const ticketTemplate: Ticket = {
+		id: '',
+		name: $t('newticket'),
+		description: '',
+		deadline: '',
+		tags: []
+	};
 
 	function handleDndConsiderTickets(e: CustomEvent<DndEvent<Ticket>>) {
 		lane.tickets = e.detail.items;
@@ -23,7 +31,10 @@
 <div class="wrapper">
 	<div class="lane-title">
 		<span>{lane.name}</span>
-		<EditLane {lane} {idx} />
+		<div>
+			<EditTicket ticket={ticketTemplate} laneIdx={idx} isNew />
+			<EditLane {lane} {idx} />
+		</div>
 	</div>
 	<div
 		class="lane-content"
@@ -31,20 +42,9 @@
 		on:consider={handleDndConsiderTickets}
 		on:finalize={handleDndFinalizeTickets}
 	>
-		{#each lane.tickets as { id, name, description, deadline, tags } (id)}
+		{#each lane.tickets as ticket (ticket.id)}
 			<div class="ticket" animate:flip={{ duration: flipDurationMs }}>
-				<p>{name}</p>
-				{#if description}
-					<p>{description}</p>
-				{/if}
-				<div>
-					{#if deadline}
-						<span>{translateDate(deadline)}</span>
-					{/if}
-					{#each tags as { id, name } (id)}
-						<span>{name}</span>
-					{/each}
-				</div>
+				<EditTicket {ticket} laneIdx={idx} />
 			</div>
 		{/each}
 	</div>
