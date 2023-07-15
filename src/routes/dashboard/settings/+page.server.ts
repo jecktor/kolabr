@@ -62,9 +62,17 @@ export const actions: Actions = {
 		}
 
 		const data = await request.formData();
-		const name = data.get('name');
+		const nameData = data.get('name');
 
-		if (!name || typeof name !== 'string') {
+		if (typeof nameData !== 'string') {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
+		const name = nameData.trim();
+
+		if (!name) {
 			return fail(400, {
 				message: 'invalid'
 			});
@@ -126,10 +134,19 @@ export const actions: Actions = {
 		}
 
 		const data = await request.formData();
-		const pass = data.get('pass');
-		const newpass = data.get('newpass');
+		const passData = data.get('pass');
+		const newpassData = data.get('newpass');
 
-		if (!pass || !newpass || typeof pass !== 'string' || typeof newpass !== 'string') {
+		if (typeof passData !== 'string' || typeof newpassData !== 'string') {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
+		const pass = passData.trim();
+		const newpass = newpassData.trim();
+
+		if (!pass || !newpass) {
 			return fail(400, {
 				message: 'invalid'
 			});

@@ -23,11 +23,13 @@
 		const lane = $lanes.get(laneIdx)!;
 		const newTicket: Ticket = {
 			id: randomId(),
-			name: nameInput.value,
-			description: descInput.value,
+			name: nameInput.value.trim(),
+			description: descInput.value.trim(),
 			deadline: dueInput.value,
 			tags: []
 		};
+
+		if (!newTicket.name) return;
 
 		const opts = {
 			method: 'POST',
@@ -54,11 +56,13 @@
 		const lane = $lanes.get(laneIdx)!;
 		const newTicket: Ticket = {
 			id: ticket.id,
-			name: nameInput.value,
-			description: descInput.value,
+			name: nameInput.value.trim(),
+			description: descInput.value.trim(),
 			deadline: dueInput.value,
 			tags: []
 		};
+
+		if (!newTicket.name) return;
 
 		const opts = {
 			method: 'POST',

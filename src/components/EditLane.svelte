@@ -25,9 +25,11 @@
 		const newLane: Lane = {
 			id: randomId(),
 			tickets: lane.tickets,
-			name: nameInput.value,
+			name: nameInput.value.trim(),
 			limit
 		};
+
+		if (!newLane.name) return;
 
 		const opts = {
 			method: 'POST',
@@ -53,9 +55,11 @@
 		const newLane: Lane = {
 			id: lane.id.split('-')[0],
 			tickets: lane.tickets,
-			name: nameInput.value,
+			name: nameInput.value.trim(),
 			limit
 		};
+
+		if (!newLane.name) return;
 
 		const opts = {
 			method: 'POST',

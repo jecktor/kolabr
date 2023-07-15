@@ -11,10 +11,23 @@ export const load = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const form = await request.formData();
-		const email = form.get('email');
-		const password = form.get('password');
+		const emailData = form.get('email');
+		const passwordData = form.get('password');
 
-		if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
+		if (typeof emailData !== 'string' || typeof passwordData !== 'string') {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
+		const email = emailData.toLowerCase().trim();
+		const password = passwordData.trim();
+
+		if (
+			!email ||
+			!password ||
+			!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)
+		) {
 			return fail(400, {
 				message: 'invalid'
 			});

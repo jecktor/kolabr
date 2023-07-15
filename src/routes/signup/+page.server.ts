@@ -11,20 +11,33 @@ export const load = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const form = await request.formData();
-		const name = form.get('name');
-		const email = form.get('email');
-		const pass = form.get('pass');
-		const passconfirm = form.get('passconfirm');
+		const nameData = form.get('name');
+		const emailData = form.get('email');
+		const passData = form.get('pass');
+		const passconfirmData = form.get('passconfirm');
+
+		if (
+			typeof nameData !== 'string' ||
+			typeof emailData !== 'string' ||
+			typeof passData !== 'string' ||
+			typeof passconfirmData !== 'string'
+		) {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
+		const name = nameData.trim();
+		const email = emailData.toLowerCase().trim();
+		const pass = passData.trim();
+		const passconfirm = passconfirmData.trim();
 
 		if (
 			!name ||
 			!email ||
 			!pass ||
 			!passconfirm ||
-			typeof name !== 'string' ||
-			typeof email !== 'string' ||
-			typeof pass !== 'string' ||
-			typeof passconfirm !== 'string'
+			!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)
 		) {
 			return fail(400, {
 				message: 'invalid'
