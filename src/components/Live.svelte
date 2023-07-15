@@ -10,6 +10,7 @@
 
 	export let board: TBoard;
 	export let boardLanes: Lane[];
+	export let access: string[];
 
 	const myPresence = useMyPresence();
 	const self = useSelf();
@@ -129,7 +130,9 @@
 					<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
 				{/if}
 
-				<ShareDialog />
+				{#if board.owner_id && $self?.id}
+					<ShareDialog ownerId={board.owner_id} userId={$self?.id} {access} />
+				{/if}
 			</div>
 		</header>
 

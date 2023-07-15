@@ -11,14 +11,11 @@ export const load = async ({ locals, params }) => {
 
 	if (!board) throw error(404, 'Not found');
 
-	if (board.owner_id !== user.userId) {
-		const [accessResults] = await db.execute('CALL user_has_access_to_board(?, ?)', [
-			user.userId,
-			board.id
-		]);
-		const { has_access } = (accessResults as [[{ has_access: number }]])[0][0];
+	const [accessResults] = await db.execute('CALL get_user_board_emails(?)', [board.id]);
+	const access = (accessResults as [[{ email: string }]])[0].map((user) => user.email);
 
-		if (has_access !== 1) throw redirect(302, '/dashboard');
+	if (board.owner_id !== user.userId && !access.includes(user.email)) {
+		throw redirect(302, '/dashboard');
 	}
 
 	const [rowsResults] = await db.execute('CALL get_board_lanes(?)', [board.id]);
@@ -64,6 +61,7 @@ export const load = async ({ locals, params }) => {
 
 	return {
 		board,
-		lanes
+		lanes,
+		access
 	};
 };

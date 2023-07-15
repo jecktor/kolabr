@@ -5,6 +5,10 @@
 	import FaShareAlt from 'svelte-icons/fa/FaShareAlt.svelte';
 	import Modal from './Modal.svelte';
 
+	export let ownerId: string;
+	export let userId: string;
+	export let access: string[];
+
 	let message: TranslationKeys | undefined;
 	let accessInput: HTMLInputElement;
 
@@ -42,17 +46,20 @@
 
 <Modal bind:show>
 	<h2>{$t('shareboard')}</h2>
-	<div>
-		<label for="access">{$t('shareaccess')}</label>
-		<input
-			bind:this={accessInput}
-			type="text"
-			name="access"
-			id="access"
-			placeholder={$t('shareemail')}
-		/>
-		<button on:click={updateAccess}>{$t('updateaccess')}</button>
-	</div>
+	{#if userId === ownerId}
+		<div>
+			<label for="access">{$t('shareaccess')}</label>
+			<input
+				bind:this={accessInput}
+				type="text"
+				name="access"
+				id="access"
+				value={access.join(', ')}
+				placeholder={$t('shareemail')}
+			/>
+			<button on:click={updateAccess}>{$t('updateaccess')}</button>
+		</div>
+	{/if}
 	<label for="access">{$t('sharelink')}</label>
 	<button on:click={copyUrl}>{$t('copylink')}</button>
 	{#if message}
