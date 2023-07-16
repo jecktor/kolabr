@@ -22,6 +22,7 @@ export const load = async ({ locals, params }) => {
 	const rows = (rowsResults as LaneResults[][])[0];
 
 	const lanes: Lane[] = [];
+	const tags: Tag[] = [];
 	let currentLane: Lane;
 
 	rows.forEach((row) => {
@@ -53,6 +54,7 @@ export const load = async ({ locals, params }) => {
 					name: row.tag_name
 				};
 				ticket.tags.push(tag);
+				tags.push(tag);
 			}
 
 			currentLane.tickets.push(ticket);
@@ -62,6 +64,7 @@ export const load = async ({ locals, params }) => {
 	return {
 		board,
 		lanes,
+		tags,
 		access
 	};
 };

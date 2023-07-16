@@ -6,11 +6,19 @@
 
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
+	import ManageTags from './ManageTags.svelte';
 	import Modal from './Modal.svelte';
+	import Tag from './Tag.svelte';
 
-	export let ticket: Ticket;
 	export let laneIdx: number;
 	export let isNew = false;
+	export let ticket: Ticket = {
+		id: '',
+		name: $t('newticket'),
+		description: '',
+		deadline: '',
+		tags: []
+	};
 
 	const lanes = useList<Lane>('lanes');
 
@@ -21,23 +29,16 @@
 
 	function createTicket() {
 		const lane = $lanes.get(laneIdx)!;
-		const newTicket: Ticket = {
-			id: randomId(),
-			name: nameInput.value.trim(),
-			description: descInput.value.trim(),
-			deadline: dueInput.value,
-			tags: []
-		};
 
-		if (!newTicket.name) return;
+		ticket.id = randomId();
 
 		const opts = {
 			method: 'POST',
 			body: JSON.stringify({
-				id: newTicket.id,
-				name: newTicket.name,
-				description: newTicket.description,
-				deadline: newTicket.deadline,
+				id: ticket.id,
+				name: ticket.name,
+				description: ticket.description,
+				deadline: ticket.deadline,
 				lane: lane.id.split('-')[0]
 			}),
 			headers: {
@@ -46,10 +47,11 @@
 		};
 
 		fetch('/api/board/ticket/create', opts)
-			.then(() => $lanes.set(laneIdx, { ...lane, tickets: [...lane.tickets, newTicket] }))
+			.then(() => {
+				$lanes.set(laneIdx, { ...lane, tickets: [...lane.tickets, ticket] });
+				show = true;
+			})
 			.catch(console.error);
-
-		show = false;
 	}
 
 	function updateTicket() {
@@ -59,7 +61,7 @@
 			name: nameInput.value.trim(),
 			description: descInput.value.trim(),
 			deadline: dueInput.value,
-			tags: []
+			tags: lane.tickets.find((t) => t.id === ticket.id)?.tags ?? []
 		};
 
 		if (!newTicket.name) return;
@@ -111,7 +113,7 @@
 </script>
 
 {#if isNew}
-	<button on:click={() => (show = true)} class="editTicket">
+	<button on:click={createTicket} class="editTicket">
 		<div class="icon">
 			<FaPlus />
 		</div>
@@ -127,7 +129,7 @@
 				<span>{translateDate(ticket.deadline)}</span>
 			{/if}
 			{#each ticket.tags as { id, name } (id)}
-				<span>{name}</span>
+				<Tag {id} {name} />
 			{/each}
 		</div>
 	</button>
@@ -136,13 +138,11 @@
 <Modal bind:show>
 	<div class="header">
 		<input bind:this={nameInput} type="text" value={ticket.name} />
-		{#if !isNew}
-			<button on:click={deleteTicket}>
-				<div class="icon">
-					<FaTrash />
-				</div>
-			</button>
-		{/if}
+		<button on:click={deleteTicket}>
+			<div class="icon">
+				<FaTrash />
+			</div>
+		</button>
 	</div>
 	<div>
 		<span>{$t('desc')}</span>
@@ -152,7 +152,11 @@
 		<span>{$t('due')}</span>
 		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} />
 	</div>
-	<button on:click={isNew ? createTicket : updateTicket} class="btn btn-primary">
+	<div>
+		<span>{$t('labels')}</span>
+		<ManageTags tags={ticket.tags} ticketId={ticket.id} {laneIdx} />
+	</div>
+	<button on:click={updateTicket} class="btn btn-primary">
 		{$t('done')}
 	</button>
 </Modal>

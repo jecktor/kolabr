@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
-	import { t } from '$locales';
 	import type { Lane, Ticket } from '$types';
 
 	import EditLane from './EditLane.svelte';
@@ -12,13 +11,6 @@
 	export let onDrop: (newTickets: Ticket[]) => void;
 
 	const flipDurationMs = 150;
-	const ticketTemplate: Ticket = {
-		id: '',
-		name: $t('newticket'),
-		description: '',
-		deadline: '',
-		tags: []
-	};
 
 	function handleDndConsiderTickets(e: CustomEvent<DndEvent<Ticket>>) {
 		lane.tickets = e.detail.items;
@@ -32,7 +24,7 @@
 	<div class="lane-title">
 		<span>{lane.name}</span>
 		<div>
-			<EditTicket ticket={ticketTemplate} laneIdx={idx} isNew />
+			<EditTicket laneIdx={idx} isNew />
 			<EditLane {lane} {idx} />
 		</div>
 	</div>

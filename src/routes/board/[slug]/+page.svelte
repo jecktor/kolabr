@@ -25,7 +25,7 @@
 	<LiveblocksProvider {client}>
 		<!-- Create a room from id e.g. `kolabr-room-758df70b5e94c13289df6` -->
 		<RoomProvider id={'kolabr-room-' + data.board.id}>
-			<Live board={data.board} boardLanes={data.lanes} access={data.access} />
+			<Live board={data.board} boardLanes={data.lanes} boardTags={data.tags} access={data.access} />
 		</RoomProvider>
 	</LiveblocksProvider>
 {/if}

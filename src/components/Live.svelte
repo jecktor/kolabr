@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { translateDate } from '$locales';
-	import type { BoardInfo, Lane, InputEvent, Board as TBoard } from '$types';
+	import type { BoardInfo, Lane, Tag, InputEvent, Board as TBoard } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
 	import FaArrowLeft from 'svelte-icons/fa/FaArrowLeft.svelte';
@@ -10,6 +10,7 @@
 
 	export let board: TBoard;
 	export let boardLanes: Lane[];
+	export let boardTags: Tag[];
 	export let access: string[];
 
 	const myPresence = useMyPresence();
@@ -22,6 +23,7 @@
 	});
 
 	const lanes = useList<Lane>('lanes', boardLanes);
+	useList<Tag>('tags', boardTags);
 
 	const boardInfo = useObject<BoardInfo>('infoStorage', {
 		name: board.name,
