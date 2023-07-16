@@ -44,7 +44,7 @@
 			}
 		};
 
-		fetch('/api/board/lane/create', opts)
+		fetch('/api/board/lane', opts)
 			.then(() => $lanes.push(newLane))
 			.catch(console.error);
 
@@ -62,14 +62,14 @@
 		if (!newLane.name) return;
 
 		const opts = {
-			method: 'POST',
+			method: 'PUT',
 			body: JSON.stringify({ id: newLane.id, name: newLane.name, limit: newLane.limit }),
 			headers: {
 				'content-type': 'application/json'
 			}
 		};
 
-		fetch('/api/board/lane/update', opts)
+		fetch('/api/board/lane', opts)
 			.then(() => $lanes.set(idx, newLane))
 			.catch(console.error);
 
@@ -78,14 +78,14 @@
 
 	function deleteLane() {
 		const opts = {
-			method: 'POST',
+			method: 'DELETE',
 			body: JSON.stringify({ id: lane.id.split('-')[0] }),
 			headers: {
 				'content-type': 'application/json'
 			}
 		};
 
-		fetch('/api/board/lane/delete', opts)
+		fetch('/api/board/lane', opts)
 			.then(() => $lanes.delete(idx))
 			.catch(console.error);
 

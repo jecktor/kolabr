@@ -46,7 +46,7 @@
 			}
 		};
 
-		fetch('/api/board/ticket/create', opts)
+		fetch('/api/board/ticket', opts)
 			.then(() => {
 				$lanes.set(laneIdx, { ...lane, tickets: [...lane.tickets, ticket] });
 				show = true;
@@ -67,7 +67,7 @@
 		if (!newTicket.name) return;
 
 		const opts = {
-			method: 'POST',
+			method: 'PUT',
 			body: JSON.stringify({
 				id: newTicket.id,
 				name: newTicket.name,
@@ -80,7 +80,7 @@
 			}
 		};
 
-		fetch('/api/board/ticket/update', opts)
+		fetch('/api/board/ticket', opts)
 			.then(() =>
 				$lanes.set(laneIdx, {
 					...lane,
@@ -95,14 +95,14 @@
 	function deleteTicket() {
 		const lane = $lanes.get(laneIdx)!;
 		const opts = {
-			method: 'POST',
+			method: 'DELETE',
 			body: JSON.stringify({ id: ticket.id }),
 			headers: {
 				'content-type': 'application/json'
 			}
 		};
 
-		fetch('/api/board/ticket/delete', opts)
+		fetch('/api/board/ticket', opts)
 			.then(() =>
 				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t.id !== ticket.id) })
 			)
