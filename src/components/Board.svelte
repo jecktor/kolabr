@@ -27,6 +27,19 @@
 	}
 
 	function handleTicketFinalize(laneIdx: number, newTickets: Ticket[]) {
+		const opts = {
+			method: 'POST',
+			body: JSON.stringify({
+				lane: lanes[laneIdx].id.split('-')[0],
+				tickets: newTickets.map((t) => t.id)
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		};
+
+		fetch('/api/board/lane/updateTickets', opts).catch(console.error);
+
 		lanes[laneIdx].tickets = newTickets;
 		onFinalUpdate(lanes);
 	}
