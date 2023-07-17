@@ -101,6 +101,13 @@
 					)
 				});
 				tags = tags.filter((tag) => tag.id !== id);
+
+				if (
+					!$lanes.find((lane) =>
+						lane.tickets.find((ticket) => ticket.tags.find((tag) => tag.id === id))
+					)
+				)
+					$boardTags.delete($boardTags.findIndex((tag) => tag.id === id));
 			})
 			.catch(console.error);
 	}
