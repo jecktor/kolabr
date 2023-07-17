@@ -134,7 +134,7 @@
 		<label class="b h" for="confirm">{$t('confirmdelete')}</label>
 		<br>
 		<input bind:value={confirmDelete} class="d g" type="text" name="confirm" id="confirm" required/>
-		<input class="btn btn-primary" type="submit" value={$t('deletes')} disabled={confirmDelete !== $t('deletes')} />
+		<input class="btn btn-primary" type="submit" value={$t('deleteaccount')} disabled={confirmDelete !== $t('deleteaccount')} />
 	</form>
 
 	{#if form?.success}

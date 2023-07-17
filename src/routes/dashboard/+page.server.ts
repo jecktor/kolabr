@@ -37,15 +37,85 @@ export const actions: Actions = {
 		const boardId = randomId();
 
 		try {
-			await db.execute('CALL create_board(?,?,?)', [
+			await db.execute('CALL create_board(?, ?, ?)', [
 				boardId,
 				translate(get(locale), 'newboard'),
 				user.userId
 			]);
 		} catch (e) {
-			return fail(500);
+			return fail(500, {
+				message: 'unknown'
+			});
 		}
 
 		throw redirect(302, `/board/${boardId}`);
+	},
+	deleteboard: async ({ locals, request }) => {
+		const { user } = await locals.auth.validateUser();
+		if (!user) throw redirect(302, '/login');
+
+		const data = await request.formData();
+		const boardId = data.get('board');
+
+		if (!boardId || typeof boardId !== 'string') {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
+		const [boardResults] = await db.execute('CALL find_board(?)', [boardId]);
+		const board = (boardResults as Board[][])[0][0];
+
+		if (!board)
+			return fail(400, {
+				message: 'invalid'
+			});
+
+		if (board.owner_id !== user.userId) {
+			return fail(302, {
+				message: 'unknown'
+			});
+		}
+
+		try {
+			await db.execute('CALL delete_board(?)', [board.id]);
+		} catch (error) {
+			return fail(500, {
+				message: 'unknown'
+			});
+		}
+
+		return { success: true };
+	},
+	removeboard: async ({ locals, request }) => {
+		const { user } = await locals.auth.validateUser();
+		if (!user) throw redirect(302, '/login');
+
+		const data = await request.formData();
+		const boardId = data.get('board');
+
+		if (!boardId || typeof boardId !== 'string') {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
+		const [boardResults] = await db.execute('CALL find_board(?)', [boardId]);
+		const board = (boardResults as Board[][])[0][0];
+
+		if (!board)
+			return fail(400, {
+				message: 'invalid'
+			});
+
+		try {
+			await db.execute('CALL remove_user_access_to_board(?, ?)', [user.userId, board.id]);
+		} catch (error) {
+			return fail(500, {
+				message: 'unknown'
+			});
+		}
+
+		return { success: true };
 	}
 };
