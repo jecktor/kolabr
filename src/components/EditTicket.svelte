@@ -12,7 +12,7 @@
 
 	export let laneIdx: number;
 	export let isNew = false;
-	export let ticket: Ticket = {
+	export let boardticket: Ticket = {
 		id: '',
 		name: $t('newticket'),
 		description: '',
@@ -26,6 +26,10 @@
 	let descInput: HTMLInputElement;
 	let dueInput: HTMLInputElement;
 	let show = false;
+
+	$: ticket = $lanes
+		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket.id === boardticket.id) ?? boardticket
+		: boardticket;
 
 	function createTicket() {
 		const lane = $lanes.get(laneIdx)!;
@@ -154,7 +158,7 @@
 	</div>
 	<div>
 		<span>{$t('labels')}</span>
-		<ManageTags tags={ticket.tags} ticketId={ticket.id} {laneIdx} />
+		<ManageTags ticketTags={ticket.tags} ticketId={ticket.id} {laneIdx} />
 	</div>
 	<button on:click={updateTicket} class="btn btn-primary">
 		{$t('done')}

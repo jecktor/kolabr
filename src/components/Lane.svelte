@@ -36,7 +36,7 @@
 	>
 		{#each lane.tickets as ticket (ticket.id)}
 			<div class="ticket" animate:flip={{ duration: flipDurationMs }}>
-				<EditTicket {ticket} laneIdx={idx} />
+				<EditTicket boardticket={ticket} laneIdx={idx} />
 			</div>
 		{/each}
 	</div>

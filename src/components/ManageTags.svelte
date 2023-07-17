@@ -8,7 +8,7 @@
 	import Tag from './Tag.svelte';
 	import type { Lane, Tag as TTag } from '$types';
 
-	export let tags: TTag[];
+	export let ticketTags: TTag[];
 	export let laneIdx: number;
 	export let ticketId: string;
 
@@ -17,6 +17,10 @@
 
 	let tagInput: HTMLInputElement;
 
+	$: tags = $lanes
+		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket.id === ticketId)?.tags ?? []
+		: ticketTags;
+
 	function createTag() {
 		const newTag: TTag = {
 			id: randomId(),
@@ -24,6 +28,7 @@
 		};
 
 		if (!newTag.name) return;
+		tagInput.value = '';
 
 		const lane = $lanes.get(laneIdx)!;
 		const opts = {
@@ -35,17 +40,17 @@
 		};
 
 		fetch('/api/board/tag', opts)
-			.then(() =>
+			.then(() => {
+				$boardTags.push(newTag);
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
 						ticket.id === ticketId ? { ...ticket, tags: [...ticket.tags, newTag] } : ticket
 					)
-				})
-			)
+				});
+				tags = [...tags, newTag];
+			})
 			.catch(console.error);
-
-		$boardTags.push(newTag);
 	}
 
 	function addTag(id: string, name: string) {
@@ -63,14 +68,15 @@
 		};
 
 		fetch('/api/board/tag', opts)
-			.then(() =>
+			.then(() => {
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
 						ticket.id === ticketId ? { ...ticket, tags: [...ticket.tags, newTag] } : ticket
 					)
-				})
-			)
+				});
+				tags = [...tags, newTag];
+			})
 			.catch(console.error);
 	}
 
@@ -85,7 +91,7 @@
 		};
 
 		fetch('/api/board/tag', opts)
-			.then(() =>
+			.then(() => {
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
@@ -93,8 +99,9 @@
 							? { ...ticket, tags: ticket.tags.filter((tag) => tag.id !== id) }
 							: ticket
 					)
-				})
-			)
+				});
+				tags = tags.filter((tag) => tag.id !== id);
+			})
 			.catch(console.error);
 	}
 
@@ -119,6 +126,7 @@
 						}))
 					});
 				});
+				tags = tags.filter((tag) => tag.id !== id);
 			})
 			.catch(console.error);
 	}
