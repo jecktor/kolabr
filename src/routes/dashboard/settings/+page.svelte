@@ -80,7 +80,12 @@
 		font-size: 14px;
 	}
 	.i {
-		width: 15%;
+		width: 14%;
+	}
+	@media (max-width: 760px) {
+		.i {
+			width: 28%;
+		}
 	}
 </style>
 

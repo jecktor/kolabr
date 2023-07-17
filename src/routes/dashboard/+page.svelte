@@ -11,14 +11,9 @@
 	export let form: { message?: TranslationKeys; success: boolean };
 </script>
 
-<div>
-	<h1>{data.user.name}</h1>
-	<img src={data.user.image} alt="avatar" width="50" height="50" />
-</div>
-
-<form use:enhance method="post" action="?/signout">
-	<input type="submit" value={$t('signout')} />
-</form>
+<style>
+	
+</style>
 
 <div>
 	<form action="?/newboard" method="post">
