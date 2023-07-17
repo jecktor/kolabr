@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FaCog from 'svelte-icons/fa/FaCog.svelte';
 	import { enhance } from '$app/forms';
-	import { t, translateDate, type TranslationKeys } from '$locales';
+	import { t } from '$locales';
 
 	export let data;
 </script>
