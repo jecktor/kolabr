@@ -25,21 +25,21 @@
 	let nameInput: HTMLInputElement;
 	let descInput: HTMLInputElement;
 	let dueInput: HTMLInputElement;
+	let newTicketId: string;
 	let show = false;
 
 	$: ticket = $lanes
-		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket.id === boardticket.id) ?? boardticket
+		? $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) ?? boardticket
 		: boardticket;
 
 	function createTicket() {
 		const lane = $lanes.get(laneIdx)!;
-
-		ticket.id = randomId();
+		newTicketId = randomId();
 
 		const opts = {
 			method: 'POST',
 			body: JSON.stringify({
-				id: ticket.id,
+				id: newTicketId,
 				name: ticket.name,
 				description: ticket.description,
 				deadline: ticket.deadline,
@@ -52,7 +52,10 @@
 
 		fetch('/api/board/ticket', opts)
 			.then(() => {
-				$lanes.set(laneIdx, { ...lane, tickets: [...lane.tickets, ticket] });
+				$lanes.set(laneIdx, {
+					...lane,
+					tickets: [...lane.tickets, { ...ticket, id: newTicketId }]
+				});
 				show = true;
 			})
 			.catch(console.error);
@@ -60,12 +63,14 @@
 
 	function updateTicket() {
 		const lane = $lanes.get(laneIdx)!;
+		const id = newTicketId ?? ticket.id;
+
 		const newTicket: Ticket = {
-			id: ticket.id,
+			id,
 			name: nameInput.value.trim(),
 			description: descInput.value.trim(),
 			deadline: dueInput.value,
-			tags: lane.tickets.find((t) => t.id === ticket.id)?.tags ?? []
+			tags: lane.tickets.find((t) => t.id === id)?.tags ?? []
 		};
 
 		if (!newTicket.name) return;
@@ -88,7 +93,7 @@
 			.then(() =>
 				$lanes.set(laneIdx, {
 					...lane,
-					tickets: lane.tickets.map((t) => (t.id === ticket.id ? newTicket : t))
+					tickets: lane.tickets.map((t) => (t.id === id ? newTicket : t))
 				})
 			)
 			.catch(console.error);
@@ -158,7 +163,7 @@
 	</div>
 	<div>
 		<span>{$t('labels')}</span>
-		<ManageTags ticketTags={ticket.tags} ticketId={ticket.id} {laneIdx} />
+		<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
 	</div>
 	<button on:click={updateTicket} class="btn btn-primary">
 		{$t('done')}
