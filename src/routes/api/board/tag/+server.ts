@@ -56,3 +56,19 @@ export const PUT = (async ({ request }) => {
 
 	return json('OK', { status: 200 });
 }) satisfies RequestHandler;
+
+export const DELETE = (async ({ request }) => {
+	const { id } = await request.json();
+
+	if (!id || typeof id !== 'string') {
+		return new Response('Bad request', { status: 400 });
+	}
+
+	try {
+		await db.execute('CALL delete_tag(?)', [id]);
+	} catch (e) {
+		return new Response('Internal Server Error', { status: 500 });
+	}
+
+	return json('OK', { status: 200 });
+}) satisfies RequestHandler;

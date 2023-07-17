@@ -3,6 +3,7 @@
 	import { randomId } from '$utils';
 
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
+	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
 	import Tag from './Tag.svelte';
 	import type { Lane, Tag as TTag } from '$types';
 
@@ -95,6 +96,31 @@
 			)
 			.catch(console.error);
 	}
+
+	function deleteTag(id: string) {
+		const opts = {
+			method: 'DELETE',
+			body: JSON.stringify({ id }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		};
+
+		fetch('/api/board/tag', opts)
+			.then(() => {
+				$boardTags.delete($boardTags.findIndex((tag) => tag.id === id));
+				$lanes.forEach((lane, idx) => {
+					$lanes.set(idx, {
+						...lane,
+						tickets: lane.tickets.map((ticket) => ({
+							...ticket,
+							tags: ticket.tags.filter((tag) => tag.id !== id)
+						}))
+					});
+				});
+			})
+			.catch(console.error);
+	}
 </script>
 
 <div class="manage_taks">
@@ -118,11 +144,18 @@
 				{#if !tags.find((tag) => tag.id === id)}
 					<div>
 						<Tag {id} {name} />
-						<button class="add" on:click={() => addTag(id, name)}>
-							<div class="icon">
-								<FaPlus />
-							</div>
-						</button>
+						<div>
+							<button class="add" on:click={() => addTag(id, name)}>
+								<div class="icon">
+									<FaPlus />
+								</div>
+							</button>
+							<button class="delete" on:click={() => deleteTag(id)}>
+								<div class="icon">
+									<FaTrash />
+								</div>
+							</button>
+						</div>
 					</div>
 				{/if}
 			{/each}
