@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useList } from '$lib/liveblocks';
 	import { randomId } from '$utils';
+	import { t } from '$locales';
 
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
@@ -131,7 +132,7 @@
 	</div>
 
 	<div class="add_tag">
-		<input type="text" placeholder="Add tag" bind:this={tagInput} />
+		<input type="text" placeholder={$t('newlabel')} bind:this={tagInput} />
 		<button class="add" on:click={createTag}>
 			<div class="icon">
 				<FaPlus />
