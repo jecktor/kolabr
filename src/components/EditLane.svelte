@@ -10,9 +10,14 @@
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
 	import Modal from './Modal.svelte';
 
-	export let lane: Lane;
-	export let idx = -1;
+	export let idx: number;
 	export let isNew = false;
+	export let lane: Lane = {
+		id: '',
+		name: $t('newlane'),
+		limit: 0,
+		tickets: []
+	};
 
 	const lanes = useList<Lane>('lanes');
 
@@ -22,21 +27,14 @@
 	$: limit = lane.limit;
 
 	function createLane() {
-		const newLane: Lane = {
-			id: randomId(),
-			tickets: lane.tickets,
-			name: nameInput.value.trim(),
-			limit
-		};
-
-		if (!newLane.name) return;
+		lane.id = randomId();
 
 		const opts = {
 			method: 'POST',
 			body: JSON.stringify({
-				id: newLane.id,
-				name: newLane.name,
-				limit: newLane.limit,
+				id: lane.id,
+				name: lane.name,
+				limit: lane.limit,
 				board: $page.url.href.split('/').pop()
 			}),
 			headers: {
@@ -45,10 +43,11 @@
 		};
 
 		fetch('/api/board/lane', opts)
-			.then(() => $lanes.push(newLane))
+			.then(() => {
+				$lanes.push(lane);
+				show = true;
+			})
 			.catch(console.error);
-
-		show = false;
 	}
 
 	function updateLane() {
@@ -93,26 +92,28 @@
 	}
 </script>
 
-<button on:click={() => (show = true)} class={isNew ? 'newLane' : 'editLane'}>
-	<div class="icon">
-		{#if isNew}
+{#if isNew}
+	<button on:click={createLane} class="new_lane">
+		<div class="icon">
 			<FaPlus />
-		{:else}
+		</div>
+	</button>
+{:else}
+	<button on:click={() => (show = true)} class="edit_lane">
+		<div class="icon">
 			<FaEllipsisH />
-		{/if}
-	</div>
-</button>
+		</div>
+	</button>
+{/if}
 
 <Modal bind:show>
 	<div class="header">
 		<input bind:this={nameInput} type="text" value={lane.name} />
-		{#if !isNew}
-			<button on:click={deleteLane}>
-				<div class="icon">
-					<FaTrash />
-				</div>
-			</button>
-		{/if}
+		<button on:click={deleteLane}>
+			<div class="icon">
+				<FaTrash />
+			</div>
+		</button>
 	</div>
 	<div>
 		<span>{$t('ticketlimit')}</span>
@@ -122,7 +123,7 @@
 			<button on:click={() => (limit = limit <= 9 ? ++limit : limit)}>+</button>
 		</div>
 	</div>
-	<button on:click={isNew ? createLane : updateLane} class="btn btn-primary">{$t('done')}</button>
+	<button on:click={updateLane} class="btn btn-primary">{$t('done')}</button>
 </Modal>
 
 <style>
@@ -136,7 +137,7 @@
 		user-select: none;
 	}
 
-	.newLane {
+	.new_lane {
 		position: absolute;
 		top: 70px;
 		float: left;

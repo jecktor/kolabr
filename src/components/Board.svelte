@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
-	import { t } from '$locales';
 	import type { Lane as TLane, Ticket } from '$types';
 
 	import Lane from './Lane.svelte';
@@ -11,12 +10,6 @@
 	export let onFinalUpdate: (newLanes: TLane[]) => void;
 
 	const flipDurationMs = 300;
-	const laneTemplate: TLane = {
-		id: '',
-		name: $t('newlane'),
-		limit: 0,
-		tickets: []
-	};
 
 	function handleDndConsiderLanes(e: CustomEvent<DndEvent<TLane>>) {
 		lanes = e.detail.items;
@@ -57,7 +50,7 @@
 		</div>
 	{/each}
 </section>
-<EditLane lane={laneTemplate} isNew />
+<EditLane idx={lanes.length - 1} isNew />
 
 <style>
 	.board {
