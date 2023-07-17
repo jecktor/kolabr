@@ -37,9 +37,10 @@ export const actions: Actions = {
 		const boardId = randomId();
 
 		try {
-			await db.execute('CALL create_board(?, ?, ?)', [
+			await db.execute('CALL create_board(?, ?, ?, ?)', [
 				boardId,
 				translate(get(locale), 'newboard'),
+				new Date().toString(),
 				user.userId
 			]);
 		} catch (e) {

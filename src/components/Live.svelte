@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { translateDate } from '$locales';
 	import type { BoardInfo, Lane, Tag, InputEvent, Board as TBoard } from '$types';
@@ -31,10 +32,29 @@
 	});
 
 	function changeBoardName(newName: string) {
-		$boardInfo.update({
-			name: newName,
-			last_edited: new Date().toString()
-		});
+		if (!newName) return;
+
+		const last_edited = new Date().toString();
+		const opts = {
+			method: 'PUT',
+			body: JSON.stringify({
+				id: board.id,
+				name: newName,
+				last_edited
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		};
+
+		fetch('/api/board', opts)
+			.then(() => {
+				$boardInfo.update({
+					name: newName,
+					last_edited
+				});
+			})
+			.catch(console.error);
 	}
 
 	function handlePointerMove(event: PointerEvent) {
@@ -73,6 +93,30 @@
 	$: hasMoreUsers = $others ? [...$others].length > 3 : false;
 	$: boardReady = $boardInfo ? Object.keys($boardInfo.toImmutable()).length > 0 : false;
 	$: lastEdit = translateDate(boardReady ? $boardInfo.get('last_edited') : '');
+
+	const unsubscribe = lanes.subscribe(() => {
+		const last_edited = new Date().toString();
+		const opts = {
+			method: 'PATCH',
+			body: JSON.stringify({
+				id: board.id,
+				last_edited
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		};
+
+		fetch('/api/board', opts)
+			.then(() => {
+				$boardInfo && $boardInfo.update({ last_edited });
+			})
+			.catch(console.error);
+	});
+
+	onDestroy(() => {
+		unsubscribe();
+	});
 </script>
 
 {#if boardReady}

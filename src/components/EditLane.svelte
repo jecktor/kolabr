@@ -24,7 +24,8 @@
 	let nameInput: HTMLInputElement;
 	let show = false;
 
-	$: limit = lane.limit;
+	$: name = $lanes ? $lanes.get(idx)?.name ?? lane.name : lane.name;
+	$: limit = $lanes ? $lanes.get(idx)?.limit ?? lane.limit : lane.limit;
 
 	function createLane() {
 		lane.id = randomId();
@@ -108,7 +109,7 @@
 
 <Modal bind:show>
 	<div class="header">
-		<input bind:this={nameInput} type="text" value={lane.name} />
+		<input bind:this={nameInput} type="text" value={name} />
 		<button on:click={deleteLane}>
 			<div class="icon">
 				<FaTrash />
