@@ -103,9 +103,11 @@
 
 	function deleteTicket() {
 		const lane = $lanes.get(laneIdx)!;
+		const id = newTicketId ?? ticket.id;
+
 		const opts = {
 			method: 'DELETE',
-			body: JSON.stringify({ id: ticket.id }),
+			body: JSON.stringify({ id }),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -113,7 +115,7 @@
 
 		fetch('/api/board/ticket', opts)
 			.then(() =>
-				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t.id !== ticket.id) })
+				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t.id !== id) })
 			)
 			.catch(console.error);
 
