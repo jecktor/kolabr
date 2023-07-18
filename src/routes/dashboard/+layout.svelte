@@ -31,7 +31,7 @@
 					</div>
 					<div class="user-actions">
 						<a class="space2 c" href="/dashboard/settings">
-							<button type="button" class="button-text">{$t('settings')}</button>
+							<p>{$t('settings')}</p>
 						</a>
 						<form use:enhance class="c" method="post" action="?/signout">
 							<button type="submit" class="button-text">{$t('signout')}</button>
@@ -128,7 +128,6 @@
 		display: inline-block;
 		border: none;
 		background: none;
-		color: inherit;
 		text-decoration: none;
 		cursor: pointer;
 		font-family: 'Inter', sans-serif;
