@@ -144,12 +144,10 @@
 	.new_lane {
 		position: absolute;
 		top: 70px;
-		float: left;
 		margin: 10px;
 		background-color: #F8F8F8;
 		border-radius: 12px;
 		border: none;
-		width: 31px;
 		height: 30px;
 	}
 	.icon {
