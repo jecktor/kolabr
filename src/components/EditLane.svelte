@@ -142,7 +142,6 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
 	.new_lane {
 		position: absolute;
 		top: 70px;
@@ -153,11 +152,9 @@
 		border: none;
 		height: 30px;
 	}
-
 	.icon {
 		color: var(--base-500);
 	}
-
 	.edit_lane {
 		background-color: var(--base-200);
 		border: none;
@@ -165,15 +162,12 @@
 		border: none;
 		background: none;
 	}
-
 	.space1 {
 		margin-bottom: 5%;
 	}
-
 	.space2 {
 		margin-right: 2%;
 	}
-
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -184,7 +178,6 @@
 		border: none;
 		box-shadow: none;
 	}
-
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -219,7 +212,6 @@
 		height: 40px;
 		user-select: none;
 	}
-
 	.counter button {
 		border: none;
 		background: none;

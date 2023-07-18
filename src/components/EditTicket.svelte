@@ -157,11 +157,11 @@
 	</div>
 	<div class="container1 space1">
 		<span class="c space2">{$t('desc')}</span>
-		<input bind:this={descInput} type="text" value={ticket.description} />
+		<input bind:this={descInput} type="text" value={ticket.description} class="i" />
 	</div>
 	<div class="container1 space1">
 		<span class="c space2">{$t('due')}</span>
-		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} />
+		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} class="i" />
 	</div>
 	<div class="container1 space1">
 		<span class="c space2">{$t('labels')}</span>
@@ -252,6 +252,11 @@
   	.form-control:focus {
     	color: #A6A6A6; 
   	}
+	.i {
+		background: #FFFFFF;
+		border: 1px solid #D3D3D3;
+		border-radius: 6px;
+	}
 	@media (max-width: 768px) {
 		.a {
 			font-size: 12px;
