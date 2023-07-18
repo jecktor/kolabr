@@ -161,7 +161,7 @@
 	</div>
 	<div class="container1 space1">
 		<span class="c space2">{$t('due')}</span>
-		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} class="i" />
+		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} class="i j" />
 	</div>
 	<div class="container1 space1">
 		<span class="c space2">{$t('labels')}</span>
@@ -256,6 +256,9 @@
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 6px;
+	}
+	.j {
+		color: #A6A6A6; 
 	}
 	@media (max-width: 768px) {
 		.a {

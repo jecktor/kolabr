@@ -139,7 +139,7 @@
 	}
 </script>
 
-<div class="manage_taks">
+<div class="manage_tasks a">
 	<div class="tags">
 		{#each tags as { id, name } (id)}
 			<Tag {id} {name} isDeletable onDelete={() => removeTag(id)} />
@@ -147,7 +147,7 @@
 	</div>
 
 	<div class="add_tag">
-		<input type="text" placeholder={$t('newlabel')} bind:this={tagInput} />
+		<input class="i" type="text" placeholder={$t('newlabel')} bind:this={tagInput} />
 		<button class="add" on:click={createTag}>
 			<div class="icon">
 				<FaPlus />
@@ -155,18 +155,18 @@
 		</button>
 	</div>
 	{#if $boardTags}
-		<div class="board_tags">
+		<div class="board_tags a">
 			{#each [...$boardTags] as { id, name } (id)}
 				{#if !tags.find((tag) => tag.id === id)}
 					<div>
 						<Tag {id} {name} />
-						<div class="container">
-							<button class="add" on:click={() => addTag(id, name)}>
+						<div>
+							<button class="add buttons" on:click={() => addTag(id, name)}>
 								<div class="icon">
 									<FaPlus />
 								</div>
 							</button>
-							<button class="delete" on:click={() => deleteTag(id)}>
+							<button class="delete buttons" on:click={() => deleteTag(id)}>
 								<div class="icon">
 									<FaTrash />
 								</div>
@@ -180,8 +180,17 @@
 </div>
 
 <style>
-	.tags {
-		
+	.a {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: #4D4D4D;
+	}
+	.icon {
+		color: #7A7A7A;
 	}
 	.add_tag button {
 		border: none;
@@ -191,12 +200,15 @@
 		font-size: 28px;
 		color: #7A7A7A;
 	}
-	button {
-		border: none;
-		background: none;
-		text-decoration: none;
-		cursor: pointer;
-		font-size: 28px;
-		color: #7A7A7A;
+	.form-control {
+    	color: #4D4D4D; 
+  	}
+  	.form-control:focus {
+    	color: #A6A6A6; 
+  	}
+	.i {
+		background: #FFFFFF;
+		border: 1px solid #D3D3D3;
+		border-radius: 6px;
 	}
 </style>

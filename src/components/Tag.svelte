@@ -17,3 +17,26 @@
 		</button>
 	{/if}
 </div>
+
+<style>
+	.tag button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+		font-size: 28px;
+		color: #7A7A7A;
+	}
+	.tag {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #FFFFFF;
+		border: 1px solid #D3D3D3;
+		border-radius: 6px;
+		width: 30%;
+	}
+	.icon {
+		line-height: 0;
+	}
+</style>
