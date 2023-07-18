@@ -131,9 +131,9 @@
 	</button>
 {:else}
 	<button on:click={() => (show = true)} class="ticket_btn">
-		<p>{ticket.name}</p>
+		<p class="a">{ticket.name}</p>
 		{#if ticket.description}
-			<p>{ticket.description}</p>
+			<p class="">{ticket.description}</p>
 		{/if}
 		<div>
 			{#if ticket.deadline}
@@ -178,7 +178,6 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
 	.ticket_btn {
 		display: flex;
 		width: 100%;
@@ -189,8 +188,11 @@
 		outline: none;
 		background: none;
 	}
-
 	.editTicket {
-		background: none;
+		background-color: #F8F8F8;
+		border: none;
+	}
+	.icon {
+		color: #7A7A7A;
 	}
 </style>

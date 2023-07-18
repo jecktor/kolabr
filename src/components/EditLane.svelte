@@ -216,4 +216,11 @@
 		text-decoration: none;
 		cursor: pointer;
 	}
+	.form-control {
+    	color: #4D4D4D; 
+  	}
+
+  	.form-control:focus {
+    	color: #A6A6A6; 
+  	}
 </style>
