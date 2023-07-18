@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { useList } from '$lib/liveblocks';
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
 	import type { Lane, Ticket } from '$types';
@@ -11,7 +10,6 @@
 	export let idx: number;
 	export let onDrop: (newTickets: Ticket[]) => void;
 
-	const lanes = useList<Lane>('lanes');
 	const flipDurationMs = 150;
 
 	function handleDndConsiderTickets(e: CustomEvent<DndEvent<Ticket>>) {
@@ -20,28 +18,19 @@
 	function handleDndFinalizeTickets(e: CustomEvent<DndEvent<Ticket>>) {
 		onDrop(e.detail.items);
 	}
-
-	$: isLaneFull = $lanes
-		? $lanes.get(idx)!.limit > 0 && $lanes.get(idx)!.tickets.length >= $lanes.get(idx)!.limit
-		: true;
 </script>
 
 <div class="wrapper">
 	<div class="lane-title">
 		<span class="space1">{lane.name}</span>
 		<div>
-			<EditTicket laneIdx={idx} {isLaneFull} isNew />
+			<EditTicket laneIdx={idx} isNew />
 			<EditLane {lane} {idx} />
 		</div>
 	</div>
 	<div
 		class="lane-content"
-		use:dndzone={{
-			items: lane.tickets,
-			flipDurationMs,
-			zoneTabIndex: -1,
-			dropFromOthersDisabled: isLaneFull
-		}}
+		use:dndzone={{ items: lane.tickets, flipDurationMs, zoneTabIndex: -1 }}
 		on:consider={handleDndConsiderTickets}
 		on:finalize={handleDndFinalizeTickets}
 	>
@@ -74,17 +63,17 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
-		color: #4d4d4d;
+		color: #4D4D4D;
 	}
 	.ticket {
-		height: auto;
+		height: 4em;
 		width: 100%;
 		margin: 0.4em 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background-color: #dddddd;
-		border: 1px solid #d3d3d3;
+		border: 1px solid #D3D3D3;
 		border-radius: 8px;
 	}
 	.space1 {
