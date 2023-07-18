@@ -30,7 +30,7 @@
 						</div>
 					</div>
 					<div class="user-actions">
-						<a class="space2" href="/dashboard/settings">
+						<a class="space2 c" href="/dashboard/settings">
 							<button type="submit" class="c">{$t('settings')}</button>
 						</a>
 						<form use:enhance method="post" action="?/signout">
@@ -159,9 +159,9 @@
 		margin-left: 2px;
 	}
 	.c {
+		color: #212121;
 		font-family: 'Inter', sans-serif;
 		font-size: 16px;
 		line-height: 20px;
-		font-weight: normal;
 	}
 </style>
