@@ -15,6 +15,7 @@
 
 	export let laneIdx: number;
 	export let isNew = false;
+	export let isLaneFull = false;
 	export let boardticket: Ticket = {
 		id: '',
 		name: $t('newticket'),
@@ -34,11 +35,6 @@
 	$: ticket = $lanes
 		? $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) ?? boardticket
 		: boardticket;
-
-	$: isLaneFull = $lanes
-		? $lanes.get(laneIdx)!.limit > 0 &&
-		  $lanes.get(laneIdx)!.tickets.length >= $lanes.get(laneIdx)!.limit
-		: true;
 
 	function createTicket() {
 		if (isLaneFull) return;
