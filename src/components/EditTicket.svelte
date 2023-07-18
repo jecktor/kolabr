@@ -4,8 +4,9 @@
 	import { t, translateDate } from '$locales';
 	import type { Lane, Ticket } from '$types';
 
-	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
+	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
+	import FaTags from 'svelte-icons/fa/FaTags.svelte';
 	import ManageTags from './ManageTags.svelte';
 	import Modal from './Modal.svelte';
 	import Tag from './Tag.svelte';
@@ -32,7 +33,14 @@
 		? $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) ?? boardticket
 		: boardticket;
 
+	$: isLaneFull = $lanes
+		? $lanes.get(laneIdx)!.limit > 0 &&
+		  $lanes.get(laneIdx)!.tickets.length >= $lanes.get(laneIdx)!.limit
+		: true;
+
 	function createTicket() {
+		if (isLaneFull) return;
+
 		const lane = $lanes.get(laneIdx)!;
 		newTicketId = randomId();
 
@@ -124,14 +132,21 @@
 </script>
 
 {#if isNew}
-	<button on:click={createTicket} class="editTicket">
-		<div class="icon">
-			<FaPlus />
-		</div>
-	</button>
+	{#if !isLaneFull}
+		<button
+			on:click={createTicket}
+			class="new_ticket"
+			aria-label={$t('newticket')}
+			title={$t('newticket')}
+		>
+			<div class="icon">
+				<FaPlus />
+			</div>
+		</button>
+	{/if}
 {:else}
 	<button on:click={() => (show = true)} class="ticket_btn">
-		<p class="a">{ticket.name}</p>
+		<p class="d">{ticket.name}</p>
 		{#if ticket.description}
 			<p>{ticket.description}</p>
 		{/if}
@@ -148,23 +163,44 @@
 
 <Modal bind:show>
 	<div class="header space1">
-		<input bind:this={nameInput} type="text" value={ticket.name} class="form-control b" />
+		<input bind:this={nameInput} type="text" value={ticket.name} class="form-control a" />
 		<button on:click={deleteTicket}>
 			<div class="icon">
 				<FaTrash />
 			</div>
 		</button>
 	</div>
-	<div class="container1 space1">
-		<span class="c space2">{$t('desc')}</span>
-		<input bind:this={descInput} type="text" value={ticket.description} class="i" />
+	<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex gap-3">
+			<div class="icon">
+				<FaAlignLeft />
+			</div>
+			<span class="b">{$t('desc')}</span>
+		</div>
+		<input bind:this={descInput} type="text" value={ticket.description} class="c form-control" />
 	</div>
-	<div class="container1 space1">
-		<span class="c space2">{$t('due')}</span>
-		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} class="i j" />
+
+	<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex gap-3">
+			<div class="icon">
+				<FaClock />
+			</div>
+			<span class="b">{$t('due')}</span>
+		</div>
+		<input
+			bind:this={dueInput}
+			type="datetime-local"
+			value={ticket.deadline}
+			class="c form-control"
+		/>
 	</div>
-	<div class="container1 space1">
-		<span class="c space2">{$t('labels')}</span>
+	<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex gap-3">
+			<div class="icon">
+				<FaTags />
+			</div>
+			<span class="b">{$t('labels')}</span>
+		</div>
 		<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
 	</div>
 	<button on:click={updateTicket} class="btn btn-primary">
@@ -178,6 +214,7 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.ticket_btn {
 		display: flex;
 		width: 100%;
@@ -187,28 +224,60 @@
 		align-items: flex-start;
 		padding: 16px;
 		gap: 8px;
-		background: #FFFFFF;
+		background: #ffffff;
 		border: none;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
 		border-radius: 8px;
 	}
-	.editTicket {
-		background-color: #F8F8F8;
-		border: none;
-	}
+
 	.icon {
-		color: #7A7A7A;
+		color: var(--base-500);
 	}
+
+	.new_ticket {
+		background-color: var(--base-200);
+		outline: none;
+		border: none;
+		background: none;
+	}
+
 	.space1 {
 		margin-bottom: 5%;
 	}
-	.space2 {
-		margin-right: 3%;
-	}
-	.form-control {
-		padding: 0;
-	}
+
 	.a {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 39px;
+		color: var(--base-400);
+		border: none;
+		box-shadow: none;
+	}
+
+	.b {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: var(--base-600);
+		white-space: nowrap;
+	}
+
+	.c.form-control {
+		height: 30px;
+		width: 100%;
+		font-size: 1.6rem;
+	}
+
+	.c.form-control:focus {
+		color: var(--base-600);
+	}
+
+	.d {
 		font-family: 'Inter';
 		font-style: normal;
 		font-weight: 600;
@@ -217,45 +286,20 @@
 		letter-spacing: -0.2px;
 		color: #212121;
 	}
-	.b {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 700;
-		font-size: 32px;
-		line-height: 39px;
-		color: #A6A6A6;
-		border: none;
-		box-shadow: none;
+
+	.form-control {
+		padding: 0;
 	}
-	.c {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 19px;
-		letter-spacing: -0.2px;
-		color: #4D4D4D;
-	}
-	.container1 {
-		display: flex;
-		align-items: center;
-	}
+
 	.header button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 	}
+
 	.form-control {
-    	color: #4D4D4D; 
-  	}
-  	.form-control:focus {
-    	color: #A6A6A6; 
-  	}
-	.i {
-		background: #FFFFFF;
-		border: 1px solid #D3D3D3;
-		border-radius: 6px;
+		color: var(--base-600);
 	}
 	.j {
 		color: #A6A6A6; 
@@ -268,5 +312,8 @@
 		.ticket_btn {
 			padding: 8px;
 		}
+	}
+	.form-control:focus {
+		color: var(--base-400);
 	}
 </style>
