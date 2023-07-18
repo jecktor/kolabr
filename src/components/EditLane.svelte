@@ -5,12 +5,11 @@
 	import { t } from '$locales';
 	import type { Lane } from '$types';
 
+	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
 	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
-	import FaRegListALt from 'svelte-icons/fa/FaRegListAlt.svelte';
 	import Modal from './Modal.svelte';
-	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
 
 	export let idx: number;
 	export let isNew = false;
@@ -96,13 +95,18 @@
 </script>
 
 {#if isNew}
-	<button on:click={createLane} class="new_lane" aria-label={$t('newlane')} title="{$t('newlane')}">
+	<button on:click={createLane} class="new_lane" aria-label={$t('newlane')} title={$t('newlane')}>
 		<div class="icon">
 			<FaPlus />
 		</div>
 	</button>
 {:else}
-	<button on:click={() => (show = true)} class="edit_lane" aria-label={$t('change')} title="{$t('change')}">
+	<button
+		on:click={() => (show = true)}
+		class="edit_lane"
+		aria-label={$t('change')}
+		title={$t('change')}
+	>
 		<div class="icon">
 			<FaEllipsisH />
 		</div>
@@ -138,41 +142,49 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-	.counter {
-		user-select: none;
-	}
+
 	.new_lane {
 		position: absolute;
 		top: 70px;
 		margin: 10px;
-		background-color: #F8F8F8;
+		background-color: var(--base-200);
 		border-radius: 12px;
+		outline: none;
 		border: none;
 		height: 30px;
 	}
+
 	.icon {
-		color: #7A7A7A;
+		color: var(--base-500);
 	}
+
 	.edit_lane {
-		background-color: #F8F8F8;
+		background-color: var(--base-200);
 		border: none;
+		outline: none;
+		border: none;
+		background: none;
 	}
+
 	.space1 {
 		margin-bottom: 5%;
 	}
+
 	.space2 {
 		margin-right: 2%;
 	}
+
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
 		font-weight: 700;
 		font-size: 32px;
 		line-height: 39px;
-		color: #A6A6A6;
+		color: var(--base-400);
 		border: none;
 		box-shadow: none;
 	}
+
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -180,15 +192,19 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
-		color: #4D4D4D;
+		color: var(--base-600);
+		white-space: nowrap;
 	}
+
 	.form-control {
 		padding: 0;
 	}
+
 	.counter-container {
 		display: flex;
 		align-items: center;
 	}
+
 	.counter {
 		display: flex;
 		align-items: center;
@@ -197,30 +213,34 @@
 		flex-direction: row;
 		padding: 2px 10px;
 		gap: 10px;
-		background: #FFFFFF;
-		border: 1px solid #D3D3D3;
+		background: var(--base-100);
+		border: 1px solid var(--base-300);
 		border-radius: 6px;
-		height: 50%;
+		height: 40px;
+		user-select: none;
 	}
+
 	.counter button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 		font-size: 28px;
-		color: #7A7A7A;
+		color: var(--base-500);
 	}
+
 	.header button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 	}
-	.form-control {
-    	color: #4D4D4D; 
-  	}
 
-  	.form-control:focus {
-    	color: #A6A6A6; 
-  	}
+	.form-control {
+		color: var(--base-600);
+	}
+
+	.form-control:focus {
+		color: var(--base-400);
+	}
 </style>
