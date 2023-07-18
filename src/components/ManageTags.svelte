@@ -158,15 +158,17 @@
 		<div class="board_tags a">
 			{#each [...$boardTags] as { id, name } (id)}
 				{#if !tags.find((tag) => tag.id === id)}
-					<div>
-						<Tag {id} {name} />
-						<div>
-							<button class="add buttons" on:click={() => addTag(id, name)}>
+					<div class="tag-container">
+						<div class="tag-name">
+							<Tag {id} {name} />
+						</div>
+						<div class="buttons space1">
+							<button class="add" on:click={() => addTag(id, name)}>
 								<div class="icon">
 									<FaPlus />
 								</div>
 							</button>
-							<button class="delete buttons" on:click={() => deleteTag(id)}>
+							<button class="delete" on:click={() => deleteTag(id)}>
 								<div class="icon">
 									<FaTrash />
 								</div>
@@ -180,6 +182,39 @@
 </div>
 
 <style>
+	.board_tags {
+		flex-wrap: wrap;
+	}
+	.tags {
+		margin-bottom: 2%;
+	}
+	.tag-name {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: left;
+		margin-left: 2%;
+	}
+	.tag-container button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+		font-size: 28px;
+		color: #7A7A7A;
+	}
+	.tag-container {
+		display: flex;
+		align-items: center;
+		background: #FFFFFF;
+		border: 1px solid #D3D3D3;
+		border-radius: 6px;
+		width: 70%;
+		margin-top: 4%;
+	}
+	.icon {
+		line-height: 0;
+	}
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -200,12 +235,6 @@
 		font-size: 28px;
 		color: #7A7A7A;
 	}
-	.form-control {
-    	color: #4D4D4D; 
-  	}
-  	.form-control:focus {
-    	color: #A6A6A6; 
-  	}
 	.i {
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;

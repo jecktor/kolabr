@@ -7,7 +7,7 @@
 	export let onDelete: (id: string) => void = () => {};
 </script>
 
-<div class="tag">
+<div class="tag space1">
 	<span class="name">{name}</span>
 	{#if isDeletable}
 		<button class="delete" on:click={() => onDelete(id)}>
@@ -32,7 +32,6 @@
 		align-items: center;
 		justify-content: center;
 		background: #FFFFFF;
-		border: 1px solid #D3D3D3;
 		border-radius: 6px;
 		width: 30%;
 	}
