@@ -44,6 +44,7 @@
 		padding: 10px;
 		background-color: #f8f8f8;
 		border: 1px solid #D3D3D3;
+		vertical-align: middle;
 	}
 	.table-light a {
   		font-weight: bold;
@@ -72,6 +73,10 @@
 	}
 	.table-light {
 		height: 50px;
+	}
+	.t {
+		height: 50px;
+		vertical-align: middle;
 	}
 	@media (max-width: 760px) {
 		.space2 {
@@ -103,7 +108,7 @@
 			<strong><p class="a space4">{$t('ownerboards')}</p></strong>
 			<div class="table-responsive">
 				<table class="table space2">
-					<thead>
+					<thead class="t">
 						<tr>
 							<th scope="col">{$t('name')}</th>
 							<th scope="col">{$t('lastedited')}</th>
@@ -153,7 +158,7 @@
 			<strong><p class="a space4">{$t('userboards')}</p></strong>
 			<div class="table-responsive">
 				<table class="table space2">
-					<thead>
+					<thead class="t">
 						<tr>
 							<th scope="col">{$t('name')}</th>
 							<th scope="col">{$t('lastedited')}</th>
