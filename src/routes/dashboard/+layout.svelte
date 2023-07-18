@@ -30,11 +30,11 @@
 						</div>
 					</div>
 					<div class="user-actions">
-						<a class="space2 c" href="/dashboard/settings">
-							<p>{$t('settings')}</p>
+						<a class="space2" href="/dashboard/settings">
+							<button type="submit" class="button-text c">{$t('settings')}</button>
 						</a>
-						<form use:enhance class="c" method="post" action="?/signout">
-							<button type="submit" class="button-text">{$t('signout')}</button>
+						<form use:enhance method="post" action="?/signout">
+							<button type="submit" class="button-text c">{$t('signout')}</button>
 						</form>
 					</div>
 				</div>
@@ -158,7 +158,8 @@
 	.c {
 		color: #212121;
 		font-family: 'Inter', sans-serif;
-		font-size: 40px;
+		font-size: 16px;
 		line-height: 20px;
+		text-decoration-line: none;
 	}
 </style>
