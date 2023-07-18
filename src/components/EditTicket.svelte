@@ -216,7 +216,6 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
 	.ticket_btn {
 		display: flex;
 		width: 100%;
@@ -231,22 +230,18 @@
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
 		border-radius: 8px;
 	}
-
 	.icon {
 		color: var(--base-500);
 	}
-
 	.new_ticket {
 		background-color: var(--base-200);
 		outline: none;
 		border: none;
 		background: none;
 	}
-
 	.space1 {
 		margin-bottom: 5%;
 	}
-
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -257,7 +252,6 @@
 		border: none;
 		box-shadow: none;
 	}
-
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -268,17 +262,14 @@
 		color: var(--base-600);
 		white-space: nowrap;
 	}
-
 	.c.form-control {
 		height: 30px;
 		width: 100%;
 		font-size: 1.6rem;
 	}
-
 	.c.form-control:focus {
 		color: var(--base-600);
 	}
-
 	.d {
 		font-family: 'Inter';
 		font-style: normal;
@@ -288,23 +279,17 @@
 		letter-spacing: -0.2px;
 		color: #212121;
 	}
-
 	.form-control {
 		padding: 0;
 	}
-
 	.header button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 	}
-
 	.form-control {
 		color: var(--base-600);
-	}
-	.j {
-		color: #A6A6A6; 
 	}
 	@media (max-width: 768px) {
 		.a {
