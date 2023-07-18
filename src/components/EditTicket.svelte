@@ -133,7 +133,7 @@
 	<button on:click={() => (show = true)} class="ticket_btn">
 		<p class="a">{ticket.name}</p>
 		{#if ticket.description}
-			<p class="">{ticket.description}</p>
+			<p>{ticket.description}</p>
 		{/if}
 		<div>
 			{#if ticket.deadline}
@@ -147,24 +147,24 @@
 {/if}
 
 <Modal bind:show>
-	<div class="header">
-		<input bind:this={nameInput} type="text" value={ticket.name} />
+	<div class="header space1">
+		<input bind:this={nameInput} type="text" value={ticket.name} class="form-control b" />
 		<button on:click={deleteTicket}>
 			<div class="icon">
 				<FaTrash />
 			</div>
 		</button>
 	</div>
-	<div>
-		<span>{$t('desc')}</span>
+	<div class="container1 space1">
+		<span class="c space2">{$t('desc')}</span>
 		<input bind:this={descInput} type="text" value={ticket.description} />
 	</div>
-	<div>
-		<span>{$t('due')}</span>
+	<div class="container1 space1">
+		<span class="c space2">{$t('due')}</span>
 		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} />
 	</div>
-	<div>
-		<span>{$t('labels')}</span>
+	<div class="container1 space1">
+		<span class="c space2">{$t('labels')}</span>
 		<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
 	</div>
 	<button on:click={updateTicket} class="btn btn-primary">
@@ -182,11 +182,15 @@
 		display: flex;
 		width: 100%;
 		height: 100%;
-		padding: 0;
 		margin: 0;
+		box-sizing: border-box;
+		align-items: flex-start;
+		padding: 16px;
+		gap: 8px;
+		background: #FFFFFF;
 		border: none;
-		outline: none;
-		background: none;
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+		border-radius: 8px;
 	}
 	.editTicket {
 		background-color: #F8F8F8;
@@ -194,5 +198,67 @@
 	}
 	.icon {
 		color: #7A7A7A;
+	}
+	.space1 {
+		margin-bottom: 5%;
+	}
+	.space2 {
+		margin-right: 3%;
+	}
+	.form-control {
+		padding: 0;
+	}
+	.a {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: #212121;
+	}
+	.b {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 39px;
+		color: #A6A6A6;
+		border: none;
+		box-shadow: none;
+	}
+	.c {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: #4D4D4D;
+	}
+	.container1 {
+		display: flex;
+		align-items: center;
+	}
+	.header button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	.form-control {
+    	color: #4D4D4D; 
+  	}
+  	.form-control:focus {
+    	color: #A6A6A6; 
+  	}
+	@media (max-width: 768px) {
+		.a {
+			font-size: 12px;
+			align-content: center;
+		}
+		.ticket_btn {
+			padding: 8px;
+		}
 	}
 </style>

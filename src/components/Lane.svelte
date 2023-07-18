@@ -22,7 +22,7 @@
 
 <div class="wrapper">
 	<div class="lane-title">
-		<span>{lane.name}</span>
+		<span class="space1">{lane.name}</span>
 		<div>
 			<EditTicket laneIdx={idx} isNew />
 			<EditLane {lane} {idx} />
@@ -48,20 +48,23 @@
 		width: 100%;
 		overflow-y: hidden;
 	}
-
 	.lane-content {
 		height: calc(100% - 2.5em);
 		overflow-y: scroll;
 	}
-
 	.lane-title {
 		height: 2.5em;
-		font-weight: bold;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: #4D4D4D;
 	}
-
 	.ticket {
 		height: 4em;
 		width: 100%;
@@ -70,6 +73,15 @@
 		justify-content: center;
 		align-items: center;
 		background-color: #dddddd;
-		border: 1px solid #333333;
+		border: 1px solid #D3D3D3;
+		border-radius: 8px;
+	}
+	.space1 {
+		margin-left: 3%;
+	}
+	@media (max-width: 768px) {
+		.lane-title {
+			font-size: 12px;
+		}
 	}
 </style>

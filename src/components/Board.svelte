@@ -58,13 +58,20 @@
 		width: 100%;
 		padding: 0.5em;
 	}
-
 	.lane {
 		height: 100%;
-		width: 25%;
+		width: 22%;
 		padding: 0.5em;
 		margin: 0.5em;
 		float: left;
-		border: 1px solid #333333;
+		border: none;
+		background-color: #F8F8F8;
+		border-radius: 12px;
+	}
+	@media (max-width: 768px) {
+		.lane {
+			width: 30%;
+			height: 60%;
+		}
 	}
 </style>

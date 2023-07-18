@@ -160,7 +160,7 @@
 				{#if !tags.find((tag) => tag.id === id)}
 					<div>
 						<Tag {id} {name} />
-						<div>
+						<div class="container">
 							<button class="add" on:click={() => addTag(id, name)}>
 								<div class="icon">
 									<FaPlus />
@@ -178,3 +178,25 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.tags {
+		
+	}
+	.add_tag button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+		font-size: 28px;
+		color: #7A7A7A;
+	}
+	button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+		font-size: 28px;
+		color: #7A7A7A;
+	}
+</style>
