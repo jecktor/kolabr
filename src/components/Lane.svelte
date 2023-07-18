@@ -77,7 +77,7 @@
 		color: #4d4d4d;
 	}
 	.ticket {
-		height: 4em;
+		height: auto;
 		width: 100%;
 		margin: 0.4em 0;
 		display: flex;

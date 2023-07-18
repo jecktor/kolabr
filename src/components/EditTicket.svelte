@@ -290,10 +290,12 @@
 	@media (max-width: 768px) {
 		.a {
 			font-size: 12px;
-			align-content: center;
 		}
 		.ticket_btn {
 			padding: 8px;
+		}
+		.d {
+			font-size: 12px;
 		}
 	}
 	.form-control:focus {
