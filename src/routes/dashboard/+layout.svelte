@@ -31,10 +31,10 @@
 					</div>
 					<div class="user-actions">
 						<a class="space2" href="/dashboard/settings">
-							<button type="submit" class="button-text c">{$t('settings')}</button>
+							<button type="submit" class="c">{$t('settings')}</button>
 						</a>
 						<form use:enhance method="post" action="?/signout">
-							<button type="submit" class="button-text c">{$t('signout')}</button>
+							<button type="submit" class="c">{$t('signout')}</button>
 						</form>
 					</div>
 				</div>
