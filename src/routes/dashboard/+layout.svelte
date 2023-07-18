@@ -14,7 +14,7 @@
 	</div>
 	<div class="header_node">
 		<div class="icon">
-			<a class="settings" href="/dashboard/settings">
+			<a class="settings" href="/dashboard/settings" aria-label={$t('settings')}>
 				<FaCog />
 			</a>
 		</div>
@@ -33,7 +33,7 @@
 						<a class="space2 c" href="/dashboard/settings">
 							<button type="submit" class="c">{$t('settings')}</button>
 						</a>
-						<form use:enhance method="post" action="?/signout">
+						<form use:enhance method="post" action="?/signout" class="signout">
 							<button type="submit" class="c">{$t('signout')}</button>
 						</form>
 					</div>
@@ -57,67 +57,78 @@
 		padding-block: 12px;
 		border-bottom: 1px solid var(--base-300);
 	}
+
 	.header_node {
 		display: flex;
 		align-items: center;
 		gap: 25px;
 	}
+
 	.header_node .settings {
 		color: var(--base-600);
 	}
+
 	.logo {
-		background-color: #ffffff;
+		background-color: var(--base-100);
 		height: 28px;
 		width: 128px;
 	}
+
 	.user-wrapper {
 		position: relative;
 	}
+
 	.user img {
 		width: 40px;
 		height: 40px;
 		border-radius: 90px;
 	}
+
 	.img1:hover + .hover-content,
 	.hover-content:hover {
 		display: block;
 	}
+
 	.hover-content {
 		display: none;
 		position: absolute;
 		top: 100%;
 		right: 800%;
 		transform: translateX(100%);
-		background-color: #ffffff;
+		background-color: var(--base-100);
 		padding: 20px;
-		border: 1px solid #d3d3d3;
+		border: 1px solid var(--base-300);
 		border-radius: 9px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		width: 800%;
-		height: 600%;
 		z-index: 1;
 	}
+
 	.hover-content .user-info {
 		display: flex;
 		align-items: center;
 		gap: 10px;
 	}
+
 	.hover-content .user-info img {
 		width: 64px;
 		height: 64px;
 		border-radius: 90px;
 	}
+
 	.hover-content .user-details {
 		display: flex;
 		flex-direction: column;
 		gap: 5px;
 	}
+
 	.hover-content .user-actions {
-		border-top: 1px solid #d3d3d3;
+		border-top: 1px solid var(--base-300);
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 15px;
 	}
+
 	.hover-content .user-actions form {
 		display: inline;
 		background: none;
@@ -125,6 +136,7 @@
 		color: inherit;
 		cursor: pointer;
 	}
+
 	.hover-content .user-actions button {
 		display: inline-block;
 		border: none;
@@ -136,33 +148,48 @@
 		line-height: 20px;
 		padding: 0;
 	}
+
+	.signout {
+		width: fit-content;
+	}
+
 	.space {
 		margin-bottom: 5%;
 	}
+
 	.space2 {
-		margin-top: 5%;;
+		margin-top: 20px;
 	}
+
 	.space3 {
-		margin-top: 5%;;
+		margin-top: 5%;
 	}
+
 	.a {
-		color: #212121;
+		color: var(--base-700);
 		font-family: 'Inter', sans-serif;
 		font-size: 20px;
 		line-height: 20px;
 		margin-left: 2px;
 	}
+
 	.b {
-		color: #4d4d4d;
+		color: var(--base-600);
 		font-family: 'Inter', sans-serif;
 		font-size: 16px;
 		line-height: 20px;
 		margin-left: 2px;
 	}
+
 	.c {
-		color: #212121;
+		color: var(--base-700);
 		font-family: 'Inter', sans-serif;
 		font-size: 16px;
 		line-height: 20px;
+		width: fit-content;
+	}
+
+	.c:hover {
+		text-decoration: underline !important;
 	}
 </style>
