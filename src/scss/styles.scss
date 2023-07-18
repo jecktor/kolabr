@@ -39,16 +39,32 @@ body {
 	-webkit-text-size-adjust: 100%;
 }
 
-.btn-primary {
-	color: var(--base-100) !important;
-	font-size: 1.6rem;
-	padding-block: 8px;
-	padding-inline: 12px;
-	border-radius: 6px;
-}
-
 .icon {
 	width: 20px;
 	height: 20px;
 	line-height: 1;
+}
+
+.alert {
+	position: fixed;
+	bottom: 0;
+	width: fit-content;
+}
+
+.btn {
+	padding-block: 6px;
+	padding-inline: 10px;
+	border-radius: 6px;
+	font-size: 1.6rem;
+	outline: none !important;
+}
+
+.btn-primary {
+	color: var(--base-100) !important;
+}
+
+.btn-danger {
+	color: #891b1b !important;
+	background: none !important;
+	border: none !important;
 }
