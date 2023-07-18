@@ -139,7 +139,7 @@
 	</button>
 {:else}
 	<button on:click={() => (show = true)} class="ticket_btn">
-		<p>{ticket.name}</p>
+		<p class="d">{ticket.name}</p>
 		{#if ticket.description}
 			<p>{ticket.description}</p>
 		{/if}
@@ -207,6 +207,21 @@
 		align-items: center;
 	}
 
+	.ticket_btn {
+		display: flex;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		box-sizing: border-box;
+		align-items: flex-start;
+		padding: 16px;
+		gap: 8px;
+		background: #ffffff;
+		border: none;
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+		border-radius: 8px;
+	}
+
 	.icon {
 		color: var(--base-500);
 	}
@@ -252,6 +267,16 @@
 
 	.c.form-control:focus {
 		color: var(--base-600);
+	}
+
+	.d {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: #212121;
 	}
 
 	.form-control {
