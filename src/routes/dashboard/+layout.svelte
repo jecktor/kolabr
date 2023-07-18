@@ -24,7 +24,7 @@
 				<div class="hover-content">
 					<div class="user-info space">
 						<img src={data.user.image} alt="avatar" width="64" height="64" />
-						<div class="user-details space">
+						<div class="user-details space space3">
 							<h1 class="a">{data.user.name}</h1>
 							<h1 class="b">{data.user.email}</h1>
 						</div>
@@ -139,6 +139,9 @@
 		margin-bottom: 5%;
 	}
 	.space2 {
+		margin-top: 5%;;
+	}
+	.space3 {
 		margin-top: 5%;;
 	}
 	.a {
