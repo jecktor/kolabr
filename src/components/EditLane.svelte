@@ -8,7 +8,9 @@
 	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
+	import FaRegListALt from 'svelte-icons/fa/FaRegListAlt.svelte';
 	import Modal from './Modal.svelte';
+	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
 
 	export let idx: number;
 	export let isNew = false;
@@ -94,13 +96,13 @@
 </script>
 
 {#if isNew}
-	<button on:click={createLane} class="new_lane">
+	<button on:click={createLane} class="new_lane" aria-label={$t('newlane')} title="{$t('newlane')}">
 		<div class="icon">
 			<FaPlus />
 		</div>
 	</button>
 {:else}
-	<button on:click={() => (show = true)} class="edit_lane">
+	<button on:click={() => (show = true)} class="edit_lane" aria-label={$t('change')} title="{$t('change')}">
 		<div class="icon">
 			<FaEllipsisH />
 		</div>
@@ -108,16 +110,19 @@
 {/if}
 
 <Modal bind:show>
-	<div class="header">
-		<input bind:this={nameInput} type="text" value={name} />
+	<div class="header space1">
+		<input bind:this={nameInput} type="text" value={name} class="form-control a" />
 		<button on:click={deleteLane}>
 			<div class="icon">
 				<FaTrash />
 			</div>
 		</button>
 	</div>
-	<div>
-		<span>{$t('ticketlimit')}</span>
+	<div class="counter-container space1">
+		<div class="icon space2">
+			<FaRegListAlt />
+		</div>
+		<span class="b">{$t('ticketlimit')}</span>
 		<div class="counter">
 			<button on:click={() => (limit = limit >= 1 ? --limit : limit)}>-</button>
 			<span>{limit}</span>
@@ -133,15 +138,84 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
 	.counter {
 		user-select: none;
 	}
-
 	.new_lane {
 		position: absolute;
 		top: 70px;
 		float: left;
 		margin: 10px;
+		background-color: #F8F8F8;
+		border-radius: 12px;
+		border: none;
+		width: 31px;
+		height: 30px;
+	}
+	.icon {
+		color: #7A7A7A;
+	}
+	.edit_lane {
+		background-color: #F8F8F8;
+		border: none;
+	}
+	.space1 {
+		margin-bottom: 5%;
+	}
+	.space2 {
+		margin-right: 2%;
+	}
+	.a {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 39px;
+		color: #A6A6A6;
+		border: none;
+		box-shadow: none;
+	}
+	.b {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: #4D4D4D;
+	}
+	.form-control {
+		padding: 0;
+	}
+	.counter-container {
+		display: flex;
+		align-items: center;
+	}
+	.counter {
+		display: flex;
+		align-items: center;
+		margin-left: 8%;
+		box-sizing: border-box;
+		flex-direction: row;
+		padding: 2px 10px;
+		gap: 10px;
+		background: #FFFFFF;
+		border: 1px solid #D3D3D3;
+		border-radius: 6px;
+		height: 50%;
+	}
+	.counter button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+		font-size: 28px;
+		color: #7A7A7A;
+	}
+	.header button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
 	}
 </style>
