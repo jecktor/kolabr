@@ -35,7 +35,14 @@
 		? $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) ?? boardticket
 		: boardticket;
 
+	$: isLaneFull = $lanes
+		? $lanes.get(laneIdx)!.limit > 0 &&
+		  $lanes.get(laneIdx)!.tickets.length >= $lanes.get(laneIdx)!.limit
+		: true;
+
 	function createTicket() {
+		if (isLaneFull) return;
+
 		const lane = $lanes.get(laneIdx)!;
 		newTicketId = randomId();
 
@@ -127,16 +134,18 @@
 </script>
 
 {#if isNew}
-	<button
-		on:click={createTicket}
-		class="new_ticket"
-		aria-label={$t('newticket')}
-		title={$t('newticket')}
-	>
-		<div class="icon">
-			<FaPlus />
-		</div>
-	</button>
+	{#if !isLaneFull}
+		<button
+			on:click={createTicket}
+			class="new_ticket"
+			aria-label={$t('newticket')}
+			title={$t('newticket')}
+		>
+			<div class="icon">
+				<FaPlus />
+			</div>
+		</button>
+	{/if}
 {:else}
 	<button on:click={() => (show = true)} class="ticket_btn">
 		<p class="d">{ticket.name}</p>
