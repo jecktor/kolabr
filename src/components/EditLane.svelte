@@ -5,11 +5,11 @@
 	import { t } from '$locales';
 	import type { Lane } from '$types';
 
+	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
 	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
 	import Modal from './Modal.svelte';
-	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
 
 	export let idx: number;
 	export let isNew = false;
@@ -143,16 +143,13 @@
 		align-items: center;
 	}
 
-	.counter {
-		user-select: none;
-	}
-
 	.new_lane {
 		position: absolute;
 		top: 70px;
 		margin: 10px;
 		background-color: var(--base-200);
 		border-radius: 12px;
+		outline: none;
 		border: none;
 		height: 30px;
 	}
@@ -164,6 +161,9 @@
 	.edit_lane {
 		background-color: var(--base-200);
 		border: none;
+		outline: none;
+		border: none;
+		background: none;
 	}
 
 	.space1 {
@@ -193,6 +193,7 @@
 		line-height: 19px;
 		letter-spacing: -0.2px;
 		color: var(--base-600);
+		white-space: nowrap;
 	}
 
 	.form-control {
@@ -216,6 +217,7 @@
 		border: 1px solid var(--base-300);
 		border-radius: 6px;
 		height: 40px;
+		user-select: none;
 	}
 
 	.counter button {

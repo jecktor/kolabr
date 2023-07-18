@@ -4,8 +4,11 @@
 	import { t, translateDate } from '$locales';
 	import type { Lane, Ticket } from '$types';
 
-	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
+	import FaAlignLeft from 'svelte-icons/fa/FaAlignLeft.svelte';
+	import FaClock from 'svelte-icons/fa/FaClock.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
+	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
+	import FaTags from 'svelte-icons/fa/FaTags.svelte';
 	import ManageTags from './ManageTags.svelte';
 	import Modal from './Modal.svelte';
 	import Tag from './Tag.svelte';
@@ -124,16 +127,21 @@
 </script>
 
 {#if isNew}
-	<button on:click={createTicket} class="editTicket">
+	<button
+		on:click={createTicket}
+		class="new_ticket"
+		aria-label={$t('newticket')}
+		title={$t('newticket')}
+	>
 		<div class="icon">
 			<FaPlus />
 		</div>
 	</button>
 {:else}
 	<button on:click={() => (show = true)} class="ticket_btn">
-		<p class="a">{ticket.name}</p>
+		<p>{ticket.name}</p>
 		{#if ticket.description}
-			<p class="">{ticket.description}</p>
+			<p>{ticket.description}</p>
 		{/if}
 		<div>
 			{#if ticket.deadline}
@@ -147,24 +155,44 @@
 {/if}
 
 <Modal bind:show>
-	<div class="header">
-		<input bind:this={nameInput} type="text" value={ticket.name} />
+	<div class="header space1">
+		<input bind:this={nameInput} type="text" value={ticket.name} class="form-control a" />
 		<button on:click={deleteTicket}>
 			<div class="icon">
 				<FaTrash />
 			</div>
 		</button>
 	</div>
-	<div>
-		<span>{$t('desc')}</span>
-		<input bind:this={descInput} type="text" value={ticket.description} />
+	<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex gap-3">
+			<div class="icon">
+				<FaAlignLeft />
+			</div>
+			<span class="b">{$t('desc')}</span>
+		</div>
+		<input bind:this={descInput} type="text" value={ticket.description} class="c form-control" />
 	</div>
-	<div>
-		<span>{$t('due')}</span>
-		<input bind:this={dueInput} type="datetime-local" value={ticket.deadline} />
+	<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex gap-3">
+			<div class="icon">
+				<FaClock />
+			</div>
+			<span class="b">{$t('due')}</span>
+		</div>
+		<input
+			bind:this={dueInput}
+			type="datetime-local"
+			value={ticket.deadline}
+			class="c form-control"
+		/>
 	</div>
-	<div>
-		<span>{$t('labels')}</span>
+	<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex gap-3">
+			<div class="icon">
+				<FaTags />
+			</div>
+			<span class="b">{$t('labels')}</span>
+		</div>
 		<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
 	</div>
 	<button on:click={updateTicket} class="btn btn-primary">
@@ -178,21 +206,70 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-	.ticket_btn {
-		display: flex;
-		width: 100%;
-		height: 100%;
-		padding: 0;
-		margin: 0;
-		border: none;
+
+	.icon {
+		color: var(--base-500);
+	}
+
+	.new_ticket {
+		background-color: var(--base-200);
 		outline: none;
+		border: none;
 		background: none;
 	}
-	.editTicket {
-		background-color: #F8F8F8;
-		border: none;
+
+	.space1 {
+		margin-bottom: 5%;
 	}
-	.icon {
-		color: #7A7A7A;
+
+	.a {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 39px;
+		color: var(--base-400);
+		border: none;
+		box-shadow: none;
+	}
+
+	.b {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		letter-spacing: -0.2px;
+		color: var(--base-600);
+		white-space: nowrap;
+	}
+
+	.c.form-control {
+		height: 30px;
+		width: 100%;
+		font-size: 1.6rem;
+	}
+
+	.c.form-control:focus {
+		color: var(--base-600);
+	}
+
+	.form-control {
+		padding: 0;
+	}
+
+	.header button {
+		border: none;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.form-control {
+		color: var(--base-600);
+	}
+
+	.form-control:focus {
+		color: var(--base-400);
 	}
 </style>
