@@ -4,6 +4,8 @@
 	import { t, translateDate } from '$locales';
 	import type { Lane, Ticket } from '$types';
 
+	import FaAlignLeft from 'svelte-icons/fa/FaAlignLeft.svelte';
+	import FaClock from 'svelte-icons/fa/FaClock.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTags from 'svelte-icons/fa/FaTags.svelte';
