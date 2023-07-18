@@ -159,10 +159,9 @@
 		margin-left: 2px;
 	}
 	.c {
-		color: #212121;
 		font-family: 'Inter', sans-serif;
 		font-size: 16px;
 		line-height: 20px;
-		text-decoration-line: none;
+		font-weight: normal;
 	}
 </style>
