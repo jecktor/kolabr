@@ -24,12 +24,13 @@
 
 	function createTag() {
 		if (!tagInput.value.trim() || tagInput.value.length > 15) return;
-		tagInput.value = '';
 
 		const newTag: TTag = {
 			id: randomId(),
 			name: tagInput.value.trim()
 		};
+
+		tagInput.value = '';
 
 		const lane = $lanes.get(laneIdx)!;
 		const opts = {
