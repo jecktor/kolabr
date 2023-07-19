@@ -12,6 +12,7 @@
 	export let access: string[];
 
 	let message: TranslationKeys | undefined;
+	let success: boolean;
 	let accessInput: HTMLInputElement;
 
 	let show = false;
@@ -34,8 +35,14 @@
 
 		fetch('/api/board/access', opts)
 			.then((res) => res.json())
-			.then((status) => (message = status))
-			.catch(() => (message = 'unknown'));
+			.then((status) => {
+				success = true;
+				message = status;
+			})
+			.catch(() => {
+				success = false;
+				message = 'unknown';
+			});
 	}
 </script>
 
@@ -57,16 +64,16 @@
 					</div>
 					<label class="b" for="access">{$t('shareaccess')}</label>
 				</div>
-			</div>			
+			</div>
 			<div class="space2">
 				<input
-				bind:this={accessInput}
-				type="text"
-				name="access"
-				id="access"
-				value={access.join(', ')}
-				placeholder={$t('shareemail')}
-				class="form-control"
+					bind:this={accessInput}
+					type="text"
+					name="access"
+					id="access"
+					value={access.join(', ')}
+					placeholder={$t('shareemail')}
+					class="form-control"
 				/>
 			</div>
 			<button on:click={updateAccess} class="btn btn-primary button">{$t('updateaccess')}</button>
@@ -80,13 +87,16 @@
 				</div>
 				<label class="b" for="access">{$t('sharelink')}</label>
 			</div>
-		</div>		
+		</div>
 		<div class="space2">
 			<button on:click={copyUrl} class="btn btn-primary button">{$t('copylink')}</button>
 		</div>
 	</div>
-	{#if message}
+	{#if success && message}
 		<p class="alert alert-success">{$t(message)}</p>
+	{/if}
+	{#if !success && message}
+		<p class="alert alert-danger">{$t(message)}</p>
 	{/if}
 </Modal>
 
