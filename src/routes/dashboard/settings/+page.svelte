@@ -171,7 +171,7 @@
 
 	.c {
 		width: 250px;
-		height: 38px;
+		height: 40px;
 		font-size: 16px;
 		padding-block: 8px;
 	}

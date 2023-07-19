@@ -209,7 +209,7 @@
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 6px;
-		width: 70%;
+		width: 50%;
 		margin-top: 4%;
 	}
 	.icon {
@@ -236,6 +236,7 @@
 		color: #7A7A7A;
 	}
 	.i {
+		width: 55%;
 		background: #FFFFFF;
 		border: 1px solid #D3D3D3;
 		border-radius: 6px;

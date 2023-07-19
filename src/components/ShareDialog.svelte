@@ -3,6 +3,8 @@
 	import { t, type TranslationKeys } from '$locales';
 
 	import FaShareAlt from 'svelte-icons/fa/FaShareAlt.svelte';
+	import FaUsers from 'svelte-icons/fa/FaUsers.svelte';
+	import FaLink from 'svelte-icons/fa/FaLink.svelte';
 	import Modal from './Modal.svelte';
 
 	export let ownerId: string;
@@ -45,10 +47,17 @@
 </button>
 
 <Modal bind:show>
-	<h2 class="a space1">{$t('shareboard')}</h2>
+	<h2 class="a">{$t('shareboard')}</h2>
 	{#if userId === ownerId}
-		<div class="space1">
-			<label class="b space2" for="access">{$t('shareaccess')}</label>
+		<div>
+			<div class="d-flex align-items-center gap-5 space1 space2">
+				<div class="d-flex gap-3">
+					<div class="icon i">
+						<FaUsers />
+					</div>
+					<label class="b" for="access">{$t('shareaccess')}</label>
+				</div>
+			</div>			
 			<div class="space2">
 				<input
 				bind:this={accessInput}
@@ -63,19 +72,32 @@
 			<button on:click={updateAccess} class="btn btn-primary button">{$t('updateaccess')}</button>
 		</div>
 	{/if}
-	<div class="space2">
-		<label class="b" for="access">{$t('sharelink')}</label>
-	</div>
-	<div class="space2">
-		<button on:click={copyUrl} class="btn btn-primary button">{$t('copylink')}</button>
+	<div class="space1 space2">
+		<div class="d-flex align-items-center gap-5 space2 space1">
+			<div class="d-flex gap-3">
+				<div class="icon i">
+					<FaLink />
+				</div>
+				<label class="b" for="access">{$t('sharelink')}</label>
+			</div>
+		</div>		
+		<div class="space2">
+			<button on:click={copyUrl} class="btn btn-primary button">{$t('copylink')}</button>
+		</div>
 	</div>
 	{#if message}
-		<p>{$t(message)}</p>
+		<p class="alert alert-success">{$t(message)}</p>
 	{/if}
 </Modal>
 
 <style>
-	
+	.alert {
+		position: inherit;
+		width: 100%;
+	}
+	.i {
+		color: var(--base-500);
+	}
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -87,10 +109,10 @@
 		box-shadow: none;
 	}
 	.space1 {
-		margin-bottom: 5%;
+		margin-top: 7%;
 	}
 	.space2 {
-		margin-bottom: 3%;
+		margin-bottom: 4%;
 	}
 	.b {
 		font-family: 'Inter';
@@ -111,6 +133,9 @@
 		letter-spacing: -0.2px;
 		color: var(--base-400);
 		white-space: nowrap;
+	}
+	.form-control:focus {
+		color: var(--base-600);
 	}
 	.button {
 		width: 100%;

@@ -288,9 +288,6 @@
 		color: var(--base-600);
 	}
 	@media (max-width: 768px) {
-		.a {
-			font-size: 12px;
-		}
 		.ticket_btn {
 			padding: 8px;
 		}
