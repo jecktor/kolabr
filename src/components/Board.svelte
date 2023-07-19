@@ -69,7 +69,10 @@
 	}
 	@media (max-width: 768px) {
 		.lane {
-			width: 42%;
+			width: 38%;
+		}
+		.board {
+			width: 170%;
 		}
 	}
 </style>

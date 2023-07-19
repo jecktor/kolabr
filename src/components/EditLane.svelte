@@ -232,7 +232,7 @@
 	}
 	@media (max-width: 768px) {
 		.new_lane {
-			left: 90%;
+			left: 135%;
 			height: 25px;
 		}
 		.icon {
