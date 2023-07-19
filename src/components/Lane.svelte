@@ -59,10 +59,12 @@
 		width: 100%;
 		overflow-y: hidden;
 	}
+
 	.lane-content {
 		height: calc(100% - 2.5em);
 		overflow-y: scroll;
 	}
+
 	.lane-title {
 		height: 2.5em;
 		display: flex;
@@ -74,22 +76,24 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
-		color: #4d4d4d;	
+		color: var(--base-600);
 	}
+
 	.ticket {
-		height: 4em;
+		height: fit-content;
 		width: 100%;
 		margin: 0.4em 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: #dddddd;
-		border: 1px solid #d3d3d3;
+		border: 1px solid var(--base-300);
 		border-radius: 8px;
 	}
+
 	.space1 {
 		margin-left: 3%;
 	}
+
 	@media (max-width: 768px) {
 		.lane-title {
 			font-size: 12px;

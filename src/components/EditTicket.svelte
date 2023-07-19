@@ -146,16 +146,23 @@
 	<button on:click={() => (show = true)} class="ticket_btn">
 		<p class="d">{ticket.name}</p>
 		{#if ticket.description}
-			<p>{ticket.description}</p>
+			<p class="desc">{ticket.description}</p>
 		{/if}
-		<div>
-			{#if ticket.deadline}
-				<span>{translateDate(ticket.deadline)}</span>
-			{/if}
-			{#each ticket.tags as { id, name } (id)}
-				<Tag {id} {name} />
-			{/each}
-		</div>
+		{#if ticket.deadline || ticket.tags.length > 0}
+			<div class="tags">
+				{#if ticket.deadline}
+					<div class="due">
+						<div class="icon">
+							<FaClock />
+						</div>
+						<span>{translateDate(ticket.deadline, true)}</span>
+					</div>
+				{/if}
+				{#each ticket.tags as { id, name } (id)}
+					<Tag {id} {name} />
+				{/each}
+			</div>
+		{/if}
 	</button>
 {/if}
 
@@ -212,32 +219,63 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.ticket_btn {
 		display: flex;
+		flex-direction: column;
+		gap: 8px;
 		width: 100%;
 		height: 100%;
 		margin: 0;
 		box-sizing: border-box;
-		align-items: flex-start;
 		padding: 16px;
-		gap: 8px;
-		background: #ffffff;
+		background: var(--base-100);
 		border: none;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
 		border-radius: 8px;
 	}
+
+	.desc {
+		color: var(--base-600);
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 5px;
+	}
+
 	.icon {
 		color: var(--base-500);
 	}
+
 	.new_ticket {
 		background-color: var(--base-200);
 		outline: none;
 		border: none;
 		background: none;
 	}
+
+	.due {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		border-radius: 90px;
+		padding: 4px 10px;
+		background: #ffdce0;
+		color: #891b1b;
+		font-size: 1.4rem;
+	}
+
+	.due .icon {
+		color: inherit;
+	}
+
 	.space1 {
 		margin-bottom: 5%;
 	}
+
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -248,6 +286,7 @@
 		border: none;
 		box-shadow: none;
 	}
+
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -258,14 +297,17 @@
 		color: var(--base-600);
 		white-space: nowrap;
 	}
+
 	.c.form-control {
 		height: 30px;
 		width: 100%;
 		font-size: 1.6rem;
 	}
+
 	.c.form-control:focus {
 		color: var(--base-600);
 	}
+
 	.d {
 		font-family: 'Inter';
 		font-style: normal;
@@ -273,29 +315,43 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
-		color: #212121;
+		color: var(--base-700);
 	}
+
 	.form-control {
 		padding: 0;
 	}
+
 	.header button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 	}
+
 	.form-control {
 		color: var(--base-600);
 	}
+
+	.form-control:focus {
+		color: var(--base-400);
+	}
+
+	p {
+		margin: 0;
+	}
+
 	@media (max-width: 768px) {
+		.a {
+			font-size: 12px;
+		}
+
 		.ticket_btn {
 			padding: 8px;
 		}
+
 		.d {
 			font-size: 12px;
 		}
-	}
-	.form-control:focus {
-		color: var(--base-400);
 	}
 </style>

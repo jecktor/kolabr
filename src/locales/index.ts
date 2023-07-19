@@ -24,13 +24,13 @@ export function translate(locale: string, key: TranslationKeys) {
 	return text;
 }
 
-export function translateDate(date: Date | string) {
+export function translateDate(date: Date | string, short = false) {
 	return new Date(date).toLocaleDateString(get(locale), {
 		year: 'numeric',
-		month: 'long',
+		month: short ? 'short' : 'long',
 		day: 'numeric',
-		hour: '2-digit',
-		minute: '2-digit'
+		hour: short ? undefined : '2-digit',
+		minute: short ? undefined : '2-digit'
 	});
 }
 

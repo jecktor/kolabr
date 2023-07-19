@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { str2Color } from '$utils';
+
 	import FaTimes from 'svelte-icons/fa/FaTimes.svelte';
 
 	export let id: string;
@@ -7,7 +9,7 @@
 	export let onDelete: (id: string) => void = () => {};
 </script>
 
-<div class="tag space1">
+<div class="tag" style={`background: ${str2Color(id, 50, 90)}; color: ${str2Color(id, 50, 30)}`}>
 	<span class="name">{name}</span>
 	{#if isDeletable}
 		<button class="delete" on:click={() => onDelete(id)}>
@@ -19,30 +21,27 @@
 </div>
 
 <style>
+	.tag {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--base-100);
+		border-radius: 90px;
+		width: fit-content;
+		padding: 4px 10px;
+		font-size: 1.4rem;
+	}
+
 	.tag button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 		font-size: 28px;
-		color: #7A7A7A;
+		color: inherit;
 	}
-	.tag {
-		display: flex;
-		align-items: center;
-	}
+
 	.icon {
 		line-height: 0;
-	}
-	.name {
-		padding: 6px 12px;
-		font-size: 14px;
-		font-weight: bold;
-		border-radius: 12px; 
-		background-color: #17a2b8; 
-    	color: #fff; 
-	}
-	.space1 {
-		margin-top: 2%;
 	}
 </style>
