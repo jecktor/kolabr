@@ -53,14 +53,14 @@
 	}
 
 	function updateLane() {
+		if (!nameInput.value.trim() || nameInput.value.length > 15) return;
+
 		const newLane: Lane = {
 			id: lane.id.split('-')[0],
 			tickets: lane.tickets,
 			name: nameInput.value.trim(),
 			limit
 		};
-
-		if (!newLane.name) return;
 
 		const opts = {
 			method: 'PUT',
@@ -115,7 +115,7 @@
 
 <Modal bind:show>
 	<div class="header space1">
-		<input bind:this={nameInput} type="text" value={name} class="form-control a" />
+		<input bind:this={nameInput} maxlength="15" type="text" value={name} class="form-control a" />
 		<button on:click={deleteLane}>
 			<div class="icon">
 				<FaTrash />
@@ -142,6 +142,7 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.new_lane {
 		position: absolute;
 		top: 70px;
@@ -152,9 +153,11 @@
 		border: none;
 		height: 30px;
 	}
+
 	.icon {
 		color: var(--base-500);
 	}
+
 	.edit_lane {
 		background-color: var(--base-200);
 		border: none;
@@ -162,12 +165,15 @@
 		border: none;
 		background: none;
 	}
+
 	.space1 {
 		margin-bottom: 5%;
 	}
+
 	.space2 {
 		margin-right: 2%;
 	}
+
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -178,6 +184,7 @@
 		border: none;
 		box-shadow: none;
 	}
+
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -188,6 +195,7 @@
 		color: var(--base-600);
 		white-space: nowrap;
 	}
+
 	.form-control {
 		padding: 0;
 	}
@@ -196,6 +204,7 @@
 		display: flex;
 		align-items: center;
 	}
+
 	.counter {
 		display: flex;
 		align-items: center;
@@ -210,6 +219,7 @@
 		height: 40px;
 		user-select: none;
 	}
+
 	.counter button {
 		border: none;
 		background: none;
@@ -218,30 +228,37 @@
 		font-size: 28px;
 		color: var(--base-500);
 	}
+
 	.header button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 	}
+
 	.form-control {
 		color: var(--base-600);
 	}
+
 	.form-control:focus {
 		color: var(--base-400);
 	}
+
 	@media (max-width: 768px) {
 		.new_lane {
 			left: 135%;
 			height: 25px;
 		}
+
 		.icon {
 			width: 12px;
 			height: 12px;
 		}
+
 		button {
 			font-size: revert;
 		}
+
 		.edit_lane {
 			margin-left: 15px;
 		}

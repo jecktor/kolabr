@@ -23,13 +23,13 @@
 		: ticketTags;
 
 	function createTag() {
+		if (!tagInput.value.trim() || tagInput.value.length > 15) return;
+		tagInput.value = '';
+
 		const newTag: TTag = {
 			id: randomId(),
 			name: tagInput.value.trim()
 		};
-
-		if (!newTag.name) return;
-		tagInput.value = '';
 
 		const lane = $lanes.get(laneIdx)!;
 		const opts = {
@@ -55,10 +55,9 @@
 	}
 
 	function addTag(id: string, name: string) {
+		if (tags.find((tag) => tag.id === id)) return;
+
 		const newTag: TTag = { id, name };
-
-		if (!newTag.name) return;
-
 		const lane = $lanes.get(laneIdx)!;
 		const opts = {
 			method: 'PATCH',
@@ -145,6 +144,7 @@
 		<input
 			class="i"
 			type="text"
+			maxlength="15"
 			placeholder={$t('newlabel')}
 			on:focus={() => (isFocused = true)}
 			on:blur={() => setTimeout(() => (isFocused = false), 200)}
@@ -192,6 +192,7 @@
 	.manage_tasks {
 		position: relative;
 	}
+
 	.board_tags {
 		position: absolute;
 		top: 35px;
@@ -204,10 +205,12 @@
 		padding: 10px;
 		background: var(--base-100);
 	}
+
 	.buttons {
 		display: flex;
 		align-items: center;
 	}
+
 	.tags {
 		display: flex;
 		flex-wrap: wrap;
@@ -215,29 +218,34 @@
 		gap: 5px;
 		margin-top: 10px;
 	}
+
 	.tag-name {
 		flex: 1;
 		display: flex;
 		align-items: center;
 		justify-content: left;
 	}
+
 	.tag-container button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 		font-size: 28px;
-		color: #7a7a7a;
+		color: var(--base-500);
 	}
+
 	.tag-container {
 		display: flex;
 		gap: 20px;
-		background: #ffffff;
+		background: var(--base-100);
 		border-radius: 6px;
 	}
+
 	.icon {
 		line-height: 0;
 	}
+
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -245,24 +253,27 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
-		color: #4d4d4d;
+		color: var(--base-600);
 	}
+
 	.icon {
-		color: #7a7a7a;
+		color: var(--base-500);
 	}
+
 	.add_tag button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 		font-size: 28px;
-		color: #7a7a7a;
+		color: var(--base-500);
 	}
+
 	.i {
 		width: 200px;
 		height: 30px;
-		background: #ffffff;
-		border: 1px solid #d3d3d3;
+		background: var(--base-100);
+		border: 1px solid var(--base-300);
 		border-radius: 0.375rem;
 	}
 </style>

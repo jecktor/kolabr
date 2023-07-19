@@ -105,9 +105,11 @@
 		position: inherit;
 		width: 100%;
 	}
+
 	.i {
 		color: var(--base-500);
 	}
+
 	.a {
 		font-family: 'Inter';
 		font-style: normal;
@@ -118,12 +120,15 @@
 		border: none;
 		box-shadow: none;
 	}
+
 	.space1 {
 		margin-top: 7%;
 	}
+
 	.space2 {
 		margin-bottom: 4%;
 	}
+
 	.b {
 		font-family: 'Inter';
 		font-style: normal;
@@ -134,6 +139,7 @@
 		color: var(--base-600);
 		white-space: nowrap;
 	}
+
 	.form-control {
 		font-family: 'Inter';
 		font-style: normal;
@@ -144,9 +150,11 @@
 		color: var(--base-400);
 		white-space: nowrap;
 	}
+
 	.form-control:focus {
 		color: var(--base-600);
 	}
+
 	.button {
 		width: 100%;
 	}

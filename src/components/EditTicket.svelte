@@ -69,6 +69,9 @@
 	}
 
 	function updateTicket() {
+		if (!nameInput.value.trim() || nameInput.value.length > 30 || descInput.value.length > 255)
+			return;
+
 		const lane = $lanes.get(laneIdx)!;
 		const id = newTicketId ?? ticket.id;
 
@@ -79,8 +82,6 @@
 			deadline: dueInput.value,
 			tags: lane.tickets.find((t) => t.id === id)?.tags ?? []
 		};
-
-		if (!newTicket.name) return;
 
 		const opts = {
 			method: 'PUT',
@@ -178,7 +179,13 @@
 
 <Modal bind:show>
 	<div class="header space1">
-		<input bind:this={nameInput} type="text" value={ticket.name} class="form-control a" />
+		<input
+			bind:this={nameInput}
+			maxlength="30"
+			type="text"
+			value={ticket.name}
+			class="form-control a"
+		/>
 		<button on:click={deleteTicket}>
 			<div class="icon">
 				<FaTrash />
@@ -192,7 +199,13 @@
 			</div>
 			<span class="b">{$t('desc')}</span>
 		</div>
-		<input bind:this={descInput} type="text" value={ticket.description} class="c form-control" />
+		<input
+			bind:this={descInput}
+			maxlength="255"
+			type="text"
+			value={ticket.description}
+			class="c form-control"
+		/>
 	</div>
 
 	<div class="d-flex align-items-center gap-5 space1">
@@ -247,6 +260,9 @@
 
 	.desc {
 		color: var(--base-600);
+		white-space: pre-wrap;
+		word-break: break-all;
+		text-align: left;
 	}
 
 	.tags {
@@ -326,6 +342,7 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
+		text-align: left;
 		color: var(--base-700);
 	}
 
@@ -357,20 +374,25 @@
 			padding: 8px;
 			font-size: 9px;
 		}
+
 		.d {
 			font-size: 9px;
 		}
+
 		.due {
 			font-size: 9px;
 		}
+
 		.new_ticket {
 			margin-left: 15px;
 			margin-top: 10px;
 		}
+
 		.icon {
 			width: 12px;
 			height: 12px;
 		}
+
 		button {
 			font-size: revert;
 		}
