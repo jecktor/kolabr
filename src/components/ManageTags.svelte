@@ -207,10 +207,9 @@
 		display: flex;
 		align-items: center;
 		background: #FFFFFF;
-		border: 1px solid #D3D3D3;
 		border-radius: 6px;
-		width: 50%;
-		margin-top: 4%;
+		width: 55%;
+		margin-top: 2%;
 	}
 	.icon {
 		line-height: 0;

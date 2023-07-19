@@ -30,10 +30,19 @@
 	.tag {
 		display: flex;
 		align-items: center;
-		background: #FFFFFF;
-		border-radius: 6px;
 	}
 	.icon {
 		line-height: 0;
+	}
+	.name {
+		padding: 6px 12px;
+		font-size: 14px;
+		font-weight: bold;
+		border-radius: 12px; 
+		background-color: #17a2b8; 
+    	color: #fff; 
+	}
+	.space1 {
+		margin-top: 2%;
 	}
 </style>
