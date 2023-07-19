@@ -22,7 +22,7 @@
 	}
 
 	$: isLaneFull = $lanes
-		? $lanes.get(idx)!.limit > 0 && $lanes.get(idx)!.tickets.length >= $lanes.get(idx)!.limit
+		? $lanes.get(idx)?.limit > 0 && $lanes.get(idx)?.tickets.length >= $lanes.get(idx)?.limit
 		: true;
 </script>
 
