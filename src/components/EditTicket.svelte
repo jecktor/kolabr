@@ -266,6 +266,7 @@
 		background: #ffdce0;
 		color: #891b1b;
 		font-size: 1.4rem;
+		font-weight: 600;
 	}
 
 	.due .icon {

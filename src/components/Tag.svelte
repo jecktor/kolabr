@@ -30,6 +30,7 @@
 		width: fit-content;
 		padding: 4px 10px;
 		font-size: 1.4rem;
+		font-weight: 600;
 	}
 
 	.tag button {
