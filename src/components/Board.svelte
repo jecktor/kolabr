@@ -60,11 +60,10 @@
 	}
 	.lane {
 		height: 100%;
-		width: 22%;
+		width: 25%;
 		padding: 0.5em;
 		margin: 0.5em;
 		float: left;
-		border: none;
 		background-color: #F8F8F8;
 		border-radius: 12px;
 	}

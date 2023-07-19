@@ -188,7 +188,6 @@
 		color: var(--base-600);
 		white-space: nowrap;
 	}
-
 	.form-control {
 		padding: 0;
 	}
@@ -197,7 +196,6 @@
 		display: flex;
 		align-items: center;
 	}
-
 	.counter {
 		display: flex;
 		align-items: center;
@@ -220,18 +218,15 @@
 		font-size: 28px;
 		color: var(--base-500);
 	}
-
 	.header button {
 		border: none;
 		background: none;
 		text-decoration: none;
 		cursor: pointer;
 	}
-
 	.form-control {
 		color: var(--base-600);
 	}
-
 	.form-control:focus {
 		color: var(--base-400);
 	}
