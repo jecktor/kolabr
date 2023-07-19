@@ -29,5 +29,6 @@
 		border: 1px solid var(--base-400);
 		border-radius: 12px;
 		background: var(--base-100);
+		overflow: visible;
 	}
 </style>

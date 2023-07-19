@@ -25,6 +25,7 @@
 	};
 
 	const lanes = useList<Lane>('lanes');
+	const boardTags = useList<Tag>('tags');
 
 	let nameInput: HTMLInputElement;
 	let descInput: HTMLInputElement;
@@ -120,9 +121,18 @@
 		};
 
 		fetch('/api/board/ticket', opts)
-			.then(() =>
-				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t.id !== id) })
-			)
+			.then(() => {
+				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t.id !== id) });
+
+				ticket.tags.forEach((tag) => {
+					if (
+						!$lanes.find((lane) =>
+							lane.tickets.find((ticket) => ticket.tags.find((t) => t.id === tag.id))
+						)
+					)
+						$boardTags.delete($boardTags.findIndex((t) => t.id === tag.id));
+				});
+			})
 			.catch(console.error);
 
 		show = false;

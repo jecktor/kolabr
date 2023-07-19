@@ -16,6 +16,7 @@
 	const boardTags = useList<TTag>('tags');
 
 	let tagInput: HTMLInputElement;
+	let isFocused = false;
 
 	$: tags = $lanes
 		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket.id === ticketId)?.tags ?? []
@@ -140,21 +141,27 @@
 </script>
 
 <div class="manage_tasks a">
-	<div class="tags">
-		{#each tags as { id, name } (id)}
-			<Tag {id} {name} isDeletable onDelete={() => removeTag(id)} />
-		{/each}
-	</div>
-
 	<div class="add_tag">
-		<input class="i" type="text" placeholder={$t('newlabel')} bind:this={tagInput} />
+		<input
+			class="i"
+			type="text"
+			placeholder={$t('newlabel')}
+			on:focus={() => (isFocused = true)}
+			on:blur={() => setTimeout(() => (isFocused = false), 200)}
+			bind:this={tagInput}
+		/>
 		<button class="add" on:click={createTag}>
 			<div class="icon">
 				<FaPlus />
 			</div>
 		</button>
 	</div>
-	{#if $boardTags}
+	<div class="tags">
+		{#each tags as { id, name } (id)}
+			<Tag {id} {name} isDeletable onDelete={() => removeTag(id)} />
+		{/each}
+	</div>
+	{#if isFocused && $boardTags && tags.length < $boardTags.length}
 		<div class="board_tags a">
 			{#each [...$boardTags] as { id, name } (id)}
 				{#if !tags.find((tag) => tag.id === id)}
@@ -162,7 +169,7 @@
 						<div class="tag-name">
 							<Tag {id} {name} />
 						</div>
-						<div class="buttons space1">
+						<div class="buttons">
 							<button class="add" on:click={() => addTag(id, name)}>
 								<div class="icon">
 									<FaPlus />
@@ -182,18 +189,37 @@
 </div>
 
 <style>
+	.manage_tasks {
+		position: relative;
+	}
 	.board_tags {
-		flex-wrap: wrap;
+		position: absolute;
+		top: 35px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		width: 250px;
+		border-radius: 6px;
+		border: 1px solid var(--base-300);
+		padding: 10px;
+		background: var(--base-100);
+	}
+	.buttons {
+		display: flex;
+		align-items: center;
 	}
 	.tags {
-		margin-bottom: 2%;
+		display: flex;
+		flex-wrap: wrap;
+		width: 300px;
+		gap: 5px;
+		margin-top: 10px;
 	}
 	.tag-name {
 		flex: 1;
 		display: flex;
 		align-items: center;
 		justify-content: left;
-		margin-left: 2%;
 	}
 	.tag-container button {
 		border: none;
@@ -201,15 +227,13 @@
 		text-decoration: none;
 		cursor: pointer;
 		font-size: 28px;
-		color: #7A7A7A;
+		color: #7a7a7a;
 	}
 	.tag-container {
 		display: flex;
-		align-items: center;
-		background: #FFFFFF;
+		gap: 20px;
+		background: #ffffff;
 		border-radius: 6px;
-		width: 55%;
-		margin-top: 2%;
 	}
 	.icon {
 		line-height: 0;
@@ -221,10 +245,10 @@
 		font-size: 16px;
 		line-height: 19px;
 		letter-spacing: -0.2px;
-		color: #4D4D4D;
+		color: #4d4d4d;
 	}
 	.icon {
-		color: #7A7A7A;
+		color: #7a7a7a;
 	}
 	.add_tag button {
 		border: none;
@@ -232,12 +256,13 @@
 		text-decoration: none;
 		cursor: pointer;
 		font-size: 28px;
-		color: #7A7A7A;
+		color: #7a7a7a;
 	}
 	.i {
-		width: 55%;
-		background: #FFFFFF;
-		border: 1px solid #D3D3D3;
-		border-radius: 6px;
+		width: 200px;
+		height: 30px;
+		background: #ffffff;
+		border: 1px solid #d3d3d3;
+		border-radius: 0.375rem;
 	}
 </style>
