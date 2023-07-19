@@ -97,6 +97,10 @@
 	@media (max-width: 768px) {
 		.lane-title {
 			font-size: 9px;
+			margin-top: 2px;
+		}
+		.ticket {
+			margin-top: 1.2rem;
 		}
 	}
 </style>

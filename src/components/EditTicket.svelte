@@ -353,5 +353,16 @@
 		.due {
 			font-size: 9px;
 		}
+		.new_ticket {
+			margin-left: 15px;
+			margin-top: 10px;
+		}
+		.icon {
+			width: 12px;
+			height: 12px;
+		}
+		button {
+			font-size: revert;
+		}
 	}
 </style>

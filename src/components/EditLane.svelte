@@ -232,7 +232,18 @@
 	}
 	@media (max-width: 768px) {
 		.new_lane {
-			left: 130%;
+			left: 90%;
+			height: 25px;
+		}
+		.icon {
+			width: 12px;
+			height: 12px;
+		}
+		button {
+			font-size: revert;
+		}
+		.edit_lane {
+			margin-left: 15px;
 		}
 	}
 </style>
