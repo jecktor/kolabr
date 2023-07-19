@@ -38,24 +38,32 @@
 	}
 </script>
 
-<section
-	class="board"
-	use:dndzone={{ items: lanes, flipDurationMs, type: 'column' }}
-	on:consider={handleDndConsiderLanes}
-	on:finalize={handleDndFinalizeLanes}
->
-	{#each lanes as lane, idx (lane.id)}
-		<div class="lane" animate:flip={{ duration: flipDurationMs }}>
-			<Lane {lane} {idx} onDrop={(newTickets) => handleTicketFinalize(idx, newTickets)} />
-		</div>
-	{/each}
-</section>
-<EditLane idx={lanes.length - 1} isNew />
+<div class="wrapper">
+	<section
+		class="board"
+		use:dndzone={{ items: lanes, flipDurationMs, type: 'column' }}
+		on:consider={handleDndConsiderLanes}
+		on:finalize={handleDndFinalizeLanes}
+	>
+		{#each lanes as lane, idx (lane.id)}
+			<div class="lane" animate:flip={{ duration: flipDurationMs }}>
+				<Lane {lane} {idx} onDrop={(newTickets) => handleTicketFinalize(idx, newTickets)} />
+			</div>
+		{/each}
+	</section>
+	<EditLane idx={lanes.length - 1} isNew />
+</div>
 
 <style>
+	.wrapper {
+		display: flex;
+	}
+
 	.board {
+		display: flex;
+		flex-wrap: wrap;
 		height: 90vh;
-		width: 100%;
+		width: fit-content;
 		padding: 0.5em;
 	}
 
@@ -73,6 +81,7 @@
 		.lane {
 			width: 38%;
 		}
+
 		.board {
 			width: 170%;
 		}

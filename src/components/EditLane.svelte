@@ -144,9 +144,7 @@
 	}
 
 	.new_lane {
-		position: absolute;
-		top: 70px;
-		margin: 10px;
+		margin: 1em 0.5em;
 		background-color: var(--base-200);
 		border-radius: 12px;
 		outline: none;
