@@ -46,7 +46,7 @@
 
 		fetch('/api/board/lane', opts)
 			.then(() => {
-				$lanes.push(lane);
+				$lanes.push({ ...lane, id: lane.id.concat('-').concat($lanes.length.toString()) });
 				show = true;
 			})
 			.catch(console.error);
