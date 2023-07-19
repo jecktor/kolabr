@@ -96,7 +96,7 @@
 
 	@media (max-width: 768px) {
 		.lane-title {
-			font-size: 12px;
+			font-size: 9px;
 		}
 	}
 </style>

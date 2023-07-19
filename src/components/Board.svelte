@@ -68,9 +68,8 @@
 		border-radius: 12px;
 	}
 	@media (max-width: 768px) {
-		.lane {
-			width: 30%;
-			height: 60%;
+		.board {
+			width: 150%;
 		}
 	}
 </style>

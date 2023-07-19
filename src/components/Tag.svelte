@@ -45,4 +45,10 @@
 	.icon {
 		line-height: 0;
 	}
+
+	@media (max-width: 768px) {
+		.name {
+			font-size: 9px;
+		}
+	}
 </style>

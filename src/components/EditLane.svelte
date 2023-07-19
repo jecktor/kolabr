@@ -230,4 +230,9 @@
 	.form-control:focus {
 		color: var(--base-400);
 	}
+	@media (max-width: 768px) {
+		.new_lane {
+			left: 130%;
+		}
+	}
 </style>

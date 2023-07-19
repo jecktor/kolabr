@@ -343,16 +343,15 @@
 	}
 
 	@media (max-width: 768px) {
-		.a {
-			font-size: 12px;
-		}
-
 		.ticket_btn {
 			padding: 8px;
+			font-size: 9px;
 		}
-
 		.d {
-			font-size: 12px;
+			font-size: 9px;
+		}
+		.due {
+			font-size: 9px;
 		}
 	}
 </style>
