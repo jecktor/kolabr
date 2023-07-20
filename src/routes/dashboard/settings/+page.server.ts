@@ -1,5 +1,5 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth, deleteFile, uploadFile } from '$lib/server';
+import { auth, deleteFile, uploadFile, db } from '$lib/server';
 import { LuciaError } from 'lucia-auth';
 
 export const load = async ({ locals }) => {
@@ -210,6 +210,8 @@ export const actions: Actions = {
 			if (user.image.includes('upload')) {
 				await deleteFile(user.image);
 			}
+
+			await db.execute('CALL delete_user_data(?)', [user.userId]);
 
 			await auth.deleteUser(user.userId);
 		} catch (e) {
