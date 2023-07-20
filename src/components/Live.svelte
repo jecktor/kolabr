@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
-	import { translateDate } from '$locales';
+	import { t, translateDate } from '$locales';
 	import type { BoardInfo, Lane, Tag, InputEvent, Board as TBoard } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
@@ -32,6 +32,7 @@
 	});
 
 	let timeout: NodeJS.Timeout;
+	let boardDeleted = false;
 
 	function changeBoardName(newName: string) {
 		if (!newName) return;
@@ -50,7 +51,12 @@
 		};
 
 		fetch('/api/board', opts)
-			.then(() => {
+			.then((res) => {
+				if (res.status === 404) {
+					boardDeleted = true;
+					return;
+				}
+
 				$boardInfo.update({
 					name: newName,
 					last_edited
@@ -98,7 +104,8 @@
 	}
 
 	$: hasMoreUsers = $others ? [...$others].length > 3 : false;
-	$: boardReady = $boardInfo ? Object.keys($boardInfo.toImmutable()).length > 0 : false;
+	$: boardReady =
+		!boardDeleted && ($boardInfo ? Object.keys($boardInfo.toImmutable()).length > 0 : false);
 	$: lastEdit = translateDate(boardReady ? $boardInfo.get('last_edited') : '');
 
 	const unsubscribe = lanes.subscribe(() => {
@@ -115,7 +122,12 @@
 		};
 
 		fetch('/api/board', opts)
-			.then(() => {
+			.then((res) => {
+				if (res.status === 404) {
+					boardDeleted = true;
+					return;
+				}
+
 				$boardInfo && $boardInfo.update({ last_edited });
 			})
 			.catch(console.error);
@@ -195,6 +207,16 @@
 	</div>
 {/if}
 
+{#if boardDeleted}
+	<div class="deleted">
+		<div>
+			<h1>{$t('boardnotfound')}</h1>
+			<p>{$t('boardnotfoundmsg')}</p>
+			<a href="/dashboard">{$t('backtodashboard')}</a>
+		</div>
+	</div>
+{/if}
+
 <style>
 	.board {
 		position: absolute;
@@ -257,5 +279,12 @@
 		background-color: var(--base-200);
 		margin-left: -0.75rem;
 		color: var(--base-600);
+	}
+
+	.deleted {
+		display: grid;
+		place-items: center;
+		width: 100vw;
+		height: 100vh;
 	}
 </style>
