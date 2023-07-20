@@ -17,6 +17,7 @@
 	function handleDndConsiderTickets(e: CustomEvent<DndEvent<Ticket>>) {
 		lane.tickets = e.detail.items;
 	}
+
 	function handleDndFinalizeTickets(e: CustomEvent<DndEvent<Ticket>>) {
 		onDrop(e.detail.items);
 	}
@@ -63,6 +64,12 @@
 	.lane-content {
 		height: calc(100% - 2.5em);
 		overflow-y: scroll;
+		--ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.lane-content::-webkit-scrollbar {
+		display: none;
 	}
 
 	.lane-title {
@@ -99,6 +106,7 @@
 			font-size: 9px;
 			margin-top: 2px;
 		}
+
 		.ticket {
 			margin-top: 1.2rem;
 		}
