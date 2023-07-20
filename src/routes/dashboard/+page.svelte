@@ -11,6 +11,11 @@
 	export let form: { message?: TranslationKeys; success: boolean };
 </script>
 
+<svelte:head>
+	<title>{$t('dashboard')} | Kolabr</title>
+	<meta name="description" content={$t('herotitle')} />
+</svelte:head>
+
 <div class="container row justify-content-center space1">
 	<div class="space3">
 		<form action="?/newboard" method="post">

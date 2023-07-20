@@ -2,6 +2,11 @@
 	import { t } from '$locales';
 </script>
 
+<svelte:head>
+	<title>Kolabr | {$t('footertitle')}</title>
+	<meta name="description" content={$t('herotitle')} />
+</svelte:head>
+
 <header>
 	<div class="header_node">
 		<a href="/#">

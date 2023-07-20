@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { t } from '$locales';
 	import { type Client, createClient } from '@liveblocks/client';
 
 	import { LiveblocksProvider, RoomProvider } from '$lib/liveblocks';
@@ -19,6 +20,11 @@
 		loaded = true;
 	});
 </script>
+
+<svelte:head>
+	<title>{data.board.name} | Kolabr</title>
+	<meta name="description" content={$t('herotitle')} />
+</svelte:head>
 
 {#if loaded}
 	<!-- Provides Liveblocks hooks to children -->

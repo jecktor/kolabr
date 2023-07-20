@@ -5,6 +5,11 @@
 	export let form: { message?: TranslationKeys };
 </script>
 
+<svelte:head>
+	<title>{$t('signup')} | Kolabr</title>
+	<meta name="description" content={$t('herotitle')} />
+</svelte:head>
+
 <div class="container signup">
 	<div class="row justify-content-center">
 		<div>

@@ -3,6 +3,11 @@
 	import { t } from '$locales';
 </script>
 
+<svelte:head>
+	<title>{$t('error')} | Kolabr</title>
+	<meta name="description" content={$t('herotitle')} />
+</svelte:head>
+
 <div class="wrapper">
 	<div>
 		<h1>{$t('error')}</h1>

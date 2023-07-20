@@ -10,6 +10,11 @@
 	let confirmDelete = '';
 </script>
 
+<svelte:head>
+	<title>{$t('settings')} | Kolabr</title>
+	<meta name="description" content={$t('herotitle')} />
+</svelte:head>
+
 <div class="container row justify-content-center space1 space3">
 	<strong><p class="a space1">{$t('settings')}</p></strong>
 	<form use:enhance bind:this={avatarForm} class="space2" action="?/avatar" method="post">
