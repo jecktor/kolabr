@@ -27,6 +27,7 @@
 
 	$: name = $lanes ? $lanes.get(idx)?.name ?? lane.name : lane.name;
 	$: limit = $lanes ? $lanes.get(idx)?.limit ?? lane.limit : lane.limit;
+	$: open = $lanes && $lanes.get(idx) && show;
 
 	function createLane() {
 		lane.id = randomId();
@@ -113,28 +114,30 @@
 	</button>
 {/if}
 
-<Modal bind:show>
-	<div class="header space1">
-		<input bind:this={nameInput} maxlength="15" type="text" value={name} class="form-control a" />
-		<button on:click={deleteLane}>
-			<div class="icon">
-				<FaTrash />
+{#if open}
+	<Modal bind:show>
+		<div class="header space1">
+			<input bind:this={nameInput} maxlength="15" type="text" value={name} class="form-control a" />
+			<button on:click={deleteLane}>
+				<div class="icon">
+					<FaTrash />
+				</div>
+			</button>
+		</div>
+		<div class="counter-container space1">
+			<div class="icon space2">
+				<FaRegListAlt />
 			</div>
-		</button>
-	</div>
-	<div class="counter-container space1">
-		<div class="icon space2">
-			<FaRegListAlt />
+			<span class="b">{$t('ticketlimit')}</span>
+			<div class="counter">
+				<button on:click={() => (limit = limit >= 1 ? --limit : limit)}>-</button>
+				<span>{limit}</span>
+				<button on:click={() => (limit = limit <= 9 ? ++limit : limit)}>+</button>
+			</div>
 		</div>
-		<span class="b">{$t('ticketlimit')}</span>
-		<div class="counter">
-			<button on:click={() => (limit = limit >= 1 ? --limit : limit)}>-</button>
-			<span>{limit}</span>
-			<button on:click={() => (limit = limit <= 9 ? ++limit : limit)}>+</button>
-		</div>
-	</div>
-	<button on:click={updateLane} class="btn btn-primary">{$t('done')}</button>
-</Modal>
+		<button on:click={updateLane} class="btn btn-primary">{$t('done')}</button>
+	</Modal>
+{/if}
 
 <style>
 	.header {

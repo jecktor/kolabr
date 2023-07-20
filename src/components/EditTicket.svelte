@@ -36,6 +36,8 @@
 	$: ticket = $lanes
 		? $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) ?? boardticket
 		: boardticket;
+	$: isDue = ticket.deadline && new Date(ticket.deadline) < new Date();
+	$: open = $lanes && $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) && show;
 
 	function createTicket() {
 		if (isLaneFull) return;
@@ -154,7 +156,7 @@
 		</button>
 	{/if}
 {:else}
-	<button on:click={() => (show = true)} class="ticket_btn">
+	<button on:click={() => (show = true)} class={`ticket_btn ${isDue ? 'expired' : ''}`}>
 		<p class="d">{ticket.name}</p>
 		{#if ticket.description}
 			<p class="desc">{ticket.description}</p>
@@ -177,64 +179,66 @@
 	</button>
 {/if}
 
-<Modal bind:show>
-	<div class="header space1">
-		<input
-			bind:this={nameInput}
-			maxlength="30"
-			type="text"
-			value={ticket.name}
-			class="form-control a"
-		/>
-		<button on:click={deleteTicket}>
-			<div class="icon">
-				<FaTrash />
-			</div>
-		</button>
-	</div>
-	<div class="d-flex align-items-center gap-5 space1">
-		<div class="d-flex gap-3">
-			<div class="icon">
-				<FaAlignLeft />
-			</div>
-			<span class="b">{$t('desc')}</span>
+{#if open}
+	<Modal bind:show>
+		<div class="header space1">
+			<input
+				bind:this={nameInput}
+				maxlength="30"
+				type="text"
+				value={ticket.name}
+				class="form-control a"
+			/>
+			<button on:click={deleteTicket}>
+				<div class="icon">
+					<FaTrash />
+				</div>
+			</button>
 		</div>
-		<input
-			bind:this={descInput}
-			maxlength="255"
-			type="text"
-			value={ticket.description}
-			class="c form-control"
-		/>
-	</div>
+		<div class="d-flex align-items-center gap-5 space1">
+			<div class="d-flex gap-3">
+				<div class="icon">
+					<FaAlignLeft />
+				</div>
+				<span class="b">{$t('desc')}</span>
+			</div>
+			<input
+				bind:this={descInput}
+				maxlength="255"
+				type="text"
+				value={ticket.description}
+				class="c form-control"
+			/>
+		</div>
 
-	<div class="d-flex align-items-center gap-5 space1">
-		<div class="d-flex gap-3">
-			<div class="icon">
-				<FaClock />
+		<div class="d-flex align-items-center gap-5 space1">
+			<div class="d-flex gap-3">
+				<div class="icon">
+					<FaClock />
+				</div>
+				<span class="b">{$t('due')}</span>
 			</div>
-			<span class="b">{$t('due')}</span>
+			<input
+				bind:this={dueInput}
+				type="datetime-local"
+				value={ticket.deadline}
+				class="c form-control"
+			/>
 		</div>
-		<input
-			bind:this={dueInput}
-			type="datetime-local"
-			value={ticket.deadline}
-			class="c form-control"
-		/>
-	</div>
-	<div class="d-flex align-items-center gap-5 space1">
-		<div class="d-flex gap-3">
-			<div class="icon">
-				<FaTags />
+		<div class="d-flex align-items-center gap-5 space1">
+			<div class="d-flex gap-3">
+				<div class="icon">
+					<FaTags />
+				</div>
+				<span class="b">{$t('labels')}</span>
 			</div>
-			<span class="b">{$t('labels')}</span>
+			<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
 		</div>
-		<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
-	</div>
-	<button on:click={updateTicket} class="btn btn-primary">
-		{$t('done')}
-	</button>
-</Modal>
+		<button on:click={updateTicket} class="btn btn-primary">
+			{$t('done')}
+		</button>
+	</Modal>
+{/if}
 
 <style>
 	.header {
@@ -256,6 +260,20 @@
 		border: none;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
 		border-radius: 8px;
+		border: 1px solid var(--base-300);
+	}
+
+	.ticket_btn.expired {
+		border: 1px solid #e46364;
+		background: #fce8e8;
+	}
+
+	.ticket_btn.expired .d {
+		color: #611818;
+	}
+
+	.ticket_btn.expired .desc {
+		color: #891b1b;
 	}
 
 	.desc {

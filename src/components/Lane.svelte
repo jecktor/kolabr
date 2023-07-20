@@ -93,7 +93,6 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		border: 1px solid var(--base-300);
 		border-radius: 8px;
 	}
 
