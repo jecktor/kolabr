@@ -31,6 +31,8 @@
 		last_edited: board.last_edited
 	});
 
+	let timeout: NodeJS.Timeout;
+
 	function changeBoardName(newName: string) {
 		if (!newName) return;
 
@@ -55,6 +57,11 @@
 				});
 			})
 			.catch(console.error);
+	}
+
+	function debounceChangeBoardName(newName: string) {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => changeBoardName(newName), 500);
 	}
 
 	function handlePointerMove(event: PointerEvent) {
@@ -145,7 +152,7 @@
 							value={$boardInfo.get('name')}
 							on:focus={handleSelectionFocus}
 							on:blur={handleSelectionBlur}
-							on:input={(e) => changeBoardName(e.currentTarget.value)}
+							on:input={(e) => debounceChangeBoardName(e.currentTarget.value)}
 						/>
 					</Selection>
 					<time datetime={$boardInfo.get('last_edited')}>
