@@ -27,7 +27,7 @@
 
 	$: name = $lanes ? $lanes.get(idx)?.name ?? lane.name : lane.name;
 	$: limit = $lanes ? $lanes.get(idx)?.limit ?? lane.limit : lane.limit;
-	$: open = $lanes && $lanes.get(idx) && show;
+	$: open = !isNew && $lanes && $lanes.get(idx) && show;
 
 	function createLane() {
 		lane.id = randomId();
