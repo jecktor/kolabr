@@ -46,10 +46,7 @@
 		};
 
 		fetch('/api/board/lane', opts)
-			.then(() => {
-				$lanes.push({ ...lane, id: `${lane.id}-${$lanes.length}` });
-				show = true;
-			})
+			.then(() => $lanes.push({ ...lane, id: `${lane.id}-${$lanes.length}` }))
 			.catch(console.error);
 	}
 

@@ -60,13 +60,12 @@
 		};
 
 		fetch('/api/board/ticket', opts)
-			.then(() => {
+			.then(() =>
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: [...lane.tickets, { ...ticket, id: newTicketId }]
-				});
-				show = true;
-			})
+				})
+			)
 			.catch(console.error);
 	}
 
