@@ -1,38 +1,14 @@
-# create-svelte
+# [Kolabr](https://kolabr.vercel.app)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+[![Kolabr](https://i.imgur.com/MT9bwWh.png)](https://kolabr.vercel.app)
 
-## Creating a project
+[Kolabr](https://kolabr.vercel.app) is a Kanban board application with live collaboration capabilities. Made with [SvelteKit](https://kit.svelte.dev/) & [Liveblocks](https://liveblocks.io).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Development
+Technologies used in this project include: Svelte, SvelteKit, Liveblocks, Bootstrap
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+### Run locally
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- Clone this repository: `git clone https://github.com/jecktor/kolabr.git`
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Install all dependencies with `npm install`
