@@ -29,7 +29,12 @@
 
 <div class="wrapper">
 	<div class="lane-title">
-		<span class="space1">{lane.name}</span>
+		<div class="d-flex gap-2 text-nowrap">
+			<span class="space1">{lane.name}</span>
+			{#if lane.limit > 0}
+				<span class="fw-normal">{lane.tickets.length}/{lane.limit}</span>
+			{/if}
+		</div>
 		<div>
 			<EditTicket laneIdx={idx} {isLaneFull} isNew />
 			<EditLane {lane} {idx} />
