@@ -2,23 +2,23 @@
 	import { useList } from '$lib/liveblocks';
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
-	import type { Lane, Ticket } from '$types';
+	import type { ILane, ITicket } from '$types';
 
 	import EditLane from './EditLane.svelte';
 	import EditTicket from './EditTicket.svelte';
 
-	export let lane: Lane;
+	export let lane: ILane;
 	export let idx: number;
-	export let onDrop: (newTickets: Ticket[]) => void;
+	export let onDrop: (newTickets: ITicket[]) => void;
 
-	const lanes = useList<Lane>('lanes');
+	const lanes = useList<ILane>('lanes');
 	const flipDurationMs = 150;
 
-	function handleDndConsiderTickets(e: CustomEvent<DndEvent<Ticket>>) {
+	function handleDndConsiderTickets(e: CustomEvent<DndEvent<ITicket>>) {
 		lane.tickets = e.detail.items;
 	}
 
-	function handleDndFinalizeTickets(e: CustomEvent<DndEvent<Ticket>>) {
+	function handleDndFinalizeTickets(e: CustomEvent<DndEvent<ITicket>>) {
 		onDrop(e.detail.items);
 	}
 
@@ -51,7 +51,7 @@
 		on:consider={handleDndConsiderTickets}
 		on:finalize={handleDndFinalizeTickets}
 	>
-		{#each lane.tickets as ticket (ticket.id)}
+		{#each lane.tickets as ticket (ticket._id)}
 			<div class="ticket" animate:flip={{ duration: flipDurationMs }}>
 				<EditTicket boardticket={ticket} laneIdx={idx} />
 			</div>

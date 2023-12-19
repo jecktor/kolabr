@@ -1,10 +1,12 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth, deleteFile, uploadFile, db } from '$lib/server';
-import { LuciaError } from 'lucia-auth';
+import { auth, deleteFile, uploadFile, Board } from '$lib/server';
+import { LuciaError } from 'lucia';
 
 export const load = async ({ locals }) => {
-	const { user } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, '/login');
+	const session = await locals.auth.validate();
+	if (!session) throw redirect(302, '/login');
+
+	const { user } = session;
 
 	return {
 		user
@@ -19,7 +21,7 @@ export const actions: Actions = {
 		locals.auth.setSession(null);
 	},
 	avatar: async ({ locals, request }) => {
-		const { user } = await locals.auth.validateUser();
+		const { user } = await locals.auth.validate();
 		if (!user) {
 			return fail(400, {
 				message: 'unknown'
@@ -60,7 +62,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 	name: async ({ locals, request }) => {
-		const { user } = await locals.auth.validateUser();
+		const { user } = await locals.auth.validate();
 		if (!user) {
 			return fail(400, {
 				message: 'unknown'
@@ -103,7 +105,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 	lang: async ({ locals, request }) => {
-		const { user } = await locals.auth.validateUser();
+		const { user } = await locals.auth.validate();
 		if (!user) {
 			return fail(400, {
 				message: 'unknown'
@@ -132,7 +134,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 	pass: async ({ locals, request }) => {
-		const { user } = await locals.auth.validateUser();
+		const { user } = await locals.auth.validate();
 		if (!user) {
 			return fail(400, {
 				message: 'unknown'
@@ -182,7 +184,10 @@ export const actions: Actions = {
 			await auth.updateKeyPassword('email', user.email, newpass);
 			await auth.invalidateAllUserSessions(user.userId);
 
-			const session = await auth.createSession(user.userId);
+			const session = await auth.createSession({
+				userId: user.userId,
+				attributes: {}
+			});
 			locals.auth.setSession(session);
 		} catch (e) {
 			if (e instanceof LuciaError && e.message === 'AUTH_INVALID_PASSWORD') {
@@ -199,7 +204,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 	delete: async ({ locals }) => {
-		const { user } = await locals.auth.validateUser();
+		const { user } = await locals.auth.validate();
 		if (!user) {
 			return fail(400, {
 				message: 'unknown'
@@ -211,8 +216,7 @@ export const actions: Actions = {
 				await deleteFile(user.image);
 			}
 
-			await db.execute('CALL delete_user_data(?)', [user.userId]);
-
+			await Board.deleteMany({ 'owner._id': user.userId });
 			await auth.deleteUser(user.userId);
 		} catch (e) {
 			return fail(400, {

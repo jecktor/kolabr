@@ -1,25 +1,29 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { auth } from '$lib/server';
-import { db } from '$lib/server';
-import { randomId } from '$utils';
+import { Board } from '$lib/server';
 import { locale, translate } from '$locales';
-import type { Board } from '$types';
+import mongoose from 'mongoose';
 
 export const load = async ({ locals }) => {
-	const { user } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, '/login');
+	const session = await locals.auth.validate();
+	if (!session) throw redirect(302, '/login');
 
-	const [ownerResults] = await db.execute('CALL get_owner_boards(?)', [user.userId]);
-	const ownerBoards = (ownerResults as Board[][])[0];
+	const { user } = session;
 
-	const [userResults] = await db.execute('CALL get_user_boards(?)', [user.userId]);
-	const userBoards = (userResults as Board[][])[0];
+	const ownerBoards = await Board.find(
+		{ 'owner._id': user.userId },
+		'_id name last_edited owner.name'
+	);
+	const userBoards = await Board.find(
+		{ shared_with: user.email },
+		'_id name last_edited owner.name'
+	);
 
 	return {
 		user,
-		ownerBoards,
-		userBoards
+		ownerBoards: ownerBoards.map((board) => board.toObject()),
+		userBoards: userBoards.map((board) => board.toObject())
 	};
 };
 
@@ -31,29 +35,41 @@ export const actions: Actions = {
 		locals.auth.setSession(null);
 	},
 	newboard: async ({ locals }) => {
-		const { user } = await locals.auth.validateUser();
-		if (!user) throw redirect(302, '/login');
+		const session = await locals.auth.validate();
+		if (!session) throw redirect(302, '/login');
 
-		const boardId = randomId();
+		const { user } = session;
+
+		const boardId = new mongoose.Types.ObjectId();
 
 		try {
-			await db.execute('CALL create_board(?, ?, ?, ?)', [
-				boardId,
-				translate(get(locale), 'newboard'),
-				new Date().toString(),
-				user.userId
-			]);
+			const newBoard = new Board({
+				_id: boardId,
+				name: translate(get(locale), 'newboard'),
+				last_edited: new Date().toString(),
+				owner: {
+					_id: user.userId,
+					name: user.name
+				},
+				shared_with: [],
+				tags: [],
+				lanes: []
+			});
+
+			await newBoard.save();
 		} catch (e) {
 			return fail(500, {
 				message: 'unknown'
 			});
 		}
 
-		throw redirect(302, `/board/${boardId}`);
+		throw redirect(302, `/board/${boardId.toString()}`);
 	},
 	deleteboard: async ({ locals, request }) => {
-		const { user } = await locals.auth.validateUser();
-		if (!user) throw redirect(302, '/login');
+		const session = await locals.auth.validate();
+		if (!session) throw redirect(302, '/login');
+
+		const { user } = session;
 
 		const data = await request.formData();
 		const boardId = data.get('board');
@@ -64,22 +80,21 @@ export const actions: Actions = {
 			});
 		}
 
-		const [boardResults] = await db.execute('CALL find_board(?)', [boardId]);
-		const board = (boardResults as Board[][])[0][0];
+		const board = await Board.findById(boardId);
 
 		if (!board)
 			return fail(400, {
 				message: 'invalid'
 			});
 
-		if (board.owner_id !== user.userId) {
+		if (board.owner._id !== user.userId) {
 			return fail(302, {
 				message: 'unknown'
 			});
 		}
 
 		try {
-			await db.execute('CALL delete_board(?)', [board.id]);
+			await board.deleteOne({ _id: boardId });
 		} catch (error) {
 			return fail(500, {
 				message: 'unknown'
@@ -89,8 +104,10 @@ export const actions: Actions = {
 		return { success: true };
 	},
 	removeboard: async ({ locals, request }) => {
-		const { user } = await locals.auth.validateUser();
-		if (!user) throw redirect(302, '/login');
+		const session = await locals.auth.validate();
+		if (!session) throw redirect(302, '/login');
+
+		const { user } = session;
 
 		const data = await request.formData();
 		const boardId = data.get('board');
@@ -101,16 +118,23 @@ export const actions: Actions = {
 			});
 		}
 
-		const [boardResults] = await db.execute('CALL find_board(?)', [boardId]);
-		const board = (boardResults as Board[][])[0][0];
+		const board = await Board.findById(boardId);
 
 		if (!board)
 			return fail(400, {
 				message: 'invalid'
 			});
 
+		if (board.owner._id === user.userId) {
+			return fail(302, {
+				message: 'unknown'
+			});
+		}
+
 		try {
-			await db.execute('CALL remove_user_access_to_board(?, ?)', [user.userId, board.id]);
+			await board.updateOne({
+				shared_with: board.shared_with.filter((email) => email !== user.email)
+			});
 		} catch (error) {
 			return fail(500, {
 				message: 'unknown'

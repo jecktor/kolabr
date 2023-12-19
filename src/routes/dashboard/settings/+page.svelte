@@ -17,7 +17,14 @@
 
 <div class="container row justify-content-center space1 space3">
 	<strong><p class="a space1">{$t('settings')}</p></strong>
-	<form use:enhance bind:this={avatarForm} class="space2" action="?/avatar" method="post">
+	<form
+		use:enhance
+		bind:this={avatarForm}
+		class="space2"
+		action="?/avatar"
+		method="post"
+		enctype="multipart/form-data"
+	>
 		<div class="avatar_upload space1">
 			<label for="avatar">
 				<img class="avatar_img" src={data.user.image} alt="avatar" width="125" height="125" />

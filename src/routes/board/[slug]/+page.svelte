@@ -2,11 +2,12 @@
 	import { onMount } from 'svelte';
 	import { t } from '$locales';
 	import { type Client, createClient } from '@liveblocks/client';
+	import type { IBoard } from '$types';
 
 	import { LiveblocksProvider, RoomProvider } from '$lib/liveblocks';
 	import { Live } from '$components';
 
-	export let data;
+	export let data: { board: IBoard };
 
 	let client: Client;
 	let loaded = false;
@@ -29,9 +30,9 @@
 {#if loaded}
 	<!-- Provides Liveblocks hooks to children -->
 	<LiveblocksProvider {client}>
-		<!-- Create a room from id e.g. `kolabr-room-758df70b5e94c13289df6` -->
-		<RoomProvider id={'kolabr-room-' + data.board.id}>
-			<Live board={data.board} boardLanes={data.lanes} boardTags={data.tags} access={data.access} />
+		<!-- Create a room from id e.g. `kolabr-room-657f8fed396b6aa615707d0c` -->
+		<RoomProvider id={'kolabr-room-' + data.board._id}>
+			<Live board={data.board} />
 		</RoomProvider>
 	</LiveblocksProvider>
 {/if}

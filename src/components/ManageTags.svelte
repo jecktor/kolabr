@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { useList } from '$lib/liveblocks';
 	import { randomId } from '$utils';
 	import { t } from '$locales';
@@ -6,36 +7,46 @@
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
 	import Tag from './Tag.svelte';
-	import type { Lane, Tag as TTag } from '$types';
+	import type { ILane, ITag } from '$types';
 
-	export let ticketTags: TTag[];
+	export let ticketTags: ITag[];
 	export let laneIdx: number;
 	export let ticketId: string;
 
-	const lanes = useList<Lane>('lanes');
-	const boardTags = useList<TTag>('tags');
+	const lanes = useList<ILane>('lanes');
+	const boardTags = useList<ITag>('tags');
+
+	const boardId = $page.url.href.split('/').pop();
 
 	let tagInput: HTMLInputElement;
 	let isFocused = false;
 
 	$: tags = $lanes
-		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket.id === ticketId)?.tags ?? []
+		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket._id === ticketId)?.tags ?? []
 		: ticketTags;
 
 	function createTag() {
 		if (!tagInput.value.trim() || tagInput.value.length > 15) return;
 
-		const newTag: TTag = {
-			id: randomId(),
-			name: tagInput.value.trim()
+		const newTag: ITag = {
+			_id: randomId(),
+			name: tagInput.value.trim(),
+			color: '#000000',
+			tickets: [ticketId]
 		};
 
 		tagInput.value = '';
 
 		const lane = $lanes.get(laneIdx)!;
+
 		const opts = {
 			method: 'POST',
-			body: JSON.stringify({ ...newTag, ticketId }),
+			body: JSON.stringify({
+				...newTag,
+				ticketId,
+				laneId: lane._id.split('-')[0],
+				boardId
+			}),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -47,7 +58,7 @@
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
-						ticket.id === ticketId ? { ...ticket, tags: [...ticket.tags, newTag] } : ticket
+						ticket._id === ticketId ? { ...ticket, tags: [...ticket.tags, newTag] } : ticket
 					)
 				});
 				tags = [...tags, newTag];
@@ -55,14 +66,21 @@
 			.catch(console.error);
 	}
 
-	function addTag(id: string, name: string) {
-		if (tags.find((tag) => tag.id === id)) return;
+	function addTag(_id: string, name: string, color: string, tickets: string[]) {
+		if (tags.find((tag: ITag) => tag._id === _id)) return;
 
-		const newTag: TTag = { id, name };
+		const newTag: ITag = { _id, name, color, tickets: [...tickets, ticketId] };
+
 		const lane = $lanes.get(laneIdx)!;
+
 		const opts = {
 			method: 'PATCH',
-			body: JSON.stringify({ id, ticketId }),
+			body: JSON.stringify({
+				...newTag,
+				ticketId,
+				laneId: lane._id.split('-')[0],
+				boardId
+			}),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -70,10 +88,14 @@
 
 		fetch('/api/board/tag', opts)
 			.then(() => {
+				$boardTags.set(
+					$boardTags.findIndex((tag) => tag._id === _id),
+					newTag
+				);
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
-						ticket.id === ticketId ? { ...ticket, tags: [...ticket.tags, newTag] } : ticket
+						ticket._id === ticketId ? { ...ticket, tags: [...ticket.tags, newTag] } : ticket
 					)
 				});
 				tags = [...tags, newTag];
@@ -81,11 +103,17 @@
 			.catch(console.error);
 	}
 
-	function removeTag(id: string) {
+	function removeTag(_id: string) {
 		const lane = $lanes.get(laneIdx)!;
+
 		const opts = {
 			method: 'PUT',
-			body: JSON.stringify({ id, ticketId }),
+			body: JSON.stringify({
+				_id,
+				ticketId,
+				laneId: lane._id.split('-')[0],
+				boardId
+			}),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -93,30 +121,34 @@
 
 		fetch('/api/board/tag', opts)
 			.then(() => {
+				const tag = $boardTags.find((tag) => tag._id === _id)!;
+
+				$boardTags.set(
+					$boardTags.findIndex((tag) => tag._id === _id),
+					{ ...tag, tickets: tag.tickets.filter((t) => t !== ticketId) }
+				);
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
-						ticket.id === ticketId
-							? { ...ticket, tags: ticket.tags.filter((tag) => tag.id !== id) }
+						ticket._id === ticketId
+							? { ...ticket, tags: ticket.tags.filter((tag: ITag) => tag._id !== _id) }
 							: ticket
 					)
 				});
-				tags = tags.filter((tag) => tag.id !== id);
 
-				if (
-					!$lanes.find((lane) =>
-						lane.tickets.find((ticket) => ticket.tags.find((tag) => tag.id === id))
-					)
-				)
-					$boardTags.delete($boardTags.findIndex((tag) => tag.id === id));
+				tags = tags.filter((tag: ITag) => tag._id !== _id);
 			})
 			.catch(console.error);
 	}
 
-	function deleteTag(id: string) {
+	function deleteTag(_id: string) {
+		const lane = $lanes.get(laneIdx)!;
+
+		const tickets = $boardTags.find((tag) => tag._id === _id)!.tickets;
+
 		const opts = {
 			method: 'DELETE',
-			body: JSON.stringify({ id }),
+			body: JSON.stringify({ _id, tickets, ticketId, laneId: lane._id.split('-')[0], boardId }),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -124,17 +156,17 @@
 
 		fetch('/api/board/tag', opts)
 			.then(() => {
-				$boardTags.delete($boardTags.findIndex((tag) => tag.id === id));
+				$boardTags.delete($boardTags.findIndex((tag) => tag._id === _id));
 				$lanes.forEach((lane, idx) => {
 					$lanes.set(idx, {
 						...lane,
 						tickets: lane.tickets.map((ticket) => ({
 							...ticket,
-							tags: ticket.tags.filter((tag) => tag.id !== id)
+							tags: ticket.tags.filter((tag: ITag) => tag._id !== _id)
 						}))
 					});
 				});
-				tags = tags.filter((tag) => tag.id !== id);
+				tags = tags.filter((tag: ITag) => tag._id !== _id);
 			})
 			.catch(console.error);
 	}
@@ -158,25 +190,25 @@
 		</button>
 	</div>
 	<div class="tags">
-		{#each tags as { id, name } (id)}
-			<Tag {id} {name} isDeletable onDelete={() => removeTag(id)} />
+		{#each tags as { _id, name } (_id)}
+			<Tag id={_id} {name} isDeletable onDelete={() => removeTag(_id)} />
 		{/each}
 	</div>
 	{#if isFocused && $boardTags && tags.length < $boardTags.length}
 		<div class="board_tags a">
-			{#each [...$boardTags] as { id, name } (id)}
-				{#if !tags.find((tag) => tag.id === id)}
+			{#each [...$boardTags] as { _id, name, color, tickets } (_id)}
+				{#if !tags.find((tag) => tag._id === _id)}
 					<div class="tag-container">
 						<div class="tag-name">
-							<Tag {id} {name} />
+							<Tag id={_id} {name} />
 						</div>
 						<div class="buttons">
-							<button class="add" on:click={() => addTag(id, name)}>
+							<button class="add" on:click={() => addTag(_id, name, color, tickets)}>
 								<div class="icon">
 									<FaPlus />
 								</div>
 							</button>
-							<button class="delete" on:click={() => deleteTag(id)}>
+							<button class="delete" on:click={() => deleteTag(_id)}>
 								<div class="icon">
 									<FaTrash />
 								</div>

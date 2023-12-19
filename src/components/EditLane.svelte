@@ -3,7 +3,7 @@
 	import { useList } from '$lib/liveblocks';
 	import { randomId } from '$utils';
 	import { t } from '$locales';
-	import type { Lane } from '$types';
+	import type { ILane } from '$types';
 
 	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
 	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
@@ -13,14 +13,16 @@
 
 	export let idx: number;
 	export let isNew = false;
-	export let lane: Lane = {
-		id: '',
+	export let lane: ILane = {
+		_id: '',
 		name: $t('newlane'),
 		limit: 0,
 		tickets: []
 	};
 
-	const lanes = useList<Lane>('lanes');
+	const lanes = useList<ILane>('lanes');
+
+	const boardId = $page.url.href.split('/').pop();
 
 	let nameInput: HTMLInputElement;
 	let show = false;
@@ -30,15 +32,15 @@
 	$: open = !isNew && $lanes && $lanes.get(idx) && show;
 
 	function createLane() {
-		lane.id = randomId();
+		lane._id = randomId();
 
 		const opts = {
 			method: 'POST',
 			body: JSON.stringify({
-				id: lane.id,
+				_id: lane._id,
 				name: lane.name,
 				limit: lane.limit,
-				board: $page.url.href.split('/').pop()
+				board: boardId
 			}),
 			headers: {
 				'content-type': 'application/json'
@@ -46,15 +48,15 @@
 		};
 
 		fetch('/api/board/lane', opts)
-			.then(() => $lanes.push({ ...lane, id: `${lane.id}-${$lanes.length}` }))
+			.then(() => $lanes.push({ ...lane, _id: `${lane._id}-${$lanes.length}` }))
 			.catch(console.error);
 	}
 
 	function updateLane() {
 		if (!nameInput.value.trim() || nameInput.value.length > 15) return;
 
-		const newLane: Lane = {
-			id: lane.id.split('-')[0],
+		const newLane: ILane = {
+			_id: lane._id.split('-')[0],
 			tickets: lane.tickets,
 			name: nameInput.value.trim(),
 			limit
@@ -62,7 +64,12 @@
 
 		const opts = {
 			method: 'PUT',
-			body: JSON.stringify({ id: newLane.id, name: newLane.name, limit: newLane.limit }),
+			body: JSON.stringify({
+				_id: newLane._id,
+				board: boardId,
+				name: newLane.name,
+				limit: newLane.limit
+			}),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -78,7 +85,7 @@
 	function deleteLane() {
 		const opts = {
 			method: 'DELETE',
-			body: JSON.stringify({ id: lane.id.split('-')[0] }),
+			body: JSON.stringify({ _id: lane._id.split('-')[0], board: boardId }),
 			headers: {
 				'content-type': 'application/json'
 			}

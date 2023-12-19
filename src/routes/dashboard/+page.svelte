@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { t, translateDate, type TranslationKeys } from '$locales';
+	import type { IBoard } from '$types';
 
 	import FaTimes from 'svelte-icons/fa/FaTimes.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
 	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaLink from 'svelte-icons/fa/FaLink.svelte';
 
-	export let data;
+	export let data: { user: { name: string }; ownerBoards: IBoard[]; userBoards: IBoard[] };
 	export let form: { message?: TranslationKeys; success: boolean };
 </script>
 
@@ -42,10 +43,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each data.ownerBoards as board (board.id)}
+						{#each data.ownerBoards as board (board._id)}
 							<tr class="table-light space2">
 								<td class="col_1"
-									><strong><a href={`/board/${board.id}`}>{board.name}</a></strong></td
+									><strong><a href={`/board/${board._id}`}>{board.name}</a></strong></td
 								>
 								<td class="col_2">{translateDate(board.last_edited)}</td>
 								<td class="col_3">{data.user.name}</td>
@@ -56,7 +57,7 @@
 											title={$t('copylink')}
 											on:click={() =>
 												navigator.clipboard.writeText(
-													`${window.location.origin}/board/${board.id}`
+													`${window.location.origin}/board/${board._id}`
 												)}
 										>
 											<div class="icon">
@@ -64,7 +65,7 @@
 											</div>
 										</button>
 										<form use:enhance action="?/deleteboard" method="post">
-											<input type="hidden" name="board" value={board.id} />
+											<input type="hidden" name="board" value={board._id} />
 											<button type="submit" aria-label={$t('deletes')} title={$t('deletes')}>
 												<div class="icon">
 													<FaTrash />
@@ -96,11 +97,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each data.userBoards as board (board.id)}
+						{#each data.userBoards as board (board._id)}
 							<tr class="table-light space2">
-								<td class="col_1"><a href={`/board/${board.id}`}>{board.name}</a></td>
+								<td class="col_1"><a href={`/board/${board._id}`}>{board.name}</a></td>
 								<td class="col_2">{translateDate(board.last_edited)}</td>
-								<td class="col_3">{board.owner_name}</td>
+								<td class="col_3">{board.owner.name}</td>
 								<td class="col_4">
 									<div class="button-group">
 										<button
@@ -108,7 +109,7 @@
 											title={$t('copylink')}
 											on:click={() =>
 												navigator.clipboard.writeText(
-													`${window.location.origin}/board/${board.id}`
+													`${window.location.origin}/board/${board._id}`
 												)}
 										>
 											<div class="icon">
@@ -116,7 +117,7 @@
 											</div>
 										</button>
 										<form action="?/removeboard" method="post">
-											<input type="hidden" name="board" value={board.id} />
+											<input type="hidden" name="board" value={board._id} />
 											<button type="submit" aria-label={$t('remove')} title={$t('remove')}>
 												<div class="icon">
 													<FaTimes />

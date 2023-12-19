@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let show: boolean = true;
+	export let show = true;
 
 	let dialog: HTMLDialogElement;
 

@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
+	import { overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
-	import type { BoardInfo, Lane, Tag, InputEvent, Board as TBoard } from '$types';
+	import type { IBoard, ILane, ITag, IBoardInfo, InputEvent } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
 	import FaArrowLeft from 'svelte-icons/fa/FaArrowLeft.svelte';
 	import Board from './Board.svelte';
 	import ShareDialog from './ShareDialog.svelte';
 
-	export let board: TBoard;
-	export let boardLanes: Lane[];
-	export let boardTags: Tag[];
-	export let access: string[];
+	export let board: IBoard;
 
 	const myPresence = useMyPresence();
 	const self = useSelf();
@@ -23,10 +21,10 @@
 		focusedId: null
 	});
 
-	const lanes = useList<Lane>('lanes', boardLanes);
-	useList<Tag>('tags', boardTags);
+	const lanes = useList<ILane>('lanes', board.lanes);
+	useList<ITag>('tags', board.tags);
 
-	const boardInfo = useObject<BoardInfo>('infoStorage', {
+	const boardInfo = useObject<IBoardInfo>('info', {
 		name: board.name,
 		last_edited: board.last_edited
 	});
@@ -41,7 +39,7 @@
 		const opts = {
 			method: 'PUT',
 			body: JSON.stringify({
-				id: board.id,
+				id: board._id,
 				name: newName,
 				last_edited
 			}),
@@ -97,9 +95,9 @@
 		myPresence.update({ cursor: null, focusedId: null });
 	}
 
-	function handleBoardUpdate(newLanes: Lane[]) {
+	function handleBoardUpdate(newLanes: ILane[]) {
 		newLanes.forEach((lane, idx) =>
-			$lanes.set(idx, { ...lane, id: `${lane.id.split('-')[0]}-${idx}` })
+			$lanes.set(idx, { ...lane, _id: `${lane._id.split('-')[0]}-${idx}` })
 		);
 	}
 
@@ -113,7 +111,7 @@
 		const opts = {
 			method: 'PATCH',
 			body: JSON.stringify({
-				id: board.id,
+				id: board._id,
 				last_edited
 			}),
 			headers: {
@@ -136,6 +134,8 @@
 	onDestroy(() => {
 		unsubscribe();
 	});
+
+	overrideItemIdKeyNameBeforeInitialisingDndZones('_id');
 </script>
 
 {#if boardReady}
@@ -195,8 +195,8 @@
 					<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
 				{/if}
 
-				{#if board.owner_id && $self?.id}
-					<ShareDialog ownerId={board.owner_id} userId={$self?.id} {access} />
+				{#if board.owner._id && $self?.id}
+					<ShareDialog ownerId={board.owner._id} userId={$self?.id} access={board.shared_with} />
 				{/if}
 			</div>
 		</header>

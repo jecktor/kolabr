@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { useList } from '$lib/liveblocks';
 	import { randomId } from '$utils';
 	import { t, translateDate } from '$locales';
-	import type { Lane, Ticket } from '$types';
+	import type { ILane, ITicket } from '$types';
 
 	import FaAlignLeft from 'svelte-icons/fa/FaAlignLeft.svelte';
 	import FaClock from 'svelte-icons/fa/FaClock.svelte';
@@ -16,16 +17,18 @@
 	export let laneIdx: number;
 	export let isNew = false;
 	export let isLaneFull = false;
-	export let boardticket: Ticket = {
-		id: '',
+	export let boardticket: ITicket = {
+		_id: '',
 		name: $t('newticket'),
 		description: '',
 		deadline: '',
 		tags: []
 	};
 
-	const lanes = useList<Lane>('lanes');
+	const lanes = useList<ILane>('lanes');
 	const boardTags = useList<Tag>('tags');
+
+	const boardId = $page.url.href.split('/').pop();
 
 	let nameInput: HTMLInputElement;
 	let descInput: HTMLInputElement;
@@ -34,10 +37,10 @@
 	let show = false;
 
 	$: ticket = $lanes
-		? $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) ?? boardticket
+		? $lanes.get(laneIdx)?.tickets.find((t) => t._id === boardticket._id) ?? boardticket
 		: boardticket;
 	$: isDue = ticket.deadline && new Date(ticket.deadline) < new Date();
-	$: open = $lanes && $lanes.get(laneIdx)?.tickets.find((t) => t.id === boardticket.id) && show;
+	$: open = $lanes && $lanes.get(laneIdx)?.tickets.find((t) => t._id === boardticket._id) && show;
 
 	function createTicket() {
 		if (isLaneFull) return;
@@ -48,11 +51,12 @@
 		const opts = {
 			method: 'POST',
 			body: JSON.stringify({
-				id: newTicketId,
+				_id: newTicketId,
 				name: ticket.name,
 				description: ticket.description,
 				deadline: ticket.deadline,
-				lane: lane.id.split('-')[0]
+				board: boardId,
+				lane: lane._id.split('-')[0]
 			}),
 			headers: {
 				'content-type': 'application/json'
@@ -63,7 +67,7 @@
 			.then(() =>
 				$lanes.set(laneIdx, {
 					...lane,
-					tickets: [...lane.tickets, { ...ticket, id: newTicketId }]
+					tickets: [...lane.tickets, { ...ticket, _id: newTicketId }]
 				})
 			)
 			.catch(console.error);
@@ -74,24 +78,22 @@
 			return;
 
 		const lane = $lanes.get(laneIdx)!;
-		const id = newTicketId ?? ticket.id;
+		const _id = newTicketId ?? ticket._id;
 
-		const newTicket: Ticket = {
-			id,
+		const newTicket: ITicket = {
+			_id,
 			name: nameInput.value.trim(),
 			description: descInput.value.trim(),
 			deadline: dueInput.value,
-			tags: lane.tickets.find((t) => t.id === id)?.tags ?? []
+			tags: lane.tickets.find((t) => t._id === _id)?.tags ?? []
 		};
 
 		const opts = {
 			method: 'PUT',
 			body: JSON.stringify({
-				id: newTicket.id,
-				name: newTicket.name,
-				description: newTicket.description,
-				deadline: newTicket.deadline,
-				lane: lane.id.split('-')[0]
+				...newTicket,
+				board: boardId,
+				lane: lane._id.split('-')[0]
 			}),
 			headers: {
 				'content-type': 'application/json'
@@ -102,7 +104,7 @@
 			.then(() =>
 				$lanes.set(laneIdx, {
 					...lane,
-					tickets: lane.tickets.map((t) => (t.id === id ? newTicket : t))
+					tickets: lane.tickets.map((t) => (t._id === _id ? newTicket : t))
 				})
 			)
 			.catch(console.error);
@@ -112,11 +114,11 @@
 
 	function deleteTicket() {
 		const lane = $lanes.get(laneIdx)!;
-		const id = newTicketId ?? ticket.id;
+		const _id = newTicketId ?? ticket._id;
 
 		const opts = {
 			method: 'DELETE',
-			body: JSON.stringify({ id }),
+			body: JSON.stringify({ _id, board: boardId, lane: lane._id.split('-')[0] }),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -124,15 +126,15 @@
 
 		fetch('/api/board/ticket', opts)
 			.then(() => {
-				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t.id !== id) });
+				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t._id !== _id) });
 
 				ticket.tags.forEach((tag) => {
 					if (
 						!$lanes.find((lane) =>
-							lane.tickets.find((ticket) => ticket.tags.find((t) => t.id === tag.id))
+							lane.tickets.find((ticket) => ticket.tags.find((t) => t._id === tag._id))
 						)
 					)
-						$boardTags.delete($boardTags.findIndex((t) => t.id === tag.id));
+						$boardTags.delete($boardTags.findIndex((t) => t._id === tag._id));
 				});
 			})
 			.catch(console.error);
@@ -170,8 +172,8 @@
 						<span>{translateDate(ticket.deadline, true)}</span>
 					</div>
 				{/if}
-				{#each ticket.tags as { id, name } (id)}
-					<Tag {id} {name} />
+				{#each ticket.tags as { _id, name } (_id)}
+					<Tag id={_id} {name} />
 				{/each}
 			</div>
 		{/if}
@@ -231,7 +233,7 @@
 				</div>
 				<span class="b">{$t('labels')}</span>
 			</div>
-			<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket.id} {laneIdx} />
+			<ManageTags ticketTags={ticket.tags} ticketId={newTicketId ?? ticket._id} {laneIdx} />
 		</div>
 		<button on:click={updateTicket} class="btn btn-primary">
 			{$t('done')}
