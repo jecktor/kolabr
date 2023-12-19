@@ -32,13 +32,13 @@
 	"type": "module",
 	"dependencies": {
 		"@google-cloud/storage": "^6.11.0",
-		"@liveblocks/client": "^1.0.12",
-		"@liveblocks/node": "^1.0.12",
-		"@lucia-auth/adapter-mysql": "^1.1.1",
+		"@liveblocks/client": "^1.9.0",
+		"@liveblocks/node": "^1.9.0",
+		"@lucia-auth/adapter-mongoose": "^3.0.1",
 		"@popperjs/core": "^2.11.8",
 		"bootstrap": "^5.3.0",
-		"lucia-auth": "^1.8.0",
-		"mysql2": "^3.4.1",
+		"lucia": "^2.7.5",
+		"mongoose": "^8.0.3",
 		"svelte-icons": "^2.1.0"
 	}
 }

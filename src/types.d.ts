@@ -38,55 +38,93 @@ export type LiveStorage = LiveObject<Storage>;
 
 export type LiveRoom = Room<Presence, Storage, UserMeta, RoomEvent>;
 
-// Misc types
+// Auth types
 
-export type InputEvent = Event & {
-	currentTarget: EventTarget & HTMLInputElement;
-};
+interface IUser {
+	_id: string;
+	name: string;
+	email: string;
+	image: string;
+	lang: string;
+}
+
+interface IKey {
+	_id: string;
+	user_id: string;
+	hashed_password: string;
+}
+
+interface ISession {
+	_id: string;
+	user_id: string;
+	active_expires: number;
+	idle_expires: number;
+}
 
 // Board types
 
-export type Tag = {
-	id: string;
+interface IBoard {
+	_id: string;
 	name: string;
+	last_edited: string;
+	owner: {
+		_id: string;
+		name: string;
+	};
+	shared_with: string[];
+	tags: {
+		_id: string;
+		name: string;
+		color: string;
+		tickets: string[];
+	}[];
+	lanes: {
+		_id: string;
+		name: string;
+		limit: number;
+		tickets: {
+			_id: string;
+			name: string;
+			description: string;
+			deadline: string;
+			tags: {
+				_id: string;
+				name: string;
+				color: string;
+			}[];
+		}[];
+	}[];
+}
+
+export type ITag = {
+	_id: string;
+	name: string;
+	color: string;
+	tickets: string[];
 };
 
-export type Ticket = {
-	id: string;
+export type ITicket = {
+	_id: string;
 	name: string;
 	description: string;
 	deadline: string;
 	tags: Tag[];
 };
 
-export type Lane = {
-	id: string;
+export type ILane = {
+	_id: string;
 	name: string;
 	limit: number;
 	tickets: Ticket[];
 };
 
-export type BoardInfo = {
+export type IBoardInfo = {
 	name: string;
 	last_edited: string;
 };
 
-export type Board = {
-	id: string;
-	name: string;
-	last_edited: string;
-	owner_name: string;
-	owner_id?: string;
-};
+// Misc types
 
-export type LaneResults = {
-	lane_id: string;
-	lane_name: string;
-	lane_limit: number;
-	ticket_id: string;
-	ticket_name: string;
-	ticket_description: string;
-	ticket_deadline: string;
-	tag_id: string;
-	tag_name: string;
+export type InputEvent = Event & {
+	currentTarget: EventTarget & HTMLInputElement;
 };

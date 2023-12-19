@@ -1,7 +1,6 @@
-import { fail, type Actions } from '@sveltejs/kit';
+import { redirect, fail, type Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server';
-import { redirect } from '@sveltejs/kit';
-import { LuciaError } from 'lucia-auth';
+import { LuciaError } from 'lucia';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -35,7 +34,10 @@ export const actions: Actions = {
 
 		try {
 			const key = await auth.useKey('email', email, password);
-			const session = await auth.createSession(key.userId);
+			const session = await auth.createSession({
+				userId: key.userId,
+				attributes: {}
+			});
 			locals.auth.setSession(session);
 		} catch (e) {
 			if (

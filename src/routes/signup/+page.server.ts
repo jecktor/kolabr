@@ -70,7 +70,7 @@ export const actions: Actions = {
 
 		try {
 			const user = await auth.createUser({
-				primaryKey: {
+				key: {
 					providerId: 'email',
 					providerUserId: email,
 					password: pass
@@ -85,7 +85,11 @@ export const actions: Actions = {
 				}
 			});
 
-			const session = await auth.createSession(user.userId);
+			const session = await auth.createSession({
+				userId: user.userId,
+				attributes: {}
+			});
+
 			locals.auth.setSession(session);
 		} catch (e) {
 			if ((e as { code: string }).code === 'ER_DUP_ENTRY') {

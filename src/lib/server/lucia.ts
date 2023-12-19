@@ -1,22 +1,26 @@
-import lucia from 'lucia-auth';
-import { sveltekit } from 'lucia-auth/middleware';
-import { mysql2 } from '@lucia-auth/adapter-mysql';
+import { lucia } from 'lucia';
+import { sveltekit } from 'lucia/middleware';
+import { mongoose } from '@lucia-auth/adapter-mongoose';
 import { dev } from '$app/environment';
-import { db } from './db';
+import { User, Key, Session } from './db';
 
 export const auth = lucia({
-	adapter: mysql2(db),
+	adapter: mongoose({
+		User,
+		Key,
+		Session
+	}),
 	env: dev ? 'DEV' : 'PROD',
-	transformDatabaseUser: (userData) => {
+	middleware: sveltekit(),
+	getUserAttributes: (data) => {
 		return {
-			userId: userData.id,
-			name: userData.name,
-			email: userData.email,
-			image: userData.image,
-			lang: userData.lang
+			userId: data.id,
+			name: data.name,
+			email: data.email,
+			image: data.image,
+			lang: data.lang
 		};
-	},
-	middleware: sveltekit()
+	}
 });
 
 export type Auth = typeof auth;

@@ -1,9 +1,9 @@
 import { parseLang } from '$utils';
 
 export const load = async ({ locals, request }) => {
-	const { user } = await locals.auth.validateUser();
+	const session = await locals.auth.validate();
 
-	if (user) return { lang: user.lang };
+	if (session) return { lang: session.user.lang };
 
 	const langHeader = request.headers.get('accept-language');
 	const lang = parseLang(langHeader);
