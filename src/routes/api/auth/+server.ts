@@ -1,30 +1,20 @@
-import { json } from '@sveltejs/kit';
-import { authorize } from '@liveblocks/node';
+import { Liveblocks } from '@liveblocks/node';
 import { str2Color } from '$utils';
+import { VITE_LIVEBLOCKS_SECRET_KEY } from '$env/static/private';
 
-const API_KEY = import.meta.env.VITE_LIVEBLOCKS_SECRET_KEY as string;
+const liveblocks = new Liveblocks({ secret: VITE_LIVEBLOCKS_SECRET_KEY });
 
 export async function POST(req) {
 	const { room } = await req.request.json();
-	const { user } = await req.locals.auth.validateUser();
+	const userSession = await req.locals.auth.validate();
 
-	if (!API_KEY) {
-		return json(
-			{ message: 'No api key was provided.' },
-			{
-				status: 403
-			}
-		);
-	}
-
-	if (!room || !user) {
+	if (!room || !userSession) {
 		return new Response(undefined, { status: 403 });
 	}
 
-	const response = await authorize({
-		room: room,
-		secret: API_KEY,
-		userId: user.userId,
+	const { user } = userSession;
+
+	const session = liveblocks.prepareSession(user.userId, {
 		userInfo: {
 			name: user.name,
 			image: user.image,
@@ -32,5 +22,9 @@ export async function POST(req) {
 		}
 	});
 
-	return new Response(response.body, { status: response.status });
+	session.allow(room, session.FULL_ACCESS);
+
+	const { status, body } = await session.authorize();
+
+	return new Response(body, { status });
 }
