@@ -100,7 +100,7 @@ export type ITag = {
 	_id: string;
 	name: string;
 	color: string;
-	tickets: string[];
+	tickets?: string[];
 };
 
 export type ITicket = {

@@ -31,8 +31,7 @@
 		const newTag: ITag = {
 			_id: randomId(),
 			name: tagInput.value.trim(),
-			color: '#000000',
-			tickets: [ticketId]
+			color: '#000000'
 		};
 
 		tagInput.value = '';
@@ -43,6 +42,7 @@
 			method: 'POST',
 			body: JSON.stringify({
 				...newTag,
+				tickets: [ticketId],
 				ticketId,
 				laneId: lane._id.split('-')[0],
 				boardId
@@ -54,7 +54,7 @@
 
 		fetch('/api/board/tag', opts)
 			.then(() => {
-				$boardTags.push(newTag);
+				$boardTags.push({ ...newTag, tickets: [ticketId] });
 				$lanes.set(laneIdx, {
 					...lane,
 					tickets: lane.tickets.map((ticket) =>
@@ -66,17 +66,20 @@
 			.catch(console.error);
 	}
 
-	function addTag(_id: string, name: string, color: string, tickets: string[]) {
+	function addTag(_id: string, name: string, color: string) {
 		if (tags.find((tag: ITag) => tag._id === _id)) return;
 
-		const newTag: ITag = { _id, name, color, tickets: [...tickets, ticketId] };
-
 		const lane = $lanes.get(laneIdx)!;
+
+		const tickets = $boardTags.find((tag) => tag._id === _id)!.tickets!;
+
+		const newTag: ITag = { _id, name, color };
 
 		const opts = {
 			method: 'PATCH',
 			body: JSON.stringify({
 				...newTag,
+				tickets: [...tickets, ticketId],
 				ticketId,
 				laneId: lane._id.split('-')[0],
 				boardId
@@ -90,7 +93,7 @@
 			.then(() => {
 				$boardTags.set(
 					$boardTags.findIndex((tag) => tag._id === _id),
-					newTag
+					{ ...newTag, tickets: [...tickets, ticketId] }
 				);
 				$lanes.set(laneIdx, {
 					...lane,
@@ -125,7 +128,7 @@
 
 				$boardTags.set(
 					$boardTags.findIndex((tag) => tag._id === _id),
-					{ ...tag, tickets: tag.tickets.filter((t) => t !== ticketId) }
+					{ ...tag, tickets: tag!.tickets!.filter((t) => t !== ticketId) }
 				);
 				$lanes.set(laneIdx, {
 					...lane,
@@ -196,14 +199,14 @@
 	</div>
 	{#if isFocused && $boardTags && tags.length < $boardTags.length}
 		<div class="board_tags a">
-			{#each [...$boardTags] as { _id, name, color, tickets } (_id)}
+			{#each [...$boardTags] as { _id, name, color } (_id)}
 				{#if !tags.find((tag) => tag._id === _id)}
 					<div class="tag-container">
 						<div class="tag-name">
 							<Tag id={_id} {name} />
 						</div>
 						<div class="buttons">
-							<button class="add" on:click={() => addTag(_id, name, color, tickets)}>
+							<button class="add" on:click={() => addTag(_id, name, color)}>
 								<div class="icon">
 									<FaPlus />
 								</div>
