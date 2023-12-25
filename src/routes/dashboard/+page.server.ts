@@ -1,8 +1,7 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { get } from 'svelte/store';
 import { auth } from '$lib/server';
 import { Board } from '$lib/server';
-import { locale, translate } from '$locales';
+import { randomId } from '$utils';
 import mongoose from 'mongoose';
 
 export const load = async ({ locals }) => {
@@ -34,26 +33,49 @@ export const actions: Actions = {
 		await auth.invalidateSession(session.sessionId);
 		locals.auth.setSession(null);
 	},
-	newboard: async ({ locals }) => {
+	newboard: async ({ locals, request }) => {
 		const session = await locals.auth.validate();
 		if (!session) throw redirect(302, '/login');
 
 		const { user } = session;
 
+		const data = await request.formData();
+		const template = data.get('template');
+
+		if (!template || typeof template !== 'string') {
+			return fail(400, {
+				message: 'invalid'
+			});
+		}
+
 		const boardId = new mongoose.Types.ObjectId();
 
 		try {
+			const board = JSON.parse(template);
+
+			const tags = board.tags.map((tag: string) => ({
+				_id: randomId(),
+				name: tag,
+				color: '#000000'
+			}));
+			const lanes = board.lanes.map((lane: string) => ({
+				_id: randomId(),
+				name: lane,
+				limit: 0,
+				tickets: []
+			}));
+
 			const newBoard = new Board({
 				_id: boardId,
-				name: translate(get(locale), 'newboard'),
+				name: board.title,
 				last_edited: new Date().toString(),
 				owner: {
 					_id: user.userId,
 					name: user.name
 				},
 				shared_with: [],
-				tags: [],
-				lanes: []
+				tags,
+				lanes
 			});
 
 			await newBoard.save();

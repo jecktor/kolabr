@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { t, translateDate, type TranslationKeys } from '$locales';
-	import type { IBoard } from '$types';
 
-	import FaTimes from 'svelte-icons/fa/FaTimes.svelte';
-	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
-	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
-	import FaLink from 'svelte-icons/fa/FaLink.svelte';
+	import { BoardTemplates } from '$components';
+	import * as Table from '$components/ui/table';
+	import * as Alert from '$components/ui/alert';
+	import { X, Trash, Link, CheckCircle, AlertCircle } from 'lucide-svelte';
 
-	export let data: { user: { name: string }; ownerBoards: IBoard[]; userBoards: IBoard[] };
+	export let data;
 	export let form: { message?: TranslationKeys; success: boolean };
 </script>
 
@@ -17,233 +16,111 @@
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 
-<div class="container row justify-content-center space1">
-	<div class="space3">
-		<form action="?/newboard" method="post">
-			<button class="btn btn-primary d-flex align-items-center gap-3" type="submit">
-				<div class="icon">
-					<FaPlus />
-				</div>
-				{$t('createboard')}
-			</button>
-		</form>
-	</div>
+<div class="container">
+	<BoardTemplates />
 
 	{#if data.ownerBoards.length > 0}
-		<section>
-			<strong><p class="a space4">{$t('ownerboards')}</p></strong>
-			<div class="table-responsive">
-				<table class="table space2">
-					<thead class="t">
-						<tr>
-							<th scope="col">{$t('name')}</th>
-							<th scope="col">{$t('lastedited')}</th>
-							<th scope="col">{$t('owner')}</th>
-							<th scope="col">{$t('actions')}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each data.ownerBoards as board (board._id)}
-							<tr class="table-light space2">
-								<td class="col_1"
-									><strong><a href={`/board/${board._id}`}>{board.name}</a></strong></td
-								>
-								<td class="col_2">{translateDate(board.last_edited)}</td>
-								<td class="col_3">{data.user.name}</td>
-								<td class="col_4">
-									<div class="button-group">
-										<button
-											aria-label={$t('copylink')}
-											title={$t('copylink')}
-											on:click={() =>
-												navigator.clipboard.writeText(
-													`${window.location.origin}/board/${board._id}`
-												)}
-										>
-											<div class="icon">
-												<FaLink />
-											</div>
+		<section class="mt-8">
+			<h2 class="mb-4 text-2xl font-bold">{$t('ownerboards')}</h2>
+			<Table.Root class="whitespace-nowrap text-base">
+				<Table.Header>
+					<Table.Row>
+						<Table.Head>{$t('name')}</Table.Head>
+						<Table.Head>{$t('lastedited')}</Table.Head>
+						<Table.Head>{$t('owner')}</Table.Head>
+						<Table.Head>{$t('actions')}</Table.Head>
+					</Table.Row>
+				</Table.Header>
+				<Table.Body>
+					{#each data.ownerBoards as board (board._id)}
+						<Table.Row>
+							<Table.Cell
+								><a class="hover:underline" href={`/board/${board._id}`}>{board.name}</a
+								></Table.Cell
+							>
+							<Table.Cell>{translateDate(board.last_edited)}</Table.Cell>
+							<Table.Cell>{data.user.name}</Table.Cell>
+							<Table.Cell>
+								<div class="flex gap-4">
+									<button
+										aria-label={$t('copylink')}
+										title={$t('copylink')}
+										on:click={() =>
+											navigator.clipboard.writeText(`${window.location.origin}/board/${board._id}`)}
+									>
+										<Link class="hover:text-primary" />
+									</button>
+									<form use:enhance action="?/deleteboard" method="post">
+										<input type="hidden" name="board" value={board._id} />
+										<button type="submit" aria-label={$t('deletes')} title={$t('deletes')}>
+											<Trash class="hover:text-primary" />
 										</button>
-										<form use:enhance action="?/deleteboard" method="post">
-											<input type="hidden" name="board" value={board._id} />
-											<button type="submit" aria-label={$t('deletes')} title={$t('deletes')}>
-												<div class="icon">
-													<FaTrash />
-												</div>
-											</button>
-										</form>
-									</div>
-								</td>
-							</tr>
-							<br />
-						{/each}
-					</tbody>
-				</table>
-			</div>
+									</form>
+								</div>
+							</Table.Cell>
+						</Table.Row>
+					{/each}
+				</Table.Body>
+			</Table.Root>
 		</section>
 	{/if}
 
 	{#if data.userBoards.length > 0}
 		<section>
-			<strong><p class="a space4">{$t('userboards')}</p></strong>
-			<div class="table-responsive">
-				<table class="table space2">
-					<thead class="t">
-						<tr>
-							<th scope="col">{$t('name')}</th>
-							<th scope="col">{$t('lastedited')}</th>
-							<th scope="col">{$t('owner')}</th>
-							<th scope="col">{$t('actions')}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each data.userBoards as board (board._id)}
-							<tr class="table-light space2">
-								<td class="col_1"><a href={`/board/${board._id}`}>{board.name}</a></td>
-								<td class="col_2">{translateDate(board.last_edited)}</td>
-								<td class="col_3">{board.owner.name}</td>
-								<td class="col_4">
-									<div class="button-group">
-										<button
-											aria-label={$t('copylink')}
-											title={$t('copylink')}
-											on:click={() =>
-												navigator.clipboard.writeText(
-													`${window.location.origin}/board/${board._id}`
-												)}
-										>
-											<div class="icon">
-												<FaLink />
-											</div>
+			<h2>{$t('userboards')}</h2>
+			<Table.Root>
+				<Table.Header>
+					<Table.Row>
+						<Table.Head>{$t('name')}</Table.Head>
+						<Table.Head>{$t('lastedited')}</Table.Head>
+						<Table.Head>{$t('owner')}</Table.Head>
+						<Table.Head>{$t('actions')}</Table.Head>
+					</Table.Row>
+				</Table.Header>
+				<Table.Body>
+					{#each data.userBoards as board (board._id)}
+						<Table.Row>
+							<Table.Cell
+								><strong><a href={`/board/${board._id}`}>{board.name}</a></strong></Table.Cell
+							>
+							<Table.Cell>{translateDate(board.last_edited)}</Table.Cell>
+							<Table.Cell>{data.user.name}</Table.Cell>
+							<Table.Cell>
+								<div>
+									<button
+										aria-label={$t('copylink')}
+										title={$t('copylink')}
+										on:click={() =>
+											navigator.clipboard.writeText(`${window.location.origin}/board/${board._id}`)}
+									>
+										<Link />
+									</button>
+									<form action="?/removeboard" method="post">
+										<input type="hidden" name="board" value={board._id} />
+										<button type="submit" aria-label={$t('remove')} title={$t('remove')}>
+											<X />
 										</button>
-										<form action="?/removeboard" method="post">
-											<input type="hidden" name="board" value={board._id} />
-											<button type="submit" aria-label={$t('remove')} title={$t('remove')}>
-												<div class="icon">
-													<FaTimes />
-												</div>
-											</button>
-										</form>
-									</div>
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
+									</form>
+								</div>
+							</Table.Cell>
+						</Table.Row>
+					{/each}
+				</Table.Body>
+			</Table.Root>
 		</section>
 	{/if}
 
 	{#if form?.success}
-		<p class="alert alert-success">{$t('boardupdate')}</p>
+		<Alert.Root class="absolute bottom-5 left-5 flex max-w-sm items-center">
+			<CheckCircle class="h-4 w-4" />
+			<Alert.Title>{$t('boardupdate')}</Alert.Title>
+		</Alert.Root>
 	{/if}
 	{#if form?.message}
-		<p class="alert alert-danger">{$t(form.message)}</p>
+		<Alert.Root variant="destructive" class="absolute bottom-5 left-5 max-w-sm">
+			<AlertCircle class="h-4 w-4" />
+			<Alert.Title>{$t('error')}</Alert.Title>
+			<Alert.Description>{$t(form.message)}</Alert.Description>
+		</Alert.Root>
 	{/if}
 </div>
-
-<style>
-	.container {
-		align-items: center;
-		text-align: left;
-		margin: 0 auto;
-	}
-
-	.space1 {
-		margin-top: 3%;
-	}
-
-	.space2 {
-		margin-bottom: 3%;
-	}
-
-	.space3 {
-		margin-bottom: 6%;
-	}
-
-	.space4 {
-		margin-bottom: 4.5%;
-	}
-
-	.col_1,
-	.col_2,
-	.col_3 {
-		width: 30%;
-	}
-
-	.col_4 {
-		width: 10%;
-	}
-
-	.a {
-		width: 90%;
-		height: auto;
-		color: var(--base-700);
-		text-align: left;
-		font-size: 24px;
-		font-family: 'Inter', sans-serif;
-		letter-spacing: 0.5px;
-		line-height: 20px;
-	}
-
-	a:hover {
-		text-decoration: underline !important;
-	}
-
-	.table-light {
-		padding: 10px;
-		background-color: var(--base-200);
-		border: 1px solid var(--base-300);
-		vertical-align: middle;
-	}
-
-	.table-light a {
-		font-weight: bold;
-		text-decoration: none;
-		color: var(--base-700);
-	}
-
-	.table-light button {
-		display: inline-block;
-		border: none;
-		background: none;
-		color: inherit;
-		text-decoration: none;
-		cursor: pointer;
-		font-family: 'Inter', sans-serif;
-		font-size: 16px;
-		line-height: 20px;
-		padding: 0;
-	}
-
-	.button-group {
-		display: flex;
-		gap: 30px;
-	}
-
-	.button-group button {
-		display: inline-flex;
-		align-items: center;
-	}
-
-	.table-light {
-		height: 50px;
-	}
-
-	.t {
-		height: 50px;
-		vertical-align: middle;
-	}
-
-	@media (max-width: 760px) {
-		.space2 {
-			margin-bottom: 7%;
-		}
-		.space3 {
-			margin-bottom: 12%;
-		}
-		.space4 {
-			margin-bottom: 8%;
-		}
-	}
-</style>

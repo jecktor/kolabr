@@ -12,10 +12,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"$components": ["src/components"],
+			"$components/ui/*": ["src/components/ui/*"],
 			"$lib": ["./src/lib"],
 			"$lib/*": ["src/lib/*"],
-			"$scss": ["src/scss"],
-			"$scss/*": ["src/scss/*"],
 			"$utils": ["src/utils"],
 			"$locales": ["src/locales"],
 			"$types": ["src/types.d.ts"],
