@@ -35,6 +35,9 @@ dependencies:
   lucide-svelte:
     specifier: ^0.298.0
     version: 0.298.0(svelte@4.2.8)
+  mode-watcher:
+    specifier: ^0.1.2
+    version: 0.1.2(svelte@4.2.8)
   mongoose:
     specifier: ^8.0.3
     version: 8.0.3
@@ -1889,6 +1892,14 @@ packages:
     dependencies:
       minimist: 1.2.8
     dev: true
+
+  /mode-watcher@0.1.2(svelte@4.2.8):
+    resolution: {integrity: sha512-XTdPCdqC3kqSvB+Q262Kor983YJkkB2Z3vj9uqg5IqKQpOdiz+xB99Jihp8sWbyM67drC7KKp0Nt5FzCypZi2g==}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      svelte: 4.2.8
+    dev: false
 
   /mongodb-connection-string-url@2.6.0:
     resolution: {integrity: sha512-WvTZlI9ab0QYtTYnuMLgobULWhokRjtC7db9LtcVfJ+Hsnyr5eo6ZtNAt3Ly24XZScGMelOcGtm7lSn0332tPQ==}

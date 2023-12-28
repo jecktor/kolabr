@@ -1,12 +1,19 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { toggleMode } from 'mode-watcher';
 	import { t, locale, locales, translate, type TranslationKeys } from '$locales';
+
+	import * as Alert from '$components/ui/alert';
+	import { Button } from '$components/ui/button';
+	import { Input } from '$components/ui/input';
+	import { Label } from '$components/ui/label';
+	import { Sun, Moon, CheckCircle, AlertCircle } from 'lucide-svelte';
 
 	export let data;
 	export let form: { message?: TranslationKeys; success: boolean };
 
-	let avatarForm: HTMLFormElement;
-	let selectForm: HTMLFormElement;
+	let langForm: HTMLFormElement;
+
 	let confirmDelete = '';
 </script>
 
@@ -15,49 +22,40 @@
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 
-<div class="container row justify-content-center space1 space3">
-	<strong><p class="a space1">{$t('settings')}</p></strong>
-	<form
-		use:enhance
-		bind:this={avatarForm}
-		class="space2"
-		action="?/avatar"
-		method="post"
-		enctype="multipart/form-data"
-	>
-		<div class="avatar_upload space1">
-			<label for="avatar">
-				<img class="avatar_img" src={data.user.image} alt="avatar" width="125" height="125" />
-			</label>
-			<input
-				class="form-control file f"
-				type="file"
-				name="avatar"
-				id="avatar"
-				accept="image/png, image/jpeg"
-				required
-				on:change={() => avatarForm.requestSubmit()}
+<h1 class="text-2xl font-semibold leading-none">{$t('settings')}</h1>
+<p class="mt-2 text-sm text-muted-foreground">{$t('settingsdesc')}</p>
+
+<div class="mt-8 flex flex-col gap-8">
+	<div class="flex w-full max-w-sm flex-col gap-3">
+		<span
+			class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+			>{$t('theme')}</span
+		>
+		<Button on:click={toggleMode} variant="outline" size="icon">
+			<Sun
+				class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
 			/>
-		</div>
-	</form>
+			<Moon
+				class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+			/>
+			<span class="sr-only">Toggle theme</span>
+		</Button>
+	</div>
 
-	<form use:enhance class="space2" action="?/name" method="post">
-		<label class="b" for="name">{$t('name')}</label>
-		<br />
-		<div class="d-flex gap-3 align-items-center">
-			<input class="c d" type="text" name="name" id="name" placeholder={data.user.name} required />
-			<input class="btn btn-primary" type="submit" value={$t('change')} />
-		</div>
-	</form>
-
-	<form use:enhance bind:this={selectForm} class="space2" action="?/lang" method="post">
-		<label class="b" for="lang">{$t('lang')}</label>
+	<form
+		class="flex w-full max-w-sm flex-col gap-3"
+		use:enhance
+		bind:this={langForm}
+		action="?/lang"
+		method="post"
+	>
+		<Label for="lang">{$t('lang')}</Label>
 		<select
-			class="form-select c i"
+			class="w-44 rounded-md border bg-background p-2 outline-none"
 			name="lang"
 			id="lang"
 			bind:value={$locale}
-			on:change={() => selectForm.requestSubmit()}
+			on:change={() => langForm.requestSubmit()}
 		>
 			{#each locales as l}
 				{#if data.user.lang === l}
@@ -69,151 +67,49 @@
 		</select>
 	</form>
 
-	<form use:enhance class="space2" action="?/pass" method="post">
-		<label class="b" for="pass">{$t('pass')}</label>
-		<br />
-		<div class="d-flex flex-wrap gap-3 align-items-center space2">
-			<input
-				class="d c"
-				type="password"
-				name="pass"
-				id="pass"
-				placeholder={$t('currentpass')}
-				required
-			/>
-			<input
-				class="d c"
-				type="password"
-				name="newpass"
-				id="newpass"
-				placeholder={$t('newpass')}
-				required
-			/>
-			<input class="btn btn-primary" type="submit" value={$t('change')} />
+	<form class="flex w-full max-w-sm flex-col gap-3" use:enhance action="?/pass" method="post">
+		<Label for="pass">{$t('pass')}</Label>
+		<div class="flex flex-wrap items-center gap-3">
+			<Input type="password" name="pass" id="pass" placeholder={$t('currentpass')} required />
+			<Input type="password" name="newpass" id="newpass" placeholder={$t('newpass')} required />
+			<Button type="submit">{$t('change')}</Button>
 		</div>
 	</form>
 
-	<p>{$t('danger')}</p>
-	<form use:enhance class="space2" action="?/delete" method="post">
-		<label class="b h" for="confirm">{$t('confirmdelete')}</label>
-		<br />
-		<div class="d-flex gap-3 align-items-center">
-			<input
-				bind:value={confirmDelete}
-				class="c d"
-				type="text"
-				name="confirm"
-				id="confirm"
-				required
-			/>
-			<input
-				class="btn btn-danger"
-				type="submit"
-				value={$t('deleteaccount')}
-				disabled={confirmDelete !== $t('deleteaccount')}
-			/>
-		</div>
-	</form>
-
-	{#if form?.success}
-		<p class="alert alert-success">{$t('settingsupdated')}</p>
-	{/if}
-	{#if form?.message}
-		<p class="alert alert-danger">{$t(form.message)}</p>
-	{/if}
+	<div>
+		<p class="mb-4 text-red-700">{$t('deleteaccount')}</p>
+		<form class="flex w-full max-w-sm flex-col gap-3" use:enhance action="?/delete" method="post">
+			<Label for="confirm">{$t('confirmdelete')}</Label>
+			<div class="flex items-center gap-2">
+				<Input bind:value={confirmDelete} type="text" name="confirm" id="confirm" required />
+				<Button
+					variant="destructive"
+					type="submit"
+					disabled={confirmDelete !== $t('deleteaccount')}
+				>
+					{$t('deleteaccount')}
+				</Button>
+			</div>
+		</form>
+	</div>
 </div>
 
-<style>
-	.container {
-		align-items: center;
-		text-align: left;
-		margin: 0 auto;
-	}
+{#if form?.success}
+	<Alert.Root
+		class="absolute bottom-0 left-0 w-full bg-background lg:bottom-5 lg:left-auto lg:right-5 lg:max-w-sm"
+	>
+		<CheckCircle class="h-4 w-4" />
+		<Alert.Title>{$t('settingsupdated')}</Alert.Title>
+	</Alert.Root>
+{/if}
 
-	.space1 {
-		margin-top: 3%;
-	}
-
-	.space2 {
-		margin-bottom: 2%;
-	}
-
-	.space3 {
-		margin-bottom: 6%;
-	}
-
-	.avatar_upload .file {
-		display: none;
-	}
-
-	.avatar_img {
-		cursor: pointer;
-	}
-
-	.a {
-		width: 90%;
-		height: auto;
-		color: var(--base-700);
-		text-align: left;
-		font-size: 24px;
-		font-family: 'Inter', sans-serif;
-		letter-spacing: 0.5px;
-		line-height: 20px;
-		margin: 0;
-	}
-
-	img {
-		border-radius: 90px;
-	}
-
-	.file {
-		color: var(--base-700);
-		text-align: left;
-		font-size: 16px;
-		font-family: 'Inter', sans-serif;
-	}
-
-	.b {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 400;
-		font-size: 16px;
-		margin-bottom: 1%;
-	}
-
-	.c {
-		width: 250px;
-		height: 40px;
-		font-size: 16px;
-		padding-block: 8px;
-	}
-
-	.d {
-		padding: 0.8rem 0.75rem;
-		color: var(--bs-body-color);
-		background-color: var(--bs-body-bg);
-		background-clip: padding-box;
-		border: var(--bs-border-width) solid var(--bs-border-color);
-		appearance: none;
-		border-radius: var(--bs-border-radius);
-		transition: border-color 0.15s ease-in-out, box-shadow 0.15s;
-	}
-
-	.f {
-		width: 70%;
-	}
-
-	.h {
-		font-size: 14px;
-	}
-
-	.i {
-		width: 14%;
-	}
-
-	@media (max-width: 760px) {
-		.i {
-			width: 28%;
-		}
-	}
-</style>
+{#if form?.message}
+	<Alert.Root
+		variant="destructive"
+		class="absolute bottom-0 left-0 w-full bg-background lg:bottom-5 lg:left-auto lg:right-5 lg:max-w-sm"
+	>
+		<AlertCircle class="h-4 w-4" />
+		<Alert.Title>{$t('error')}</Alert.Title>
+		<Alert.Description>{$t(form.message)}</Alert.Description>
+	</Alert.Root>
+{/if}
