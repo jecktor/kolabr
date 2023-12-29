@@ -9,7 +9,7 @@
 
 	export let ownerId: string;
 	export let userId: string;
-	export let access: string[];
+	export let access: { name: string; email: string; image: string }[];
 
 	let message: TranslationKeys | undefined;
 	let success: boolean;
@@ -46,7 +46,7 @@
 	}
 </script>
 
-<button on:click={() => (show = true)} class="btn btn-primary d-flex gap-2 align-items-center">
+<button on:click={() => (show = true)} class="btn btn-primary d-flex align-items-center gap-2">
 	<span>{$t('share')}</span>
 	<div class="icon">
 		<FaShareAlt />
@@ -57,7 +57,7 @@
 	<h2 class="a">{$t('shareboard')}</h2>
 	{#if userId === ownerId}
 		<div>
-			<div class="d-flex align-items-center gap-5 space1 space2">
+			<div class="d-flex align-items-center space1 space2 gap-5">
 				<div class="d-flex gap-3">
 					<div class="icon i">
 						<FaUsers />
@@ -71,7 +71,7 @@
 					type="text"
 					name="access"
 					id="access"
-					value={access.join(', ')}
+					value={access.map((user) => user.email).join(', ')}
 					placeholder={$t('shareemail')}
 					class="form-control"
 				/>
@@ -80,7 +80,7 @@
 		</div>
 	{/if}
 	<div class="space1 space2">
-		<div class="d-flex align-items-center gap-5 space2 space1">
+		<div class="d-flex align-items-center space2 space1 gap-5">
 			<div class="d-flex gap-3">
 				<div class="icon i">
 					<FaLink />

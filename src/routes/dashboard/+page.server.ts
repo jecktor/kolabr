@@ -12,11 +12,11 @@ export const load = async ({ locals }) => {
 
 	const ownerBoards = await Board.find(
 		{ 'owner._id': user.userId },
-		'_id name last_edited owner.name'
+		'_id name last_edited shared_with'
 	);
 	const userBoards = await Board.find(
-		{ shared_with: user.email },
-		'_id name last_edited owner.name'
+		{ 'shared_with.email': user.email },
+		'_id name last_edited shared_with owner'
 	);
 
 	return {
@@ -71,7 +71,9 @@ export const actions: Actions = {
 				last_edited: new Date().toString(),
 				owner: {
 					_id: user.userId,
-					name: user.name
+					name: user.name,
+					email: user.email,
+					image: user.image
 				},
 				shared_with: [],
 				tags,
@@ -155,7 +157,7 @@ export const actions: Actions = {
 
 		try {
 			await board.updateOne({
-				shared_with: board.shared_with.filter((email) => email !== user.email)
+				shared_with: board.shared_with.filter((u) => u.email !== user.email)
 			});
 		} catch (error) {
 			return fail(500, {

@@ -1,5 +1,5 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth, deleteFile, uploadFile } from '$lib/server';
+import { auth, deleteFile, uploadFile, Board } from '$lib/server';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -52,6 +52,13 @@ export const actions: Actions = {
 			await auth.updateUserAttributes(user.userId, {
 				image: newAvatar
 			});
+
+			await Board.updateMany({ 'owner._id': user.userId }, { $set: { 'owner.image': newAvatar } });
+
+			await Board.updateMany(
+				{ shared_with: { $elemMatch: { email: user.email } } },
+				{ $set: { 'shared_with.$.image': newAvatar } }
+			);
 		} catch (e) {
 			return fail(400, {
 				message: 'unknown'
@@ -95,6 +102,13 @@ export const actions: Actions = {
 			await auth.updateUserAttributes(user.userId, {
 				name
 			});
+
+			await Board.updateMany({ 'owner._id': user.userId }, { $set: { 'owner.name': name } });
+
+			await Board.updateMany(
+				{ shared_with: { $elemMatch: { email: user.email } } },
+				{ $set: { 'shared_with.$.name': name } }
+			);
 		} catch (e) {
 			return fail(400, {
 				message: 'unknown'

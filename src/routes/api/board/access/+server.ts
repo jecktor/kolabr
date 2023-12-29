@@ -35,7 +35,13 @@ export const POST = (async ({ request }) => {
 			const usersToShareWith = users.filter((user) => user._id !== board.owner._id);
 
 			if (users.length > 0) {
-				await board.updateOne({ shared_with: usersToShareWith.map((user) => user.email) });
+				await board.updateOne({
+					shared_with: usersToShareWith.map((u) => ({
+						name: u.name,
+						email: u.email,
+						image: u.image
+					}))
+				});
 			}
 		}
 	} catch (e) {

@@ -70,8 +70,14 @@ interface IBoard {
 	owner: {
 		_id: string;
 		name: string;
+		email: string;
+		image: string;
 	};
-	shared_with: string[];
+	shared_with: {
+		name: string;
+		email: string;
+		image: string;
+	}[];
 	tags: {
 		_id: string;
 		name: string;

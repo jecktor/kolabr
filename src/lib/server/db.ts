@@ -82,8 +82,16 @@ const boardSchema = new mongoose.Schema<IBoard>(
 		owner: {
       _id: String,
       name: String,
+      email: String,
+      image: String,
     },
-		shared_with: [String],
+		shared_with: [
+      {
+        name: String,
+        email: String,
+        image: String,
+      }
+    ],
     tags: [
       {
         _id: String,

@@ -133,6 +133,13 @@ export const actions: Actions = {
 			}
 
 			await Board.deleteMany({ 'owner._id': user.userId });
+
+			await Board.updateMany(
+				{},
+				{ $pull: { shared_with: { email: user.email } } },
+				{ multi: true }
+			);
+
 			await auth.deleteUser(user.userId);
 		} catch (e) {
 			return fail(400, {

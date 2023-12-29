@@ -2,10 +2,12 @@
 	import { enhance } from '$app/forms';
 	import { t, translateDate, type TranslationKeys } from '$locales';
 
-	import { BoardTemplates } from '$components';
-	import * as Table from '$components/ui/table';
+	import { NewBoard } from '$components';
+	import * as Avatar from '$components/ui/avatar';
 	import * as Alert from '$components/ui/alert';
-	import { X, Trash, Link, CheckCircle, AlertCircle } from 'lucide-svelte';
+	import * as Card from '$components/ui/card';
+	import * as DropdownMenu from '$components/ui/dropdown-menu';
+	import { X, MoreHorizontal, Trash, Link, CheckCircle, AlertCircle } from 'lucide-svelte';
 
 	export let data;
 	export let form: { message?: TranslationKeys; success: boolean };
@@ -16,103 +18,172 @@
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 
-<BoardTemplates />
-
 {#if data.ownerBoards.length > 0}
-	<section class="mt-16">
-		<h2 class="mb-4 text-2xl font-bold">{$t('ownerboards')}</h2>
-		<Table.Root class="whitespace-nowrap text-base">
-			<Table.Header>
-				<Table.Row>
-					<Table.Head class="w-96">{$t('name')}</Table.Head>
-					<Table.Head>{$t('lastedited')}</Table.Head>
-					<Table.Head class="w-96">{$t('owner')}</Table.Head>
-					<Table.Head>{$t('actions')}</Table.Head>
-				</Table.Row>
-			</Table.Header>
-			<Table.Body>
-				{#each data.ownerBoards as board (board._id)}
-					<Table.Row>
-						<Table.Cell class="max-w-96 overflow-hidden overflow-ellipsis"
-							><a class="decoration-primary hover:underline" href={`/board/${board._id}`}
-								>{board.name}</a
-							></Table.Cell
-						>
-						<Table.Cell>{translateDate(board.last_edited)}</Table.Cell>
-						<Table.Cell class="max-w-96 overflow-hidden overflow-ellipsis"
-							>{data.user.name}</Table.Cell
-						>
-						<Table.Cell>
-							<div class="flex gap-5">
-								<button
-									aria-label={$t('copylink')}
-									title={$t('copylink')}
-									on:click={() =>
-										navigator.clipboard.writeText(`${window.location.origin}/board/${board._id}`)}
+	<section>
+		<div class="flex flex-wrap items-center justify-between gap-4">
+			<header class="text-2xl font-semibold leading-none">{$t('ownerboards')}</header>
+			<NewBoard />
+		</div>
+
+		<div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			{#each data.ownerBoards as board (board._id)}
+				<div class="relative">
+					<a class="h-full" href={`/board/${board._id}`}>
+						<Card.Root class="h-full">
+							<Card.Header class="text-left">
+								<Card.Title class="mr-6 overflow-hidden overflow-ellipsis whitespace-nowrap"
+									>{board.name}</Card.Title
 								>
-									<Link class="hover:text-primary" />
+								<Card.Description>{translateDate(board.last_edited, true)}</Card.Description>
+							</Card.Header>
+							{#if board.shared_with.length > 0}
+								<Card.Footer>
+									<div class="flex -space-x-1">
+										{#each board.shared_with.slice(0, 3) as user (user.email)}
+											<Avatar.Root
+												class="inline-block h-6 w-6 bg-background ring-1 ring-background"
+											>
+												<Avatar.Image src={user.image} alt="avatar" />
+												<Avatar.Fallback>{user.name}</Avatar.Fallback>
+											</Avatar.Root>
+										{/each}
+										{#if board.shared_with.length > 3}
+											<div
+												class="z-10 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground ring-1 ring-background"
+											>
+												+{board.shared_with.length - 3}
+											</div>
+										{/if}
+									</div>
+								</Card.Footer>
+							{/if}
+						</Card.Root>
+					</a>
+					<div class="absolute right-4 top-4">
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger>
+								<button
+									class="flex h-8 w-8 items-center justify-center"
+									title={$t('actions')}
+									aria-label={$t('actions')}
+								>
+									<MoreHorizontal class="h-5 w-5" />
 								</button>
-								<form class="flex items-center" use:enhance action="?/deleteboard" method="post">
-									<input type="hidden" name="board" value={board._id} />
-									<button type="submit" aria-label={$t('deletes')} title={$t('deletes')}>
-										<Trash class="hover:text-primary" />
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content>
+								<DropdownMenu.Group>
+									<button
+										class="w-full"
+										on:click={() =>
+											navigator.clipboard.writeText(`${window.location.origin}/board/${board._id}`)}
+									>
+										<DropdownMenu.Item class="cursor-pointer">
+											<Link class="mr-2 h-4 w-4" />
+											{$t('copylink')}
+										</DropdownMenu.Item>
 									</button>
-								</form>
-							</div>
-						</Table.Cell>
-					</Table.Row>
-				{/each}
-			</Table.Body>
-		</Table.Root>
+									<form class="w-full" use:enhance action="?/deleteboard" method="post">
+										<input type="hidden" name="board" value={board._id} />
+										<button class="w-full" type="submit">
+											<DropdownMenu.Item class="cursor-pointer">
+												<Trash class="mr-2.5 h-4 w-4" />
+												{$t('deletes')}
+											</DropdownMenu.Item>
+										</button>
+									</form>
+								</DropdownMenu.Group>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					</div>
+				</div>
+			{/each}
+		</div>
 	</section>
+{:else}
+	<NewBoard />
 {/if}
 
 {#if data.userBoards.length > 0}
-	<section class="mt-16">
-		<h2 class="mb-4 text-2xl font-bold">{$t('userboards')}</h2>
-		<Table.Root class="whitespace-nowrap text-base">
-			<Table.Header>
-				<Table.Row>
-					<Table.Head class="w-96">{$t('name')}</Table.Head>
-					<Table.Head>{$t('lastedited')}</Table.Head>
-					<Table.Head class="w-96">{$t('owner')}</Table.Head>
-					<Table.Head>{$t('actions')}</Table.Head>
-				</Table.Row>
-			</Table.Header>
-			<Table.Body>
-				{#each data.userBoards as board (board._id)}
-					<Table.Row>
-						<Table.Cell class="max-w-96 overflow-hidden overflow-ellipsis"
-							><a class="decoration-primary hover:underline" href={`/board/${board._id}`}
-								>{board.name}</a
-							></Table.Cell
-						>
-						<Table.Cell>{translateDate(board.last_edited)}</Table.Cell>
-						<Table.Cell class="max-w-96 overflow-hidden overflow-ellipsis"
-							>{board.owner.name}</Table.Cell
-						>
-						<Table.Cell>
-							<div class="flex gap-5">
-								<button
-									aria-label={$t('copylink')}
-									title={$t('copylink')}
-									on:click={() =>
-										navigator.clipboard.writeText(`${window.location.origin}/board/${board._id}`)}
+	<section class="mt-12">
+		<header class="text-2xl font-semibold leading-none">{$t('userboards')}</header>
+
+		<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			{#each data.userBoards as board (board._id)}
+				<div class="relative">
+					<a class="h-full" href={`/board/${board._id}`}>
+						<Card.Root class="h-full">
+							<Card.Header class="text-left">
+								<Card.Title class="mr-6 overflow-hidden overflow-ellipsis whitespace-nowrap"
+									>{board.name}</Card.Title
 								>
-									<Link class="hover:text-primary" />
+								<Card.Description>{translateDate(board.last_edited, true)}</Card.Description>
+							</Card.Header>
+							<Card.Footer>
+								<Avatar.Root class="mr-4 h-6 w-6">
+									<Avatar.Image src={board.owner.image} alt="avatar" />
+									<Avatar.Fallback>{board.owner.name}</Avatar.Fallback>
+								</Avatar.Root>
+								{#if board.shared_with.length > 0}
+									<div class="flex -space-x-1">
+										{#each board.shared_with.slice(0, 3) as user (user.email)}
+											<Avatar.Root
+												class="inline-block h-6 w-6 bg-background ring-1 ring-background"
+											>
+												<Avatar.Image src={user.image} alt="avatar" />
+												<Avatar.Fallback>{user.name}</Avatar.Fallback>
+											</Avatar.Root>
+										{/each}
+										{#if board.shared_with.length > 3}
+											<div
+												class="z-10 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground ring-1 ring-background"
+											>
+												+{board.shared_with.length - 3}
+											</div>
+										{/if}
+									</div>
+								{/if}
+							</Card.Footer>
+						</Card.Root>
+					</a>
+					<div class="absolute right-4 top-4">
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger>
+								<button
+									class="flex h-8 w-8 items-center justify-center"
+									title={$t('actions')}
+									aria-label={$t('actions')}
+								>
+									<MoreHorizontal class="h-5 w-5" />
 								</button>
-								<form class="flex items-center" use:enhance action="?/removeboard" method="post">
-									<input type="hidden" name="board" value={board._id} />
-									<button type="submit" aria-label={$t('remove')} title={$t('remove')}>
-										<X class="h-7 w-7 hover:text-primary" />
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content>
+								<DropdownMenu.Group>
+									<button
+										class="w-full"
+										on:click={() =>
+											navigator.clipboard.writeText(`${window.location.origin}/board/${board._id}`)}
+									>
+										<DropdownMenu.Item class="cursor-pointer">
+											<Link class="mr-2 h-4 w-4" />
+											{$t('copylink')}
+										</DropdownMenu.Item>
 									</button>
-								</form>
-							</div>
-						</Table.Cell>
-					</Table.Row>
-				{/each}
-			</Table.Body>
-		</Table.Root>
+									<form class="w-full" use:enhance action="?/removeboard" method="post">
+										<input type="hidden" name="board" value={board._id} />
+										<button class="w-full" type="submit">
+											<DropdownMenu.Item class="cursor-pointer">
+												<X class="mr-1.5 h-5 w-5" />
+												{$t('remove')}
+											</DropdownMenu.Item>
+										</button>
+									</form>
+								</DropdownMenu.Group>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					</div>
+				</div>
+			{/each}
+		</div>
 	</section>
 {/if}
 

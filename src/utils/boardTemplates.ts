@@ -1,7 +1,7 @@
 interface BoardTemplate {
 	[key: string]: {
 		name: string;
-		image: string;
+		description: string;
 		board: {
 			title: string;
 			lanes: string[];
@@ -13,7 +13,7 @@ interface BoardTemplate {
 const empty: BoardTemplate = {
 	en: {
 		name: 'Empty board',
-		image: '/templates/empty.png',
+		description: 'An empty board with no lanes or tags',
 		board: {
 			title: 'New empty board',
 			lanes: [],
@@ -22,7 +22,7 @@ const empty: BoardTemplate = {
 	},
 	es: {
 		name: 'Tablero vacío',
-		image: '/templates/empty.png',
+		description: 'Un tablero vacío sin carriles ni etiquetas',
 		board: {
 			title: 'Nuevo tablero vacío',
 			lanes: [],
@@ -34,7 +34,7 @@ const empty: BoardTemplate = {
 const kanbanBoard: BoardTemplate = {
 	en: {
 		name: 'Kanban board',
-		image: '/templates/empty.png',
+		description: 'A kanban board with the default lanes and tags',
 		board: {
 			title: 'New kanban board',
 			lanes: ['To do', 'In progress', 'Done'],
@@ -43,7 +43,7 @@ const kanbanBoard: BoardTemplate = {
 	},
 	es: {
 		name: 'Tablero Kanban',
-		image: '/templates/empty.png',
+		description: 'Un tablero Kanban con los carriles y etiquetas predeterminados',
 		board: {
 			title: 'Nuevo tablero Kanban',
 			lanes: ['Por hacer', 'En progreso', 'Hecho'],
@@ -55,7 +55,7 @@ const kanbanBoard: BoardTemplate = {
 const softwareDev: BoardTemplate = {
 	en: {
 		name: 'Software development',
-		image: '/templates/empty.png',
+		description: 'A board for the software development industry',
 		board: {
 			title: 'New software development board',
 			lanes: ['Requested', 'Development', 'Testing', 'Deployment', 'Done'],
@@ -64,7 +64,7 @@ const softwareDev: BoardTemplate = {
 	},
 	es: {
 		name: 'Desarrollo de software',
-		image: '/templates/empty.png',
+		description: 'Un tablero para la industria del desarrollo de software',
 		board: {
 			title: 'Nuevo tablero de desarrollo de software',
 			lanes: ['Solicitado', 'Desarrollo', 'Pruebas', 'Despliegue', 'Hecho'],
@@ -76,7 +76,7 @@ const softwareDev: BoardTemplate = {
 const issueTracking: BoardTemplate = {
 	en: {
 		name: 'Issue tracker',
-		image: '/templates/empty.png',
+		description: 'A board for easily tracking and managing issues',
 		board: {
 			title: 'New issue tracking board',
 			lanes: ['Open', 'In progress', 'Testing', 'Closed'],
@@ -85,7 +85,7 @@ const issueTracking: BoardTemplate = {
 	},
 	es: {
 		name: 'Seguimiento de problemas',
-		image: '/templates/empty.png',
+		description: 'Un tablero para rastrear y administrar fácilmente los problemas',
 		board: {
 			title: 'Nuevo tablero de seguimiento de problemas',
 			lanes: ['Abierto', 'En progreso', 'Pruebas', 'Cerrado'],
@@ -102,25 +102,4 @@ const issueTracking: BoardTemplate = {
 	}
 };
 
-const supportTeam: BoardTemplate = {
-	en: {
-		name: 'Support team',
-		image: '/templates/empty.png',
-		board: {
-			title: 'New support team board',
-			lanes: ['Requested', 'In progress', 'Tracking', 'Waiting on customer', 'Done'],
-			tags: ['Urgent', 'Internal', 'Sales', 'Marketing']
-		}
-	},
-	es: {
-		name: 'Equipo de soporte',
-		image: '/templates/empty.png',
-		board: {
-			title: 'Nuevo tablero de equipo de soporte',
-			lanes: ['Solicitado', 'En progreso', 'Seguimiento', 'Esperando al cliente', 'Hecho'],
-			tags: ['Urgente', 'Interno', 'Ventas', 'Marketing']
-		}
-	}
-};
-
-export const boardTemplates = [empty, kanbanBoard, softwareDev, issueTracking, supportTeam];
+export const boardTemplates = [empty, kanbanBoard, softwareDev, issueTracking];

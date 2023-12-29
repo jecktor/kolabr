@@ -11,7 +11,12 @@ export const load = async ({ locals, params }) => {
 
 	if (!board) throw error(404, 'Not found');
 
-	if (board.owner._id !== user.userId && !board.shared_with.includes(user.email)) {
+	if (
+		board.owner._id !== user.userId &&
+		!board.shared_with.find((u) => {
+			return u.email === user.email;
+		})
+	) {
 		throw redirect(302, '/dashboard');
 	}
 
