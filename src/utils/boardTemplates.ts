@@ -13,7 +13,7 @@ interface BoardTemplate {
 const empty: BoardTemplate = {
 	en: {
 		name: 'Empty board',
-		description: 'An empty board with no lanes or tags',
+		description: 'An empty board with no lanes or tags.',
 		board: {
 			title: 'New empty board',
 			lanes: [],
@@ -22,7 +22,7 @@ const empty: BoardTemplate = {
 	},
 	es: {
 		name: 'Tablero vacío',
-		description: 'Un tablero vacío sin carriles ni etiquetas',
+		description: 'Un tablero vacío sin carriles ni etiquetas.',
 		board: {
 			title: 'Nuevo tablero vacío',
 			lanes: [],
@@ -34,7 +34,7 @@ const empty: BoardTemplate = {
 const kanbanBoard: BoardTemplate = {
 	en: {
 		name: 'Kanban board',
-		description: 'A kanban board with the default lanes and tags',
+		description: 'A kanban board with the default lanes and tags.',
 		board: {
 			title: 'New kanban board',
 			lanes: ['To do', 'In progress', 'Done'],
@@ -43,7 +43,7 @@ const kanbanBoard: BoardTemplate = {
 	},
 	es: {
 		name: 'Tablero Kanban',
-		description: 'Un tablero Kanban con los carriles y etiquetas predeterminados',
+		description: 'Un tablero Kanban con los carriles y etiquetas predeterminados.',
 		board: {
 			title: 'Nuevo tablero Kanban',
 			lanes: ['Por hacer', 'En progreso', 'Hecho'],
@@ -55,7 +55,7 @@ const kanbanBoard: BoardTemplate = {
 const softwareDev: BoardTemplate = {
 	en: {
 		name: 'Software development',
-		description: 'A board for the software development industry',
+		description: 'A board for the software development industry.',
 		board: {
 			title: 'New software development board',
 			lanes: ['Requested', 'Development', 'Testing', 'Deployment', 'Done'],
@@ -64,7 +64,7 @@ const softwareDev: BoardTemplate = {
 	},
 	es: {
 		name: 'Desarrollo de software',
-		description: 'Un tablero para la industria del desarrollo de software',
+		description: 'Un tablero para la industria del desarrollo de software.',
 		board: {
 			title: 'Nuevo tablero de desarrollo de software',
 			lanes: ['Solicitado', 'Desarrollo', 'Pruebas', 'Despliegue', 'Hecho'],
@@ -76,7 +76,7 @@ const softwareDev: BoardTemplate = {
 const issueTracking: BoardTemplate = {
 	en: {
 		name: 'Issue tracker',
-		description: 'A board for easily tracking and managing issues',
+		description: 'A board for easily tracking and managing issues.',
 		board: {
 			title: 'New issue tracking board',
 			lanes: ['Open', 'In progress', 'Testing', 'Closed'],
@@ -85,7 +85,7 @@ const issueTracking: BoardTemplate = {
 	},
 	es: {
 		name: 'Seguimiento de problemas',
-		description: 'Un tablero para rastrear y administrar fácilmente los problemas',
+		description: 'Un tablero para rastrear y administrar fácilmente los problemas.',
 		board: {
 			title: 'Nuevo tablero de seguimiento de problemas',
 			lanes: ['Abierto', 'En progreso', 'Pruebas', 'Cerrado'],

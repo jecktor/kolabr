@@ -40,7 +40,7 @@
 
 <aside
 	bind:this={sidebar}
-	class="fixed hidden h-screen w-screen border-r bg-background lg:block lg:w-72"
+	class="fixed z-50 hidden h-screen w-screen border-r bg-background lg:block lg:w-72"
 >
 	<div class="container flex h-[61px] items-center justify-between border-b">
 		<a class="flex items-center gap-2" href="/dashboard">
