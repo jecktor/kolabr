@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('error')} | Kolabr</title>
+	<title>{$t('error')} – Kolabr</title>
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 

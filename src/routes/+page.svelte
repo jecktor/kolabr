@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Kolabr | {$t('footertitle')}</title>
+	<title>Kolabr – {$t('footertitle')}</title>
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 

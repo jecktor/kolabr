@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.board.name} | Kolabr</title>
+	<title>{data.board.name} – Kolabr</title>
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 

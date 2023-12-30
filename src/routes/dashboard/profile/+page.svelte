@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('profile')} | Kolabr</title>
+	<title>{$t('profile')} – Kolabr</title>
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 

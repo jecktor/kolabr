@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('dashboard')} | Kolabr</title>
+	<title>{$t('dashboard')} – Kolabr</title>
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 

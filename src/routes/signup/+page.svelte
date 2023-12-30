@@ -6,11 +6,11 @@
 </script>
 
 <svelte:head>
-	<title>{$t('signup')} | Kolabr</title>
+	<title>{$t('signup')} – Kolabr</title>
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 
-<div class="container signup">
+<div class="signup container">
 	<div class="row justify-content-center">
 		<div>
 			<div class="signup-wrapper">
@@ -44,7 +44,7 @@
 				</form>
 				<a
 					href="/login"
-					class="b text-center link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+					class="b link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover text-center"
 					>{$t('login')}</a
 				>
 			</div>
