@@ -31,22 +31,30 @@
 		method="post"
 		enctype="multipart/form-data"
 	>
-		<div>
-			<label for="avatar">
-				<Avatar.Root class="h-20 w-20 cursor-pointer outline-2 hover:outline hover:outline-primary">
-					<Avatar.Image src={data.user.image} alt="avatar" />
-					<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
-				</Avatar.Root>
-			</label>
-			<input
-				class="hidden"
-				type="file"
-				name="avatar"
-				id="avatar"
-				accept="image/png, image/jpeg"
-				required
-				on:change={() => avatarForm.requestSubmit()}
-			/>
+		<div class="flex flex-wrap items-center gap-6">
+			<div>
+				<label for="avatar">
+					<Avatar.Root
+						class="h-20 w-20 cursor-pointer outline-2 hover:outline hover:outline-primary"
+					>
+						<Avatar.Image src={data.user.image} alt="avatar" />
+						<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
+					</Avatar.Root>
+				</label>
+				<input
+					class="hidden"
+					type="file"
+					name="avatar"
+					id="avatar"
+					accept="image/png, image/jpeg"
+					required
+					on:change={() => avatarForm.requestSubmit()}
+				/>
+			</div>
+			<div>
+				<div class="text-xl font-semibold">{data.user.name}</div>
+				<div class="text-sm text-muted-foreground">{data.user.email}</div>
+			</div>
 		</div>
 	</form>
 

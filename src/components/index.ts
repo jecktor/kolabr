@@ -1,3 +1,3 @@
-export { default as Live } from './Live.svelte';
 export { default as SidebarLink } from './SidebarLink.svelte';
-export { default as NewBoard } from './NewBoard.svelte';
+export { default as BoardList } from './BoardList.svelte';
+export { default as Live } from './Live.svelte';

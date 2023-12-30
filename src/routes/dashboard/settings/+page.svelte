@@ -4,7 +4,8 @@
 	import { t, locale, locales, translate, type TranslationKeys } from '$locales';
 
 	import * as Alert from '$components/ui/alert';
-	import { Button } from '$components/ui/button';
+	import * as AlertDialog from '$components/ui/alert-dialog';
+	import { Button, buttonVariants } from '$components/ui/button';
 	import { Input } from '$components/ui/input';
 	import { Label } from '$components/ui/label';
 	import { Sun, Moon, CheckCircle, AlertCircle } from 'lucide-svelte';
@@ -13,6 +14,7 @@
 	export let form: { message?: TranslationKeys; success: boolean };
 
 	let langForm: HTMLFormElement;
+	let deleteForm: HTMLFormElement;
 
 	let confirmDelete = '';
 </script>
@@ -78,17 +80,40 @@
 
 	<div>
 		<p class="mb-4 text-red-700">{$t('deleteaccount')}</p>
-		<form class="flex w-full max-w-sm flex-col gap-3" use:enhance action="?/delete" method="post">
+		<form
+			class="flex w-full max-w-sm flex-col gap-3"
+			bind:this={deleteForm}
+			use:enhance
+			action="?/delete"
+			method="post"
+		>
 			<Label for="confirm">{$t('confirmdelete')}</Label>
 			<div class="flex items-center gap-2">
 				<Input bind:value={confirmDelete} type="text" name="confirm" id="confirm" required />
-				<Button
-					variant="destructive"
-					type="submit"
-					disabled={confirmDelete !== $t('deleteaccount')}
-				>
-					{$t('deleteaccount')}
-				</Button>
+
+				<AlertDialog.Root>
+					<AlertDialog.Trigger
+						class={buttonVariants({ variant: 'destructive' })}
+						type="button"
+						disabled={confirmDelete !== $t('deleteaccount')}
+					>
+						{$t('deleteaccount')}
+					</AlertDialog.Trigger>
+					<AlertDialog.Content>
+						<AlertDialog.Header>
+							<AlertDialog.Title>{$t('sure')}</AlertDialog.Title>
+							<AlertDialog.Description>
+								{$t('deleteaccountdesc')}
+							</AlertDialog.Description>
+						</AlertDialog.Header>
+						<AlertDialog.Footer>
+							<AlertDialog.Cancel>{$t('cancel')}</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={() => deleteForm.requestSubmit()}
+								>{$t('deleteaccount')}</AlertDialog.Action
+							>
+						</AlertDialog.Footer>
+					</AlertDialog.Content>
+				</AlertDialog.Root>
 			</div>
 		</form>
 	</div>
