@@ -1,6 +1,7 @@
 {
 	"locale": "Español",
 	"actions": "Acciones",
+	"addpeople": "Añadir personas",
 	"backtodashboard": "Volver al panel",
 	"accessupdate": "Acceso al tablero actualizado",
 	"boardnotfound": "Tablero no encontrado",
@@ -81,6 +82,7 @@
 	"share": "Compartir",
 	"shareaccess": "Personas con acceso",
 	"shareboard": "Compartir este tablero",
+	"shareboarddesc": "Comparte este tablero con los miembros de tu equipo agregando sus correos electrónicos",
 	"shareemail": "Correo electrónico, separado por comas",
 	"sharelink": "Enlace de colaboración",
 	"signout": "Cerrar sesión",
@@ -90,6 +92,5 @@
 	"theme": "Tema",
 	"ticketlimit": "Límite de tareas",
 	"unknown": "Ocurrió un error desconocido",
-	"updateaccess": "Actualizar acceso",
 	"userboards": "Otros tableros"
 }

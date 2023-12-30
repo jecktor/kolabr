@@ -6,9 +6,11 @@
 	import type { IBoard, ILane, ITag, IBoardInfo, InputEvent } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
-	import FaArrowLeft from 'svelte-icons/fa/FaArrowLeft.svelte';
 	import Board from './Board.svelte';
 	import ShareDialog from './ShareDialog.svelte';
+	import * as Tooltip from '$components/ui/tooltip';
+	import { Button } from '$components/ui/button';
+	import { ChevronLeft } from 'lucide-svelte';
 
 	export let board: IBoard;
 
@@ -139,7 +141,11 @@
 </script>
 
 {#if boardReady}
-	<div class="board" on:pointerleave={handlePointerLeave} on:pointermove={handlePointerMove}>
+	<div
+		class="absolute inset-0 h-screen w-screen touch-none"
+		on:pointerleave={handlePointerLeave}
+		on:pointermove={handlePointerMove}
+	>
 		<!-- Live cursors -->
 		{#if $others}
 			{#each [...$others] as { connectionId, presence, info } (connectionId)}
@@ -149,16 +155,17 @@
 			{/each}
 		{/if}
 
-		<header>
-			<div class="header_node">
-				<a class="back" href="/dashboard">
-					<div class="icon">
-						<FaArrowLeft />
-					</div>
-				</a>
-				<div class="board_info">
+		<header
+			class="flex h-[60px] w-full items-center justify-between gap-4 border-b bg-background px-8"
+		>
+			<div class="flex items-center gap-6">
+				<Button variant="outline" size="icon" href="/dashboard" aria-label={$t('backtodashboard')}>
+					<ChevronLeft />
+				</Button>
+				<div class="whitespace-nowrap">
 					<Selection id="board-name" {others}>
 						<input
+							class="overflow-ellipsis border-none bg-transparent p-0 text-lg font-semibold leading-[0] outline-none"
 							id="board-name"
 							type="text"
 							value={$boardInfo.get('name')}
@@ -167,14 +174,14 @@
 							on:input={(e) => debounceChangeBoardName(e.currentTarget.value)}
 						/>
 					</Selection>
-					<time datetime={$boardInfo.get('last_edited')}>
+					<time class="text-sm text-muted-foreground" datetime={$boardInfo.get('last_edited')}>
 						{lastEdit}
 					</time>
 				</div>
 			</div>
-			<div class="header_node">
+			<div class="flex gap-6">
 				<!-- Avatars -->
-				<div class="avatars">
+				<div class="flex -space-x-1">
 					<!-- Show the first 3 users' avatars -->
 					{#if $others && $self}
 						{#each [...$others].slice(0, 3) as { connectionId, info, id } (connectionId)}
@@ -185,8 +192,27 @@
 					{/if}
 
 					<!-- Show the amount of people online past the third user -->
-					{#if hasMoreUsers}
-						<div class="more">+ {[...$others].length - 3}</div>
+					{#if hasMoreUsers && $self}
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<div
+									class="z-10 flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground ring-2 ring-muted-foreground"
+								>
+									+{[...$others].length - 3}
+								</div>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								{#each [...$others].slice(3) as { connectionId, info, id } (connectionId)}
+									{#if $self.id !== id}
+										<div class="flex flex-col gap-1">
+											<p>{info.name}</p>
+											<p>{info.name}</p>
+											<p>{info.name}</p>
+										</div>
+									{/if}
+								{/each}
+							</Tooltip.Content>
+						</Tooltip.Root>
 					{/if}
 				</div>
 
@@ -196,13 +222,13 @@
 				{/if}
 
 				{#if board.owner._id && $self?.id}
-					<ShareDialog ownerId={board.owner._id} userId={$self?.id} access={board.shared_with} />
+					<ShareDialog userId={$self?.id} owner={board.owner} access={board.shared_with} />
 				{/if}
 			</div>
 		</header>
 
 		<main>
-			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} />
+			<!-- <Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} /> -->
 		</main>
 	</div>
 {/if}
@@ -216,75 +242,3 @@
 		</div>
 	</div>
 {/if}
-
-<style>
-	.board {
-		position: absolute;
-		inset: 0;
-		width: 100vw;
-		height: 100vh;
-		touch-action: none;
-	}
-
-	header {
-		height: 64px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-inline: 40px;
-		padding-block: 12px;
-		border-bottom: 1px solid var(--base-300);
-	}
-
-	.back {
-		padding: 10px;
-		color: var(--base-700);
-		background-color: var(--base-200);
-		border: 1px solid var(--base-300);
-		border-radius: 6px;
-	}
-
-	.header_node {
-		display: flex;
-		align-items: center;
-		gap: 25px;
-	}
-
-	.board_info input {
-		border: none;
-		outline: none;
-		padding: 0;
-		font-size: 1.8rem;
-		font-weight: 700;
-	}
-
-	.board_info time {
-		font-size: 1.4rem;
-		color: var(--base-600);
-	}
-
-	.avatars {
-		display: flex;
-	}
-
-	.more {
-		display: flex;
-		place-content: center;
-		place-items: center;
-		position: relative;
-		border: 4px solid var(--base-300);
-		border-radius: 9999px;
-		width: 56px;
-		height: 56px;
-		background-color: var(--base-200);
-		margin-left: -0.75rem;
-		color: var(--base-600);
-	}
-
-	.deleted {
-		display: grid;
-		place-items: center;
-		width: 100vw;
-		height: 100vh;
-	}
-</style>

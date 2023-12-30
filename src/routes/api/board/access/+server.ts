@@ -27,26 +27,53 @@ export const POST = (async ({ request }) => {
 		return new Response('Not found', { status: 404 });
 	}
 
-	await board.updateOne({ shared_with: [] });
-
 	try {
+		let usersToShareWith: { name: string; email: string; image: string }[] = [];
+
 		if (emails.length > 0) {
 			const users = await User.find({ email: { $in: emails } });
-			const usersToShareWith = users.filter((user) => user._id !== board.owner._id);
+			usersToShareWith = users.filter((user) => user._id !== board.owner._id);
+
+			const usersAlreadySharedWith = board.shared_with.map((user) => user.email);
+			usersToShareWith = usersToShareWith.filter(
+				(user) => !usersAlreadySharedWith.includes(user.email)
+			);
 
 			if (users.length > 0) {
 				await board.updateOne({
-					shared_with: usersToShareWith.map((u) => ({
-						name: u.name,
-						email: u.email,
-						image: u.image
-					}))
+					$push: {
+						shared_with: {
+							$each: usersToShareWith.map((u) => ({ name: u.name, email: u.email, image: u.image }))
+						}
+					}
 				});
 			}
 		}
+
+		return json({ status: 'accessupdate', users: usersToShareWith }, { status: 200 });
 	} catch (e) {
 		return json('unknown', { status: 500 });
 	}
+}) satisfies RequestHandler;
 
-	return json('accessupdate', { status: 200 });
+export const DELETE = (async ({ request }) => {
+	const { email, boardId } = await request.json();
+
+	if (!boardId || !email || typeof email !== 'string' || typeof boardId !== 'string') {
+		return new Response('Bad request', { status: 400 });
+	}
+
+	const board = await Board.findById(boardId);
+
+	if (!board) {
+		return new Response('Not found', { status: 404 });
+	}
+
+	try {
+		await board.updateOne({ $pull: { shared_with: { email } } });
+
+		return json({ status: 'accessupdate' }, { status: 200 });
+	} catch (e) {
+		return json('unknown', { status: 500 });
+	}
 }) satisfies RequestHandler;

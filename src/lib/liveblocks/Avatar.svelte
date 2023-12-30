@@ -1,63 +1,20 @@
-<script>
-	export let image = '';
-	export let name = '';
-	export let color = '';
+<script lang="ts">
+	import * as Avatar from '$components/ui/avatar';
+	import * as Tooltip from '$components/ui/tooltip';
 
-	const IMAGE_SIZE = 48;
+	export let image: string;
+	export let name: string;
+	export let color: string;
 </script>
 
-<div class="avatar" data-tooltip={name} style={`border: 4px solid ${color};`}>
-	<div class="avatar_image">
-		<img
-			alt="Avatar"
-			height={IMAGE_SIZE}
-			src={image}
-			width={IMAGE_SIZE}
-			referrerpolicy="no-referrer"
-		/>
-	</div>
-</div>
-
-<style>
-	.avatar {
-		display: flex;
-		place-content: center;
-		position: relative;
-		border-radius: 90px;
-		width: 56px;
-		height: 56px;
-		margin-left: -0.75rem;
-		padding: 1px;
-		background: white;
-	}
-
-	.avatar:before {
-		content: attr(data-tooltip);
-		position: absolute;
-		bottom: -100%;
-		opacity: 0;
-		transition: opacity 0.15s ease;
-		padding: 5px 10px;
-		color: white;
-		font-size: 1.2rem;
-		border-radius: 8px;
-		margin-bottom: 10px;
-		z-index: 1;
-		background: black;
-		white-space: nowrap;
-	}
-
-	.avatar:hover:before {
-		opacity: 1;
-	}
-
-	.avatar_image {
-		border-radius: 90px;
-		overflow: hidden;
-	}
-
-	.avatar_image img {
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<Tooltip.Root>
+	<Tooltip.Trigger>
+		<Avatar.Root class="h-8 w-8 bg-background" style={`outline: 2px solid ${color};`}>
+			<Avatar.Image src={image} alt="avatar" referrerpolicy="no-referrer" />
+			<Avatar.Fallback>{name}</Avatar.Fallback>
+		</Avatar.Root>
+	</Tooltip.Trigger>
+	<Tooltip.Content>
+		<p>{name}</p>
+	</Tooltip.Content>
+</Tooltip.Root>
