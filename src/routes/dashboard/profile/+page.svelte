@@ -58,13 +58,21 @@
 		</div>
 	</form>
 
-	<form class="flex w-full max-w-sm items-end space-x-2" use:enhance action="?/name" method="post">
-		<div class="flex w-full max-w-sm flex-col gap-3">
-			<Label for="name">{$t('name')}</Label>
-			<Input type="text" id="name" name="name" placeholder={data.user.name} required />
-		</div>
-		<Button type="submit">{$t('change')}</Button>
-	</form>
+	<div>
+		<form
+			class="flex w-full max-w-sm items-end space-x-2"
+			use:enhance
+			action="?/name"
+			method="post"
+		>
+			<div class="flex w-full max-w-sm flex-col gap-3">
+				<Label for="name">{$t('name')}</Label>
+				<Input type="text" id="name" name="name" placeholder={data.user.name} required />
+			</div>
+			<Button type="submit">{$t('change')}</Button>
+		</form>
+		<p class="mt-2 text-sm text-muted-foreground">{$t('namedesc')}</p>
+	</div>
 </div>
 
 {#if form?.success}

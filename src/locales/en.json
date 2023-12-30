@@ -52,6 +52,7 @@
 	"login": "Log in",
 	"myaccount": "My Account",
 	"name": "Name",
+	"namedesc": "This is your public display name",
 	"namelong": "Name is too long",
 	"newboard": "New board",
 	"newlabel": "Add new label",

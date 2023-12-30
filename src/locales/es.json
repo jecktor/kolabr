@@ -52,6 +52,7 @@
 	"login": "Iniciar sesión",
 	"myaccount": "Mi Cuenta",
 	"name": "Nombre",
+	"namedesc": "Este es tu nombre público",
 	"namelong": "El nombre es demasiado largo",
 	"newboard": "Nuevo tablero",
 	"newlabel": "Añadir nueva etiqueta",
