@@ -6,7 +6,10 @@
 	import type { IBoard, ILane, ITag, IBoardInfo, InputEvent } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
+
 	import Board from './Board.svelte';
+	import { Loading } from '$components';
+
 	import ShareDialog from './ShareDialog.svelte';
 	import * as Tooltip from '$components/ui/tooltip';
 	import { Button } from '$components/ui/button';
@@ -140,7 +143,7 @@
 	overrideItemIdKeyNameBeforeInitialisingDndZones('_id');
 </script>
 
-{#if boardReady}
+{#if boardReady && !boardDeleted}
 	<div
 		class="absolute inset-0 h-screen w-screen touch-none"
 		on:pointerleave={handlePointerLeave}
@@ -228,17 +231,21 @@
 		</header>
 
 		<main>
-			<!-- <Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} /> -->
+			<Board lanes={[...$lanes]} onFinalUpdate={handleBoardUpdate} />
 		</main>
+	</div>
+{:else if !boardReady}
+	<div class="absolute inset-0 grid h-screen w-screen place-items-center">
+		<Loading />
 	</div>
 {/if}
 
 {#if boardDeleted}
-	<div class="deleted">
+	<div class="absolute inset-0 grid h-screen w-screen place-items-center bg-background">
 		<div>
-			<h1>{$t('boardnotfound')}</h1>
-			<p>{$t('boardnotfoundmsg')}</p>
-			<a href="/dashboard">{$t('backtodashboard')}</a>
+			<h1 class="text-2xl font-semibold leading-none">{$t('boardnotfound')}</h1>
+			<p class="mt-2 text-sm text-muted-foreground">{$t('boardnotfoundmsg')}</p>
+			<Button class="mt-6" href="/dashboard">{$t('backtodashboard')}</Button>
 		</div>
 	</div>
 {/if}

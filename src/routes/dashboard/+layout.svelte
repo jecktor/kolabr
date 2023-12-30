@@ -8,7 +8,7 @@
 	import * as Avatar from '$components/ui/avatar';
 	import * as DropdownMenu from '$components/ui/dropdown-menu';
 	import { Input } from '$components/ui/input';
-	import { SearchIcon, KanbanIcon, UserIcon, UsersIcon, Settings, LogOut } from 'lucide-svelte';
+	import { SearchIcon, KanbanIcon, UserIcon, Settings, LogOut } from 'lucide-svelte';
 
 	type Boards = (IBoard &
 		Required<{
@@ -54,9 +54,9 @@
 			<KanbanIcon class="h-4 w-4" />
 			{$t('boards')}
 		</SidebarLink>
-		<SidebarLink to="/dashboard/teams" active={location === 'teams'}>
-			<UsersIcon class="h-4 w-4" />
-			{$t('teams')}
+		<SidebarLink to="/dashboard/profile" active={location === 'profile'}>
+			<UserIcon class="h-4 w-4" />
+			{$t('profile')}
 		</SidebarLink>
 		<SidebarLink to="/dashboard/settings" active={location === 'settings'}>
 			<Settings class="h-4 w-4" />

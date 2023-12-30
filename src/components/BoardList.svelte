@@ -45,7 +45,7 @@
 			{#each boards as board (board._id)}
 				<div class="relative">
 					<a class="h-full" href={`/board/${board._id}`}>
-						<Card.Root class="h-full">
+						<Card.Root class="h-full hover:border-primary">
 							<Card.Header class="text-left">
 								<Card.Title class="mr-6 overflow-hidden overflow-ellipsis whitespace-nowrap"
 									>{board.name}</Card.Title
@@ -87,7 +87,7 @@
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
 								<button
-									class="flex h-8 w-8 items-center justify-center"
+									class="flex h-8 w-8 items-center justify-center rounded-md hover:text-primary"
 									title={$t('actions')}
 									aria-label={$t('actions')}
 								>
