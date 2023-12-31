@@ -9,6 +9,7 @@
 	import * as Card from '$components/ui/card';
 	import * as AlertDialog from '$components/ui/alert-dialog';
 	import * as DropdownMenu from '$components/ui/dropdown-menu';
+	import { Button } from '$components/ui/button';
 	import { MoreHorizontal, Link } from 'lucide-svelte';
 
 	export let title: TranslationKeys;
@@ -86,13 +87,14 @@
 					<div class="absolute right-4 top-4">
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
-								<button
-									class="flex h-8 w-8 items-center justify-center rounded-md hover:text-primary"
+								<Button
+									size="icon"
+									variant="ghost"
 									title={$t('actions')}
 									aria-label={$t('actions')}
 								>
 									<MoreHorizontal class="h-5 w-5" />
-								</button>
+								</Button>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
 								<DropdownMenu.Group>

@@ -5,10 +5,11 @@
 	import { t, translateDate } from '$locales';
 	import type { ILane, ITicket } from '$types';
 
+	import { Button } from '$components/ui/button';
+	import { Plus } from 'lucide-svelte';
 	import FaAlignLeft from 'svelte-icons/fa/FaAlignLeft.svelte';
 	import FaClock from 'svelte-icons/fa/FaClock.svelte';
 	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
-	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import FaTags from 'svelte-icons/fa/FaTags.svelte';
 	import ManageTags from './ManageTags.svelte';
 	import Modal from './Modal.svelte';
@@ -145,16 +146,15 @@
 
 {#if isNew}
 	{#if !isLaneFull}
-		<button
+		<Button
+			size="icon"
+			variant="ghost"
 			on:click={createTicket}
-			class="new_ticket"
 			aria-label={$t('newticket')}
 			title={$t('newticket')}
 		>
-			<div class="icon">
-				<FaPlus />
-			</div>
-		</button>
+			<Plus />
+		</Button>
 	{/if}
 {:else}
 	<button on:click={() => (show = true)} class={`ticket_btn ${isDue ? 'expired' : ''}`}>
@@ -196,7 +196,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex align-items-center space1 gap-5">
 			<div class="d-flex gap-3">
 				<div class="icon">
 					<FaAlignLeft />
@@ -212,7 +212,7 @@
 			/>
 		</div>
 
-		<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex align-items-center space1 gap-5">
 			<div class="d-flex gap-3">
 				<div class="icon">
 					<FaClock />
@@ -226,7 +226,7 @@
 				class="c form-control"
 			/>
 		</div>
-		<div class="d-flex align-items-center gap-5 space1">
+		<div class="d-flex align-items-center space1 gap-5">
 			<div class="d-flex gap-3">
 				<div class="icon">
 					<FaTags />

@@ -1,49 +1,79 @@
-import { json } from '@sveltejs/kit';
 import { Board } from '$lib/server';
 import type { RequestHandler } from './$types';
 
-export const POST = (async ({ request }) => {
-	const { _id, name, limit, board } = await request.json();
+export const POST = (async ({ locals, request }) => {
+	const session = await locals.auth.validate();
+	if (!session) return new Response('Unauthorized', { status: 401 });
+
+	const { user } = session;
+	const { _id, name, limit, boardId } = await request.json();
 
 	if (
 		!_id ||
 		typeof _id !== 'string' ||
 		!name ||
 		typeof name !== 'string' ||
-		!board ||
-		typeof board !== 'string' ||
+		!boardId ||
+		typeof boardId !== 'string' ||
 		typeof limit !== 'number'
 	) {
 		return new Response('Bad request', { status: 400 });
 	}
 
+	if (limit < 0 || name.length > 15) {
+		return new Response('Bad request', { status: 400 });
+	}
+
+	const board = await Board.findById(boardId);
+
+	if (!board) {
+		return new Response('Not found', { status: 404 });
+	}
+
+	if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+		return new Response('Unauthorized', { status: 401 });
+	}
+
 	try {
-		await Board.findByIdAndUpdate(board, {
+		await board.updateOne({
 			$push: { lanes: { _id, name, limit, tickets: [] } }
 		});
+
+		return new Response('OK', { status: 200 });
 	} catch (e) {
 		return new Response('Internal Server Error', { status: 500 });
 	}
-
-	return json('OK', { status: 200 });
 }) satisfies RequestHandler;
 
-export const PATCH = (async ({ request }) => {
-	const { _id, board, tickets } = await request.json();
+export const PATCH = (async ({ locals, request }) => {
+	const session = await locals.auth.validate();
+	if (!session) return new Response('Unauthorized', { status: 401 });
+
+	const { user } = session;
+	const { _id, tickets, boardId } = await request.json();
 
 	if (
 		!_id ||
 		typeof _id !== 'string' ||
-		!board ||
-		typeof board !== 'string' ||
+		!boardId ||
+		typeof boardId !== 'string' ||
 		typeof tickets !== 'object'
 	) {
 		return new Response('Bad request', { status: 400 });
 	}
 
+	const board = await Board.findById(boardId);
+
+	if (!board) {
+		return new Response('Not found', { status: 404 });
+	}
+
+	if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+		return new Response('Unauthorized', { status: 401 });
+	}
+
 	try {
-		await Board.findByIdAndUpdate(
-			board,
+		await board.updateOne(
 			{
 				$set: { 'lanes.$[lane].tickets': tickets }
 			},
@@ -51,21 +81,25 @@ export const PATCH = (async ({ request }) => {
 				arrayFilters: [{ 'lane._id': _id }]
 			}
 		);
+
+		return new Response('OK', { status: 200 });
 	} catch (e) {
 		return new Response('Internal Server Error', { status: 500 });
 	}
-
-	return json('OK', { status: 200 });
 }) satisfies RequestHandler;
 
-export const PUT = (async ({ request }) => {
-	const { _id, board, name, limit } = await request.json();
+export const PUT = (async ({ locals, request }) => {
+	const session = await locals.auth.validate();
+	if (!session) return new Response('Unauthorized', { status: 401 });
+
+	const { user } = session;
+	const { _id, name, limit, boardId } = await request.json();
 
 	if (
 		!_id ||
 		typeof _id !== 'string' ||
-		!board ||
-		typeof board !== 'string' ||
+		!boardId ||
+		typeof boardId !== 'string' ||
 		!name ||
 		typeof name !== 'string' ||
 		typeof limit !== 'number'
@@ -73,31 +107,58 @@ export const PUT = (async ({ request }) => {
 		return new Response('Bad request', { status: 400 });
 	}
 
-	try {
-		await Board.findByIdAndUpdate(
-			board,
-			{ $set: { 'lanes.$[lane].name': name, 'lanes.$[lane].limit': limit } },
-			{ arrayFilters: [{ 'lane._id': _id }] }
-		);
-	} catch (e) {
-		return new Response('Internal Server Error', { status: 500 });
-	}
-
-	return json('OK', { status: 200 });
-}) satisfies RequestHandler;
-
-export const DELETE = (async ({ request }) => {
-	const { _id, board } = await request.json();
-
-	if (!_id || typeof _id !== 'string' || !board || typeof board !== 'string') {
+	if (limit < 0 || name.length > 15) {
 		return new Response('Bad request', { status: 400 });
 	}
 
+	const board = await Board.findById(boardId);
+
+	if (!board) {
+		return new Response('Not found', { status: 404 });
+	}
+
+	if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+		return new Response('Unauthorized', { status: 401 });
+	}
+
 	try {
-		await Board.findByIdAndUpdate(board, { $pull: { lanes: { _id } } });
+		await board.updateOne(
+			{ $set: { 'lanes.$[lane].name': name, 'lanes.$[lane].limit': limit } },
+			{ arrayFilters: [{ 'lane._id': _id }] }
+		);
+
+		return new Response('OK', { status: 200 });
 	} catch (e) {
 		return new Response('Internal Server Error', { status: 500 });
 	}
+}) satisfies RequestHandler;
 
-	return json('OK', { status: 200 });
+export const DELETE = (async ({ locals, request }) => {
+	const session = await locals.auth.validate();
+	if (!session) return new Response('Unauthorized', { status: 401 });
+
+	const { user } = session;
+	const { _id, boardId } = await request.json();
+
+	if (!_id || typeof _id !== 'string' || !boardId || typeof boardId !== 'string') {
+		return new Response('Bad request', { status: 400 });
+	}
+
+	const board = await Board.findById(boardId);
+
+	if (!board) {
+		return new Response('Not found', { status: 404 });
+	}
+
+	if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+		return new Response('Unauthorized', { status: 401 });
+	}
+
+	try {
+		await board.updateOne({ $pull: { lanes: { _id } } });
+
+		return new Response('OK', { status: 200 });
+	} catch (e) {
+		return new Response('Internal Server Error', { status: 500 });
+	}
 }) satisfies RequestHandler;

@@ -27,12 +27,16 @@
 		: true;
 </script>
 
-<div class="wrapper">
-	<div class="lane-title">
+<div
+	class="h-full w-full overflow-y-hidden rounded-lg border bg-card text-card-foreground shadow-sm"
+>
+	<div class="flex items-center justify-between px-4 pt-3">
 		<div class="d-flex gap-2 text-nowrap">
-			<span class="space1">{lane.name}</span>
+			<span class="font-semibold">{lane.name}</span>
 			{#if lane.limit > 0}
-				<span class="fw-normal">{lane.tickets.length}/{lane.limit}</span>
+				<span class="ml-2 tracking-widest text-muted-foreground"
+					>{lane.tickets.length}/{lane.limit}</span
+				>
 			{/if}
 		</div>
 		<div>
@@ -41,7 +45,7 @@
 		</div>
 	</div>
 	<div
-		class="lane-content"
+		class="no-scrollbar h-[calc(100%-2.5rem)] overflow-y-scroll px-4"
 		use:dndzone={{
 			items: lane.tickets,
 			flipDurationMs,
@@ -52,67 +56,12 @@
 		on:finalize={handleDndFinalizeTickets}
 	>
 		{#each lane.tickets as ticket (ticket._id)}
-			<div class="ticket" animate:flip={{ duration: flipDurationMs }}>
+			<div
+				class="my-2 flex h-fit w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-sm"
+				animate:flip={{ duration: flipDurationMs }}
+			>
 				<EditTicket boardticket={ticket} laneIdx={idx} />
 			</div>
 		{/each}
 	</div>
 </div>
-
-<style>
-	.wrapper {
-		height: 100%;
-		width: 100%;
-		overflow-y: hidden;
-	}
-
-	.lane-content {
-		height: calc(100% - 2.5em);
-		overflow-y: scroll;
-		--ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-
-	.lane-content::-webkit-scrollbar {
-		display: none;
-	}
-
-	.lane-title {
-		height: 2.5em;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 600;
-		font-size: 16px;
-		line-height: 19px;
-		letter-spacing: -0.2px;
-		color: var(--base-600);
-	}
-
-	.ticket {
-		height: fit-content;
-		width: 100%;
-		margin: 0.4em 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 8px;
-	}
-
-	.space1 {
-		margin-left: 3%;
-	}
-
-	@media (max-width: 768px) {
-		.lane-title {
-			font-size: 9px;
-			margin-top: 2px;
-		}
-
-		.ticket {
-			margin-top: 1.2rem;
-		}
-	}
-</style>

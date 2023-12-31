@@ -5,11 +5,9 @@
 	import { t } from '$locales';
 	import type { ILane } from '$types';
 
-	import FaRegListAlt from 'svelte-icons/fa/FaRegListAlt.svelte';
-	import FaEllipsisH from 'svelte-icons/fa/FaEllipsisH.svelte';
-	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
-	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
-	import Modal from './Modal.svelte';
+	import * as Dialog from '$components/ui/dialog';
+	import { Button } from '$components/ui/button';
+	import { Plus, MoreHorizontal, Trash } from 'lucide-svelte';
 
 	export let idx: number;
 	export let isNew = false;
@@ -29,7 +27,7 @@
 
 	$: name = $lanes ? $lanes.get(idx)?.name ?? lane.name : lane.name;
 	$: limit = $lanes ? $lanes.get(idx)?.limit ?? lane.limit : lane.limit;
-	$: open = !isNew && $lanes && $lanes.get(idx) && show;
+	$: validLane = !isNew && $lanes && $lanes.get(idx);
 
 	function createLane() {
 		lane._id = randomId();
@@ -40,7 +38,7 @@
 				_id: lane._id,
 				name: lane.name,
 				limit: lane.limit,
-				board: boardId
+				boardId
 			}),
 			headers: {
 				'content-type': 'application/json'
@@ -66,7 +64,7 @@
 			method: 'PUT',
 			body: JSON.stringify({
 				_id: newLane._id,
-				board: boardId,
+				boardId,
 				name: newLane.name,
 				limit: newLane.limit
 			}),
@@ -85,7 +83,7 @@
 	function deleteLane() {
 		const opts = {
 			method: 'DELETE',
-			body: JSON.stringify({ _id: lane._id.split('-')[0], board: boardId }),
+			body: JSON.stringify({ _id: lane._id.split('-')[0], boardId }),
 			headers: {
 				'content-type': 'application/json'
 			}
@@ -100,172 +98,73 @@
 </script>
 
 {#if isNew}
-	<button on:click={createLane} class="new_lane" aria-label={$t('newlane')} title={$t('newlane')}>
-		<div class="icon">
-			<FaPlus />
-		</div>
-	</button>
+	<Button
+		size="icon"
+		variant="ghost"
+		on:click={createLane}
+		class="mx-2 mt-[1.5rem]"
+		aria-label={$t('newlane')}
+		title={$t('newlane')}
+	>
+		<Plus />
+	</Button>
 {:else}
-	<button
+	<Button
+		size="icon"
+		variant="ghost"
 		on:click={() => (show = true)}
-		class="edit_lane"
 		aria-label={$t('change')}
 		title={$t('change')}
 	>
-		<div class="icon">
-			<FaEllipsisH />
-		</div>
-	</button>
+		<MoreHorizontal />
+	</Button>
 {/if}
 
-{#if open}
-	<Modal bind:show>
-		<div class="header space1">
-			<input bind:this={nameInput} maxlength="15" type="text" value={name} class="form-control a" />
-			<button on:click={deleteLane}>
-				<div class="icon">
-					<FaTrash />
+{#if validLane}
+	<Dialog.Root bind:open={show}>
+		<Dialog.Trigger />
+		<Dialog.Content class="no-close max-w-sm text-left">
+			<Dialog.Header>
+				<Dialog.Title class="flex items-center justify-between">
+					<input
+						class="mr-4 w-full whitespace-nowrap border-none bg-transparent p-0 text-lg font-semibold leading-[0] outline-none selection:bg-muted"
+						bind:this={nameInput}
+						maxlength="15"
+						type="text"
+						value={name}
+					/>
+					<Button
+						class="min-w-10"
+						on:click={deleteLane}
+						variant="ghost"
+						size="icon"
+						aria-label={$t('deletes')}
+					>
+						<Trash class="h-5 w-5" />
+					</Button>
+				</Dialog.Title>
+				<div class="!my-4 flex items-center gap-4 whitespace-nowrap">
+					<span class="text-sm leading-none">{$t('ticketlimit')}</span>
+					<div
+						class="flex h-10 w-32 items-center justify-between whitespace-nowrap rounded-md border"
+					>
+						<Button
+							class="text-xl"
+							variant="ghost"
+							on:click={() => (limit = limit >= 1 ? --limit : limit)}>-</Button
+						>
+						<span>{limit}</span>
+						<Button
+							class="text-xl"
+							variant="ghost"
+							on:click={() => (limit = limit <= 9 ? ++limit : limit)}>+</Button
+						>
+					</div>
 				</div>
-			</button>
-		</div>
-		<div class="counter-container space1">
-			<div class="icon space2">
-				<FaRegListAlt />
-			</div>
-			<span class="b">{$t('ticketlimit')}</span>
-			<div class="counter">
-				<button on:click={() => (limit = limit >= 1 ? --limit : limit)}>-</button>
-				<span>{limit}</span>
-				<button on:click={() => (limit = limit <= 9 ? ++limit : limit)}>+</button>
-			</div>
-		</div>
-		<button on:click={updateLane} class="btn btn-primary">{$t('done')}</button>
-	</Modal>
+				<Dialog.Footer class="!justify-start">
+					<Button on:click={updateLane}>{$t('done')}</Button>
+				</Dialog.Footer>
+			</Dialog.Header>
+		</Dialog.Content>
+	</Dialog.Root>
 {/if}
-
-<style>
-	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.new_lane {
-		margin: 1em 0.5em;
-		background-color: var(--base-200);
-		border-radius: 12px;
-		outline: none;
-		border: none;
-		height: 30px;
-	}
-
-	.icon {
-		color: var(--base-500);
-	}
-
-	.edit_lane {
-		background-color: var(--base-200);
-		border: none;
-		outline: none;
-		border: none;
-		background: none;
-	}
-
-	.space1 {
-		margin-bottom: 5%;
-	}
-
-	.space2 {
-		margin-right: 2%;
-	}
-
-	.a {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 700;
-		font-size: 32px;
-		line-height: 39px;
-		color: var(--base-400);
-		border: none;
-		box-shadow: none;
-	}
-
-	.b {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 19px;
-		letter-spacing: -0.2px;
-		color: var(--base-600);
-		white-space: nowrap;
-	}
-
-	.form-control {
-		padding: 0;
-	}
-
-	.counter-container {
-		display: flex;
-		align-items: center;
-	}
-
-	.counter {
-		display: flex;
-		align-items: center;
-		margin-left: 8%;
-		box-sizing: border-box;
-		flex-direction: row;
-		padding: 2px 10px;
-		gap: 10px;
-		background: var(--base-100);
-		border: 1px solid var(--base-300);
-		border-radius: 6px;
-		height: 40px;
-		user-select: none;
-	}
-
-	.counter button {
-		border: none;
-		background: none;
-		text-decoration: none;
-		cursor: pointer;
-		font-size: 28px;
-		color: var(--base-500);
-	}
-
-	.header button {
-		border: none;
-		background: none;
-		text-decoration: none;
-		cursor: pointer;
-	}
-
-	.form-control {
-		color: var(--base-600);
-	}
-
-	.form-control:focus {
-		color: var(--base-400);
-	}
-
-	@media (max-width: 768px) {
-		.new_lane {
-			left: 135%;
-			height: 25px;
-		}
-
-		.icon {
-			width: 12px;
-			height: 12px;
-		}
-
-		button {
-			font-size: revert;
-		}
-
-		.edit_lane {
-			margin-left: 15px;
-		}
-	}
-</style>

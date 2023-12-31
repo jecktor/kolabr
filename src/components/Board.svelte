@@ -25,7 +25,7 @@
 			method: 'PATCH',
 			body: JSON.stringify({
 				_id: lanes[laneIdx]._id.split('-')[0],
-				board: $page.url.href.split('/').pop(),
+				boardId: $page.url.href.split('/').pop(),
 				tickets: newTickets
 			}),
 			headers: {
@@ -40,52 +40,21 @@
 	}
 </script>
 
-<div class="wrapper">
+<div class="flex">
 	<section
-		class="board"
+		class="flex h-[93vh] w-fit flex-wrap p-2"
 		use:dndzone={{ items: lanes, flipDurationMs, type: 'column' }}
 		on:consider={handleDndConsiderLanes}
 		on:finalize={handleDndFinalizeLanes}
 	>
 		{#each lanes as lane, idx (lane._id)}
-			<div class="lane" animate:flip={{ duration: flipDurationMs }}>
+			<div
+				class="float-left m-2 h-full w-80 rounded-md p-2"
+				animate:flip={{ duration: flipDurationMs }}
+			>
 				<Lane {lane} {idx} onDrop={(newTickets) => handleTicketFinalize(idx, newTickets)} />
 			</div>
 		{/each}
 	</section>
 	<EditLane idx={lanes.length - 1} isNew />
 </div>
-
-<style>
-	.wrapper {
-		display: flex;
-	}
-
-	.board {
-		display: flex;
-		flex-wrap: wrap;
-		height: 90vh;
-		width: fit-content;
-		padding: 0.5em;
-	}
-
-	.lane {
-		height: 100%;
-		width: 300px;
-		padding: 0.5em;
-		margin: 0.5em;
-		float: left;
-		background-color: var(--base-200);
-		border-radius: 12px;
-	}
-
-	@media (max-width: 768px) {
-		.lane {
-			width: 38%;
-		}
-
-		.board {
-			width: 170%;
-		}
-	}
-</style>

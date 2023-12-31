@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
 
 @layer base {
   :root {
@@ -58,3 +57,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+
+      .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+    }
+
+      .no-close [data-dialog-close] {
+        display: none;
+    }
+  }
+

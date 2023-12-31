@@ -165,7 +165,7 @@
 				<Button variant="outline" size="icon" href="/dashboard" aria-label={$t('backtodashboard')}>
 					<ChevronLeft />
 				</Button>
-				<div class="whitespace-nowrap">
+				<div class="whitespace-nowrap leading-[0]">
 					<Selection id="board-name" {others}>
 						<input
 							class="overflow-ellipsis border-none bg-transparent p-0 text-lg font-semibold leading-[0] outline-none"
