@@ -3,11 +3,11 @@
 	import { useList } from '$lib/liveblocks';
 	import { randomId } from '$utils';
 	import { t } from '$locales';
-
-	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
-	import FaTrash from 'svelte-icons/fa/FaTrash.svelte';
-	import Tag from './Tag.svelte';
 	import type { ILane, ITag } from '$types';
+
+	import { Button } from '$components/ui/button';
+	import { Plus, Trash } from 'lucide-svelte';
+	import Tag from './Tag.svelte';
 
 	export let ticketTags: ITag[];
 	export let laneIdx: number;
@@ -175,47 +175,59 @@
 	}
 </script>
 
-<div class="manage_tasks a">
-	<div class="add_tag">
+<div class="relative">
+	<div class="flex items-center justify-between gap-2">
 		<input
-			class="i"
-			type="text"
+			class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 			maxlength="15"
 			placeholder={$t('newlabel')}
 			on:focus={() => (isFocused = true)}
 			on:blur={() => setTimeout(() => (isFocused = false), 200)}
 			bind:this={tagInput}
 		/>
-		<button class="add" on:click={createTag}>
-			<div class="icon">
-				<FaPlus />
-			</div>
-		</button>
+		<Button
+			class="min-w-10"
+			aria-label={$t('newlabel')}
+			title={$t('newlabel')}
+			variant="secondary"
+			size="icon"
+			on:click={createTag}
+		>
+			<Plus class="h-4 w-4" />
+		</Button>
 	</div>
-	<div class="tags">
+	<div class="mt-3 flex flex-wrap gap-2">
 		{#each tags as { _id, name } (_id)}
 			<Tag id={_id} {name} isDeletable onDelete={() => removeTag(_id)} />
 		{/each}
 	</div>
 	{#if isFocused && $boardTags && tags.length < $boardTags.length}
-		<div class="board_tags a">
+		<div class="absolute top-11 flex w-72 flex-col gap-2 rounded-md border bg-background px-3 py-2">
 			{#each [...$boardTags] as { _id, name, color } (_id)}
 				{#if !tags.find((tag) => tag._id === _id)}
-					<div class="tag-container">
-						<div class="tag-name">
-							<Tag id={_id} {name} />
-						</div>
-						<div class="buttons">
-							<button class="add" on:click={() => addTag(_id, name, color)}>
-								<div class="icon">
-									<FaPlus />
-								</div>
-							</button>
-							<button class="delete" on:click={() => deleteTag(_id)}>
-								<div class="icon">
-									<FaTrash />
-								</div>
-							</button>
+					<div class="flex items-center justify-between">
+						<Tag id={_id} {name} />
+						<div class="flex gap-1">
+							<Button
+								variant="ghost"
+								size="icon"
+								class="h-8 w-8"
+								aria-label={$t('newlabel')}
+								title={$t('newlabel')}
+								on:click={() => addTag(_id, name, color)}
+							>
+								<Plus class="h-4 w-4" />
+							</Button>
+							<Button
+								variant="ghost"
+								size="icon"
+								class="h-8 w-8"
+								aria-label={$t('deletes')}
+								title={$t('deletes')}
+								on:click={() => deleteTag(_id)}
+							>
+								<Trash class="h-4 w-4" />
+							</Button>
 						</div>
 					</div>
 				{/if}
@@ -223,93 +235,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	.manage_tasks {
-		position: relative;
-	}
-
-	.board_tags {
-		position: absolute;
-		top: 35px;
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		width: 250px;
-		border-radius: 6px;
-		border: 1px solid var(--base-300);
-		padding: 10px;
-		background: var(--base-100);
-	}
-
-	.buttons {
-		display: flex;
-		align-items: center;
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		width: 300px;
-		gap: 5px;
-		margin-top: 10px;
-	}
-
-	.tag-name {
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: left;
-	}
-
-	.tag-container button {
-		border: none;
-		background: none;
-		text-decoration: none;
-		cursor: pointer;
-		font-size: 28px;
-		color: var(--base-500);
-	}
-
-	.tag-container {
-		display: flex;
-		gap: 20px;
-		background: var(--base-100);
-		border-radius: 6px;
-	}
-
-	.icon {
-		line-height: 0;
-	}
-
-	.a {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 19px;
-		letter-spacing: -0.2px;
-		color: var(--base-600);
-	}
-
-	.icon {
-		color: var(--base-500);
-	}
-
-	.add_tag button {
-		border: none;
-		background: none;
-		text-decoration: none;
-		cursor: pointer;
-		font-size: 28px;
-		color: var(--base-500);
-	}
-
-	.i {
-		width: 200px;
-		height: 30px;
-		background: var(--base-100);
-		border: 1px solid var(--base-300);
-		border-radius: 0.375rem;
-	}
-</style>

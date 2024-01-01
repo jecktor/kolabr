@@ -47,7 +47,6 @@
 		"lucide-svelte": "^0.298.0",
 		"mode-watcher": "^0.1.2",
 		"mongoose": "^8.0.3",
-		"svelte-icons": "^2.1.0",
 		"sveltekit-superforms": "^1.12.0",
 		"tailwind-merge": "^2.1.0",
 		"tailwind-variants": "^0.1.19",

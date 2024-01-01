@@ -100,7 +100,7 @@
 {#if isNew}
 	<Button
 		size="icon"
-		variant="ghost"
+		variant="outline"
 		on:click={createLane}
 		class="mx-2 mt-[1.5rem]"
 		aria-label={$t('newlane')}
@@ -161,7 +161,7 @@
 						>
 					</div>
 				</div>
-				<Dialog.Footer class="!justify-start">
+				<Dialog.Footer>
 					<Button on:click={updateLane}>{$t('done')}</Button>
 				</Dialog.Footer>
 			</Dialog.Header>

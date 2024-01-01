@@ -57,7 +57,7 @@
 	>
 		{#each lane.tickets as ticket (ticket._id)}
 			<div
-				class="my-2 flex h-fit w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-sm"
+				class="my-2 flex h-fit w-full items-center justify-center rounded-lg bg-card text-card-foreground shadow-sm"
 				animate:flip={{ duration: flipDurationMs }}
 			>
 				<EditTicket boardticket={ticket} laneIdx={idx} />
