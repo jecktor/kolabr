@@ -10,7 +10,7 @@
 	export let onDelete: (id: string) => void = () => {};
 </script>
 
-<Badge class="text-white" style={`background: ${str2Color(id, 80, 40)}`}>
+<Badge class="text-white" style={`background: ${str2Color(id)}`}>
 	<span>{name}</span>
 	{#if isDeletable}
 		<button class="border-none bg-transparent outline-none" on:click={() => onDelete(id)}>

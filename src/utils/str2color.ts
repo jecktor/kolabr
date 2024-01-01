@@ -2,7 +2,7 @@
  * Generates an hsl color from a string consistently.
  */
 
-export function str2Color(str: string, s = 50, l = 80) {
+export function str2Color(str: string, s = 80, l = 40) {
 	const hash = str.split('').reduce((acc, char) => {
 		acc = (acc << 5) - acc + char.charCodeAt(0);
 		return acc & acc;
