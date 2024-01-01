@@ -2,6 +2,13 @@
 	import { enhance } from '$app/forms';
 	import { t, type TranslationKeys } from '$locales';
 
+	import * as Alert from '$components/ui/alert';
+	import * as Card from '$components/ui/card';
+	import { Input } from '$components/ui/input';
+	import { Label } from '$components/ui/label';
+	import { Button } from '$components/ui/button';
+	import { AlertCircle } from 'lucide-svelte';
+
 	export let form: { message?: TranslationKeys };
 </script>
 
@@ -10,116 +17,45 @@
 	<meta name="description" content={$t('herotitle')} />
 </svelte:head>
 
-<div class="signup container">
-	<div class="row justify-content-center">
-		<div>
-			<div class="signup-wrapper">
-				<h2 class="a">{$t('signup')}</h2>
-				<form method="post" use:enhance>
-					<div class="form-group mb-4">
-						<label class="b" for="name">{$t('name')}</label>
-						<input id="name" name="name" class="form-control c" required />
-					</div>
-					<div class="form-group mb-4">
-						<label class="b" for="email">{$t('email')}</label>
-						<input type="email" id="email" name="email" class="form-control c" required />
-					</div>
-					<div class="form-group mb-4">
-						<label class="b" for="pass">{$t('pass')}</label>
-						<input type="password" id="pass" name="pass" class="form-control c" required />
-					</div>
-					<div class="form-group mb-4">
-						<label class="b" for="passconfirm">{$t('passconfirm')}</label>
-						<input
-							type="password"
-							id="passconfirm"
-							name="passconfirm"
-							class="form-control c"
-							required
-						/>
-					</div>
-					<button type="submit" class="button btn btn-secondary btn-lg btn-block"
-						>{$t('continues')}</button
-					>
-				</form>
-				<a
-					href="/login"
-					class="b link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover text-center"
-					>{$t('login')}</a
-				>
-			</div>
-		</div>
-	</div>
-	{#if form?.message}
-		<p class="b alert alert-danger">{$t(form.message)}</p>
-	{/if}
+<div class="grid h-screen w-screen place-items-center">
+	<Card.Root class="w-full md:w-[400px]">
+		<form method="post" use:enhance>
+			<Card.Header class="space-y-1">
+				<Card.Title class="text-2xl">{$t('signup')}</Card.Title>
+			</Card.Header>
+			<Card.Content class="grid gap-4">
+				<div class="grid gap-2">
+					<Label for="name">{$t('name')}</Label>
+					<Input class="w-full" id="name" name="name" placeholder="John Smith" required />
+				</div>
+				<div class="grid gap-2">
+					<Label for="email">{$t('email')}</Label>
+					<Input type="email" id="email" name="email" placeholder="email@example.com" required />
+				</div>
+				<div class="grid gap-2">
+					<Label for="pass">{$t('pass')}</Label>
+					<Input type="password" id="pass" name="pass" required />
+				</div>
+				<div class="grid gap-2">
+					<Label for="passconfirm">{$t('passconfirm')}</Label>
+					<Input type="password" id="passconfirm" name="passconfirm" required />
+				</div>
+			</Card.Content>
+			<Card.Footer class="flex flex-col gap-2">
+				<Button class="w-full" type="submit">{$t('continues')}</Button>
+				<Button class="w-full" variant="ghost" href="/login">{$t('login')}</Button>
+			</Card.Footer>
+		</form>
+	</Card.Root>
 </div>
 
-<style>
-	.container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-	}
-
-	.signup-wrapper {
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
-		padding: 40px;
-		gap: 25px;
-		width: 500px;
-		background: var(--base-100);
-		border: 1px solid var(--base-300);
-		border-radius: 12px;
-	}
-
-	.a {
-		margin-top: 20px;
-		width: 100%;
-		height: 20px;
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 600;
-		font-size: 32px;
-		line-height: 20px;
-	}
-
-	.b {
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 20px;
-		margin-bottom: 5%;
-	}
-
-	.c {
-		width: 100%;
-		height: 40px;
-		font-size: 16px;
-	}
-
-	.button {
-		align-items: center;
-		padding: 10px 16px;
-		gap: 8px;
-		background: #f4ca64;
-		border-radius: 6px;
-		font-family: 'Inter', sans-serif;
-		font-weight: 600;
-		font-size: 16px;
-		line-height: 18px;
-		color: #fdf3d7;
-		text-decoration: none;
-		border: none;
-		width: 100%;
-	}
-
-	@media (max-width: 768px) {
-		.signup-wrapper {
-			width: 100%;
-		}
-	}
-</style>
+{#if form?.message}
+	<Alert.Root
+		variant="destructive"
+		class="absolute bottom-0 left-0 w-full bg-background lg:bottom-5 lg:left-auto lg:right-5 lg:max-w-sm"
+	>
+		<AlertCircle class="h-4 w-4" />
+		<Alert.Title>{$t('error')}</Alert.Title>
+		<Alert.Description>{$t(form.message)}</Alert.Description>
+	</Alert.Root>
+{/if}

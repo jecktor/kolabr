@@ -11,7 +11,7 @@ export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const form = await request.formData();
 		const emailData = form.get('email');
-		const passwordData = form.get('password');
+		const passwordData = form.get('pass');
 
 		if (typeof emailData !== 'string' || typeof passwordData !== 'string') {
 			return fail(400, {
