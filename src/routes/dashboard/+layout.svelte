@@ -134,7 +134,7 @@
 		</div>
 	</header>
 
-	<main class="h-full px-8 pt-8">
+	<main class="px-8 pt-8">
 		<slot />
 	</main>
 </div>
