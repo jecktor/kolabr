@@ -1,14 +1,47 @@
-# [Kolabr](https://kolabr.vercel.app)
+# Kolabr
 
-[![Kolabr](https://i.imgur.com/MT9bwWh.png)](https://kolabr.vercel.app)
+A Kanban board application with live collaboration capabilities. Made with [SvelteKit](https://kit.svelte.dev/) & [Liveblocks](https://liveblocks.io).
 
-[Kolabr](https://kolabr.vercel.app) is a Kanban board application with live collaboration capabilities. Made with [SvelteKit](https://kit.svelte.dev/) & [Liveblocks](https://liveblocks.io).
+## About this project
 
-## Development
-Technologies used in this project include: Svelte, SvelteKit, Liveblocks, Bootstrap
+Technologies used in this project include:
 
-### Run locally
+- Svelte
+- SvelteKit
+- Liveblocks
+- lucia-auth
+- mongoose
+- tailwindcss
+- shadcn/ui (shadcn-svelte)
 
-- Clone this repository: `git clone https://github.com/jecktor/kolabr.git`
+## Features
 
-- Install all dependencies with `npm install`
+- Intuitive drag-and-drop interface for managing tasks
+- Real-time collaboration with Liveblocks
+- User authentication with lucia-auth
+- Integration with MongoDB using mongoose
+- Stylish UI components from shadcn-svelte
+
+## Running Locally
+
+1. Install dependencies using pnpm:
+
+```sh
+pnpm install
+```
+
+2. Copy `.env.example` to `.env` and update the variables.
+
+```sh
+cp .env.example .env
+```
+
+3. Start the development server:
+
+```sh
+pnpm dev
+```
+
+## License
+
+Licensed under the [MIT license](https://github.com/jecktor/kolabr/blob/main/LICENSE).
