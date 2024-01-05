@@ -54,7 +54,7 @@ export const PUT = (async ({ locals, request }) => {
 	if (!session) return new Response('Unauthorized', { status: 401 });
 
 	const { user } = session;
-	const { _id, name, description, deadline, tags, boardId, lane } = await request.json();
+	const { _id, name, description, deadline, tags, assignees, boardId, lane } = await request.json();
 
 	if (
 		!_id ||
@@ -67,7 +67,8 @@ export const PUT = (async ({ locals, request }) => {
 		typeof boardId !== 'string' ||
 		!lane ||
 		typeof lane !== 'string' ||
-		typeof tags !== 'object'
+		typeof tags !== 'object' ||
+		typeof assignees !== 'object'
 	) {
 		return new Response('Bad request', { status: 400 });
 	}
@@ -88,7 +89,11 @@ export const PUT = (async ({ locals, request }) => {
 
 	try {
 		await board.updateOne(
-			{ $set: { 'lanes.$[lane].tickets.$[ticket]': { _id, name, description, deadline, tags } } },
+			{
+				$set: {
+					'lanes.$[lane].tickets.$[ticket]': { _id, name, description, deadline, tags, assignees }
+				}
+			},
 			{ arrayFilters: [{ 'lane._id': lane }, { 'ticket._id': _id }] }
 		);
 

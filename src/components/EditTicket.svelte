@@ -5,6 +5,7 @@
 	import { t, translateDate } from '$locales';
 	import type { ILane, ITicket } from '$types';
 
+	import * as Avatar from '$components/ui/avatar';
 	import * as Dialog from '$components/ui/dialog';
 	import { Button } from '$components/ui/button';
 	import { Badge } from '$components/ui/badge';
@@ -20,11 +21,11 @@
 		name: $t('newticket'),
 		description: '',
 		deadline: '',
-		tags: []
+		tags: [],
+		assignees: []
 	};
 
 	const lanes = useList<ILane>('lanes');
-	const boardTags = useList<Tag>('tags');
 
 	const boardId = $page.url.href.split('/').pop();
 
@@ -83,7 +84,8 @@
 			name: nameInput.value.trim(),
 			description: descInput.value.trim(),
 			deadline: dueInput.value,
-			tags: lane.tickets.find((t) => t._id === _id)?.tags ?? []
+			tags: lane.tickets.find((t) => t._id === _id)?.tags ?? [],
+			assignees: lane.tickets.find((t) => t._id === _id)?.assignees ?? []
 		};
 
 		const opts = {
@@ -123,18 +125,9 @@
 		};
 
 		fetch('/api/board/ticket', opts)
-			.then(() => {
-				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t._id !== _id) });
-
-				ticket.tags.forEach((tag) => {
-					if (
-						!$lanes.find((lane) =>
-							lane.tickets.find((ticket) => ticket.tags.find((t) => t._id === tag._id))
-						)
-					)
-						$boardTags.delete($boardTags.findIndex((t) => t._id === tag._id));
-				});
-			})
+			.then(() =>
+				$lanes.set(laneIdx, { ...lane, tickets: lane.tickets.filter((t) => t._id !== _id) })
+			)
 			.catch(console.error);
 
 		show = false;

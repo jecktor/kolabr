@@ -120,6 +120,7 @@ export type ITicket = {
 	description: string;
 	deadline: string;
 	tags: Tag[];
+	assignees: IMember[];
 };
 
 export type ILane = {
