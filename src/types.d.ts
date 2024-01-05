@@ -98,6 +98,11 @@ interface IBoard {
 				name: string;
 				color: string;
 			}[];
+			assignees: {
+				name: string;
+				email: string;
+				image: string;
+			}[];
 		}[];
 	}[];
 }
@@ -127,6 +132,12 @@ export type ILane = {
 export type IBoardInfo = {
 	name: string;
 	last_edited: string;
+};
+
+export type IMember = {
+	name: string;
+	email: string;
+	image: string;
 };
 
 // Misc types

@@ -3,7 +3,7 @@
 	import { overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
-	import type { IBoard, ILane, ITag, IBoardInfo, InputEvent } from '$types';
+	import type { IBoard, ILane, ITag, IMember, IBoardInfo, InputEvent } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
 
@@ -26,13 +26,15 @@
 		focusedId: null
 	});
 
-	const lanes = useList<ILane>('lanes', board.lanes);
-	useList<ITag>('tags', board.tags);
-
 	const boardInfo = useObject<IBoardInfo>('info', {
 		name: board.name,
 		last_edited: board.last_edited
 	});
+
+	const lanes = useList<ILane>('lanes', board.lanes);
+
+	useList<IMember>('members', board.shared_with);
+	useList<ITag>('tags', board.tags);
 
 	let timeout: NodeJS.Timeout;
 	let boardDeleted = false;
@@ -225,7 +227,7 @@
 				{/if}
 
 				{#if board.owner._id && $self?.id}
-					<ShareDialog userId={$self?.id} owner={board.owner} access={board.shared_with} />
+					<ShareDialog userId={$self?.id} owner={board.owner} />
 				{/if}
 			</div>
 		</header>

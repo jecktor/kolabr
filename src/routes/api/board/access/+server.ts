@@ -31,7 +31,7 @@ export const POST = (async ({ locals, request }) => {
 		return new Response('Not found', { status: 404 });
 	}
 
-	if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+	if (board.owner._id !== user.userId) {
 		return new Response('Unauthorized', { status: 401 });
 	}
 
@@ -81,7 +81,7 @@ export const DELETE = (async ({ locals, request }) => {
 		return new Response('Not found', { status: 404 });
 	}
 
-	if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+	if (board.owner._id !== user.userId) {
 		return new Response('Unauthorized', { status: 401 });
 	}
 

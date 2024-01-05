@@ -117,6 +117,13 @@ const boardSchema = new mongoose.Schema<IBoard>(
                 name: String,
                 color: String,
               }
+            ],
+            assignees: [
+              {
+                name: String,
+                email: String,
+                image: String,
+              }
             ]
 					}
 				]

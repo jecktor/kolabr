@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { useList } from '$lib/liveblocks';
 	import { t, type TranslationKeys } from '$locales';
+	import type { IMember } from '$types';
 
 	import { Button, buttonVariants } from '$components/ui/button';
 	import { Input } from '$components/ui/input';
@@ -13,7 +15,8 @@
 
 	export let userId: string;
 	export let owner: { _id: string; name: string; email: string; image: string };
-	export let access: { name: string; email: string; image: string }[];
+
+	const members = useList<IMember>('members');
 
 	let message: TranslationKeys | undefined;
 	let success: boolean;
@@ -47,7 +50,10 @@
 			.then((info) => {
 				success = true;
 				message = info.status;
-				access = [...access, ...info.users];
+
+				info.users.forEach((user: IMember) => {
+					$members.push(user);
+				});
 
 				accessPeople = '';
 
@@ -75,7 +81,9 @@
 			.then((info) => {
 				success = true;
 				message = info.status;
-				access = access.filter((user) => user.email !== email);
+
+				$members.delete($members.findIndex((user) => user.email === email));
+
 				setTimeout(() => (message = undefined), 3000);
 			})
 			.catch(() => {
@@ -128,7 +136,7 @@
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</div>
-				{#each access as user (user.email)}
+				{#each [...$members] as user (user.email)}
 					<div class="flex items-center justify-between space-x-4">
 						<div class="flex items-center space-x-4">
 							<Avatar.Root>
