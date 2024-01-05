@@ -1,20 +1,18 @@
 <script lang="ts">
-	import { str2Color } from '$utils';
-
 	import { Badge } from '$components/ui/badge';
 	import { X } from 'lucide-svelte';
 
-	export let id: string;
-	export let name: string;
-	export let isDeletable = false;
-	export let onDelete: (id: string) => void = () => {};
+	export let tag: { _id: string; name: string; color: string };
+	export let deletable = false;
+	export let onDelete: (_id: string) => void = () => {};
 </script>
 
-<Badge class="text-white" style={`background: ${str2Color(id)}`}>
-	<span>{name}</span>
-	{#if isDeletable}
-		<button class="border-none bg-transparent outline-none" on:click={() => onDelete(id)}>
-			<X class="ml-2 h-3 w-3" />
+<Badge class="flex items-center gap-2 text-white" style={`background: ${tag.color}`}>
+	<span>{tag.name}</span>
+	<slot />
+	{#if deletable}
+		<button class="border-none bg-transparent outline-none" on:click={() => onDelete(tag._id)}>
+			<X class="h-4 w-4" />
 		</button>
 	{/if}
 </Badge>

@@ -182,8 +182,8 @@
 						<span>{translateDate(ticket.deadline, true)}</span>
 					</Badge>
 				{/if}
-				{#each ticket.tags as { _id, name } (_id)}
-					<Tag id={_id} {name} />
+				{#each ticket.tags as tag (tag._id)}
+					<Tag {tag} />
 				{/each}
 			</div>
 		{/if}

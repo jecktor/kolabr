@@ -1,7 +1,7 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
 import { auth } from '$lib/server';
 import { Board } from '$lib/server';
-import { randomId } from '$utils';
+import { randomId, tagColors } from '$utils';
 import mongoose from 'mongoose';
 
 export const load = async ({ locals }) => {
@@ -56,7 +56,7 @@ export const actions: Actions = {
 			const tags = board.tags.map((tag: string) => ({
 				_id: randomId(),
 				name: tag,
-				color: '#000000'
+				color: tagColors[Math.floor(Math.random() * tagColors.length)]
 			}));
 			const lanes = board.lanes.map((lane: string) => ({
 				_id: randomId(),

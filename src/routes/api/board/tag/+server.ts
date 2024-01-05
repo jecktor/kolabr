@@ -118,15 +118,17 @@ export const PUT = (async ({ locals, request }) => {
 	if (!session) return new Response('Unauthorized', { status: 401 });
 
 	const { user } = session;
-	const { _id, ticketId, laneId, boardId } = await request.json();
+	const { _id, name, color, tickets, boardId } = await request.json();
 
 	if (
 		!_id ||
 		typeof _id !== 'string' ||
-		!ticketId ||
-		typeof ticketId !== 'string' ||
-		!laneId ||
-		typeof laneId !== 'string' ||
+		!name ||
+		typeof name !== 'string' ||
+		!color ||
+		typeof color !== 'string' ||
+		!tickets ||
+		typeof tickets !== 'object' ||
 		!boardId ||
 		typeof boardId !== 'string'
 	) {
@@ -146,12 +148,16 @@ export const PUT = (async ({ locals, request }) => {
 	try {
 		await board.updateOne(
 			{
-				$pull: {
-					'lanes.$[lane].tickets.$[ticket].tags': { _id },
-					'tags.$[tag].tickets': ticketId
+				$set: {
+					'lanes.$[].tickets.$[ticket].tags.$[tag].name': name,
+					'lanes.$[].tickets.$[ticket].tags.$[tag].color': color,
+					'tags.$[tag].name': name,
+					'tags.$[tag].color': color
 				}
 			},
-			{ arrayFilters: [{ 'lane._id': laneId }, { 'ticket._id': ticketId }, { 'tag._id': _id }] }
+			{
+				arrayFilters: [{ 'ticket._id': { $in: tickets } }, { 'tag._id': _id }]
+			}
 		);
 
 		return new Response('OK', { status: 200 });
@@ -165,17 +171,58 @@ export const DELETE = (async ({ locals, request }) => {
 	if (!session) return new Response('Unauthorized', { status: 401 });
 
 	const { user } = session;
-	const { _id, tickets, ticketId, laneId, boardId } = await request.json();
+	const { _id, tickets, ticketId, laneId, boardId, remove } = await request.json();
+
+	if (typeof remove !== 'boolean') {
+		return new Response('Bad request', { status: 400 });
+	}
+
+	if (remove) {
+		if (
+			!_id ||
+			typeof _id !== 'string' ||
+			!ticketId ||
+			typeof ticketId !== 'string' ||
+			!laneId ||
+			typeof laneId !== 'string' ||
+			!boardId ||
+			typeof boardId !== 'string'
+		) {
+			return new Response('Bad request', { status: 400 });
+		}
+
+		const board = await Board.findById(boardId);
+
+		if (!board) {
+			return new Response('Not found', { status: 404 });
+		}
+
+		if (board.owner._id !== user.userId && !board.shared_with.some((u) => u.email === user.email)) {
+			return new Response('Unauthorized', { status: 401 });
+		}
+
+		try {
+			await board.updateOne(
+				{
+					$pull: {
+						'lanes.$[lane].tickets.$[ticket].tags': { _id },
+						'tags.$[tag].tickets': ticketId
+					}
+				},
+				{ arrayFilters: [{ 'lane._id': laneId }, { 'ticket._id': ticketId }, { 'tag._id': _id }] }
+			);
+
+			return new Response('OK', { status: 200 });
+		} catch (e) {
+			return new Response('Internal Server Error', { status: 500 });
+		}
+	}
 
 	if (
 		!_id ||
 		typeof _id !== 'string' ||
 		!tickets ||
 		typeof tickets !== 'object' ||
-		!ticketId ||
-		typeof ticketId !== 'string' ||
-		!laneId ||
-		typeof laneId !== 'string' ||
 		!boardId ||
 		typeof boardId !== 'string'
 	) {
