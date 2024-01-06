@@ -107,7 +107,7 @@
 				<DropdownMenu.Trigger>
 					<Avatar.Root class="h-8 w-8">
 						<Avatar.Image src={data.user.image} alt="avatar" />
-						<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
+						<Avatar.Fallback>{data.user.name[0]}</Avatar.Fallback>
 					</Avatar.Root>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content>

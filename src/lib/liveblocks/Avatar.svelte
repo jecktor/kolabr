@@ -11,7 +11,7 @@
 	<Tooltip.Trigger>
 		<Avatar.Root class="h-8 w-8 bg-background" style={`outline: 2px solid ${color};`}>
 			<Avatar.Image src={image} alt="avatar" referrerpolicy="no-referrer" />
-			<Avatar.Fallback>{name}</Avatar.Fallback>
+			<Avatar.Fallback>{name[0]}</Avatar.Fallback>
 		</Avatar.Root>
 	</Tooltip.Trigger>
 	<Tooltip.Content>

@@ -58,7 +58,7 @@
 									{#if showOwner}
 										<Avatar.Root class="mr-4 h-6 w-6">
 											<Avatar.Image src={board.owner.image} alt="avatar" />
-											<Avatar.Fallback>{board.owner.name}</Avatar.Fallback>
+											<Avatar.Fallback>{board.owner.name[0]}</Avatar.Fallback>
 										</Avatar.Root>
 									{/if}
 									{#if board.shared_with.length > 0}
@@ -68,7 +68,7 @@
 													class="inline-block h-6 w-6 bg-background ring-1 ring-background"
 												>
 													<Avatar.Image src={user.image} alt="avatar" />
-													<Avatar.Fallback>{user.name}</Avatar.Fallback>
+													<Avatar.Fallback>{user.name[0]}</Avatar.Fallback>
 												</Avatar.Root>
 											{/each}
 											{#if board.shared_with.length > 3}

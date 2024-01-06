@@ -38,7 +38,7 @@
 						class="h-20 w-20 cursor-pointer outline-2 hover:outline hover:outline-primary"
 					>
 						<Avatar.Image src={data.user.image} alt="avatar" />
-						<Avatar.Fallback>{data.user.name}</Avatar.Fallback>
+						<Avatar.Fallback>{data.user.name[0]}</Avatar.Fallback>
 					</Avatar.Root>
 				</label>
 				<input
