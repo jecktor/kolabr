@@ -224,7 +224,7 @@
 
 				<!-- Show the current user's avatar-->
 				{#if $self && $myPresence}
-					<Avatar image={$self.info.image} name={$self.info.name} color={$self.info.color} />
+					<Avatar image={$self.info.image} name={$self.info.name} color="transparent" />
 				{/if}
 
 				{#if board.owner._id && $self?.id}
