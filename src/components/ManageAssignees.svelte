@@ -19,11 +19,18 @@
 
 	const boardId = $page.url.href.split('/').pop();
 
+	let timeout = true;
+
 	$: assignees = $lanes
 		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket._id === ticketId)?.assignees ?? []
 		: ticketAssignees;
 
 	function addAssignee(member: IMember) {
+		if (!timeout || assignees.find((m: IMember) => m.email === member.email)) return;
+
+		timeout = false;
+		setTimeout(() => (timeout = true), 500);
+
 		const lane = $lanes.get(laneIdx)!;
 
 		const opts = {
@@ -31,7 +38,7 @@
 			body: JSON.stringify({
 				assignees: [...assignees, member],
 				ticketId,
-				laneId: lane._id,
+				laneId: lane._id.split('-')[0],
 				boardId
 			}),
 			headers: {
@@ -60,7 +67,7 @@
 			body: JSON.stringify({
 				assignee: email,
 				ticketId,
-				laneId: lane._id,
+				laneId: lane._id.split('-')[0],
 				boardId
 			}),
 			headers: {

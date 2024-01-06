@@ -27,12 +27,17 @@
 	let inputFocused = false;
 	let tagPopupFocused = false;
 
+	let timeout = true;
+
 	$: tags = $lanes
 		? $lanes.get(laneIdx)?.tickets.find((ticket) => ticket._id === ticketId)?.tags ?? []
 		: ticketTags;
 
 	function createTag() {
-		if (!tagInput.value.trim() || tagInput.value.length > 15) return;
+		if (!timeout || !tagInput.value.trim() || tagInput.value.length > 15) return;
+
+		timeout = false;
+		setTimeout(() => (timeout = true), 500);
 
 		const newTag: ITag = {
 			_id: randomId(),
@@ -73,7 +78,10 @@
 	}
 
 	function addTag(_id: string, name: string, color: string) {
-		if (tags.find((tag: ITag) => tag._id === _id)) return;
+		if (!timeout || tags.find((tag: ITag) => tag._id === _id)) return;
+
+		timeout = false;
+		setTimeout(() => (timeout = true), 500);
 
 		const lane = $lanes.get(laneIdx)!;
 
