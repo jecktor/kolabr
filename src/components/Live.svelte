@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
@@ -32,9 +33,9 @@
 	});
 
 	const lanes = useList<ILane>('lanes', board.lanes);
+	const owner = useObject<IOwner>('owner', board.owner);
+	const members = useList<IMember>('members', board.shared_with);
 
-	useObject<IOwner>('owner', board.owner);
-	useList<IMember>('members', board.shared_with);
 	useList<ITag>('tags', board.tags);
 
 	let timeout: NodeJS.Timeout;
@@ -115,6 +116,16 @@
 	$: lastEdit = translateDate(boardReady ? $boardInfo.get('last_edited') : '');
 
 	const unsubscribe = lanes.subscribe(() => {
+		if (
+			$self &&
+			$owner &&
+			$self.id !== $owner.get('_id') &&
+			$members &&
+			!$members.find((member) => member.email === $self!.info.email)
+		) {
+			goto('/dashboard');
+		}
+
 		const last_edited = new Date().toString();
 		const opts = {
 			method: 'PATCH',
