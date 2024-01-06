@@ -36,6 +36,8 @@
 	let newTicketId: string;
 	let show = false;
 
+	let timeout = true;
+
 	$: ticket = $lanes
 		? $lanes.get(laneIdx)?.tickets.find((t) => t._id === boardticket._id) ?? boardticket
 		: boardticket;
@@ -43,7 +45,10 @@
 	$: validTicket = $lanes && $lanes.get(laneIdx)?.tickets.find((t) => t._id === boardticket._id);
 
 	function createTicket() {
-		if (isLaneFull) return;
+		if (isLaneFull || !timeout) return;
+
+		timeout = false;
+		setTimeout(() => (timeout = true), 500);
 
 		const lane = $lanes.get(laneIdx)!;
 		newTicketId = randomId();
@@ -178,6 +183,16 @@
 				{/if}
 				{#each ticket.tags as tag (tag._id)}
 					<Tag {tag} />
+				{/each}
+			</div>
+		{/if}
+		{#if ticket.assignees.length > 0}
+			<div class="flex -space-x-1">
+				{#each ticket.assignees as user (user.email)}
+					<Avatar.Root class="inline-block h-6 w-6 bg-background ring-1 ring-background">
+						<Avatar.Image src={user.image} alt="avatar" />
+						<Avatar.Fallback>{user.name}</Avatar.Fallback>
+					</Avatar.Root>
 				{/each}
 			</div>
 		{/if}
