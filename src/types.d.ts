@@ -135,6 +135,13 @@ export type IBoardInfo = {
 	last_edited: string;
 };
 
+export type IOwner = {
+	_id: string;
+	name: string;
+	email: string;
+	image: string;
+};
+
 export type IMember = {
 	name: string;
 	email: string;

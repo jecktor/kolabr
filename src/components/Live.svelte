@@ -3,7 +3,7 @@
 	import { overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
 	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
-	import type { IBoard, ILane, ITag, IMember, IBoardInfo, InputEvent } from '$types';
+	import type { IBoard, ILane, ITag, IMember, IOwner, IBoardInfo, InputEvent } from '$types';
 
 	import { Cursor, Avatar, Selection } from '$lib/liveblocks';
 
@@ -33,6 +33,7 @@
 
 	const lanes = useList<ILane>('lanes', board.lanes);
 
+	useObject<IOwner>('owner', board.owner);
 	useList<IMember>('members', board.shared_with);
 	useList<ITag>('tags', board.tags);
 
@@ -227,7 +228,7 @@
 				{/if}
 
 				{#if board.owner._id && $self?.id}
-					<ShareDialog userId={$self?.id} owner={board.owner} />
+					<ShareDialog userId={$self?.id} />
 				{/if}
 			</div>
 		</header>

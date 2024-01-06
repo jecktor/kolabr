@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { useList } from '$lib/liveblocks';
+	import { useList, useObject } from '$lib/liveblocks';
 	import { t, type TranslationKeys } from '$locales';
-	import type { IMember } from '$types';
+	import type { IOwner, IMember } from '$types';
 
 	import { Button, buttonVariants } from '$components/ui/button';
 	import { Input } from '$components/ui/input';
@@ -14,8 +14,8 @@
 	import { X, Crown, CheckCircle, AlertCircle } from 'lucide-svelte';
 
 	export let userId: string;
-	export let owner: { _id: string; name: string; email: string; image: string };
 
+	const owner = useObject<IOwner>('owner');
 	const members = useList<IMember>('members');
 
 	let message: TranslationKeys | undefined;
@@ -101,7 +101,7 @@
 			<Dialog.Title>{$t('shareboard')}</Dialog.Title>
 			<Dialog.Description>{$t('shareboarddesc')}</Dialog.Description>
 		</Dialog.Header>
-		{#if owner._id === userId}
+		{#if $owner.get('_id') === userId}
 			<div class="flex space-x-2">
 				<Input bind:value={accessPeople} placeholder={$t('shareemail')} />
 				<Button on:click={addPeople} class="shrink-0">{$t('addpeople')}</Button>
@@ -115,15 +115,15 @@
 				<div class="flex items-center justify-between space-x-4">
 					<div class="flex items-center space-x-4">
 						<Avatar.Root>
-							<Avatar.Image src={owner.image} />
-							<Avatar.Fallback>{owner.name}</Avatar.Fallback>
+							<Avatar.Image src={$owner.get('image')} />
+							<Avatar.Fallback>{$owner.get('name')[0]}</Avatar.Fallback>
 						</Avatar.Root>
 						<div>
 							<p class="text-sm font-medium leading-none">
-								{owner.name}
+								{$owner.get('name')}
 							</p>
 							<p class="text-sm text-muted-foreground">
-								{owner.email}
+								{$owner.get('email')}
 							</p>
 						</div>
 					</div>
@@ -141,7 +141,7 @@
 						<div class="flex items-center space-x-4">
 							<Avatar.Root>
 								<Avatar.Image src={user.image} />
-								<Avatar.Fallback>{user.name}</Avatar.Fallback>
+								<Avatar.Fallback>{user.name[0]}</Avatar.Fallback>
 							</Avatar.Root>
 							<div>
 								<p class="text-sm font-medium leading-none">
@@ -152,7 +152,7 @@
 								</p>
 							</div>
 						</div>
-						{#if owner._id === userId}
+						{#if $owner.get('_id') === userId}
 							<Button
 								on:click={() => removePerson(user.email)}
 								variant="outline"
