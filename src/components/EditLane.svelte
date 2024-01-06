@@ -25,11 +25,18 @@
 	let nameInput: HTMLInputElement;
 	let show = false;
 
+	let timeout = true;
+
 	$: name = $lanes ? $lanes.get(idx)?.name ?? lane.name : lane.name;
 	$: limit = $lanes ? $lanes.get(idx)?.limit ?? lane.limit : lane.limit;
 	$: validLane = !isNew && $lanes && $lanes.get(idx);
 
 	function createLane() {
+		if (!timeout) return;
+
+		timeout = false;
+		setTimeout(() => (timeout = true), 500);
+
 		lane._id = randomId();
 
 		const opts = {

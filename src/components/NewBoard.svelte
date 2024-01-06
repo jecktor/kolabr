@@ -22,7 +22,7 @@
 			</Dialog.Description>
 		</Dialog.Header>
 		<div
-			class="grid max-h-[50vh] grid-cols-1 place-items-center gap-6 overflow-scroll lg:grid-cols-2"
+			class="no-scrollbar grid max-h-[50vh] grid-cols-1 place-items-center gap-6 overflow-scroll lg:grid-cols-2"
 		>
 			{#each boardTemplates as template (template[$locale].name)}
 				<form class="h-full w-60 cursor-pointer" use:enhance action="?/newboard" method="post">

@@ -11,6 +11,7 @@
 	import { Badge } from '$components/ui/badge';
 	import { Plus, Trash, Clock } from 'lucide-svelte';
 	import ManageTags from './ManageTags.svelte';
+	import ManageAssignees from './ManageAssignees.svelte';
 	import Tag from './Tag.svelte';
 
 	export let laneIdx: number;

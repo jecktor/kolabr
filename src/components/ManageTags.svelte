@@ -185,7 +185,6 @@
 							: ticket
 					)
 				});
-
 				tags = tags.filter((tag: ITag) => tag._id !== _id);
 			})
 			.catch(console.error);
