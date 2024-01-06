@@ -2,6 +2,8 @@
 	"locale": "English",
 	"actions": "Actions",
 	"addpeople": "Add people",
+	"addassignee": "Add assignee",
+	"assignees": "Assignees",
 	"backtodashboard": "Back to dashboard",
 	"accessupdate": "Board access updated",
 	"boardnotfound": "Board not found",

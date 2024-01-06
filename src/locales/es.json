@@ -2,6 +2,8 @@
 	"locale": "Español",
 	"actions": "Acciones",
 	"addpeople": "Añadir personas",
+	"addassignee": "Añadir asignado",
+	"assignees": "Asignados",
 	"backtodashboard": "Volver al panel",
 	"accessupdate": "Acceso al tablero actualizado",
 	"boardnotfound": "Tablero no encontrado",

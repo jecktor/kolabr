@@ -10,8 +10,8 @@
 	import { Button } from '$components/ui/button';
 	import { Badge } from '$components/ui/badge';
 	import { Plus, Trash, Clock } from 'lucide-svelte';
-	import ManageTags from './ManageTags.svelte';
 	import ManageAssignees from './ManageAssignees.svelte';
+	import ManageTags from './ManageTags.svelte';
 	import Tag from './Tag.svelte';
 
 	export let laneIdx: number;
@@ -161,18 +161,26 @@
 				: 'hover:border-primary'
 		}`}
 	>
-		<div class="text-left">
-			<p class="font-semibold">{ticket.name}</p>
-			{#if ticket.description}
-				<p
-					class={`whitespace-pre-wrap break-all ${
-						isDue ? 'text-red-900 dark:text-red-200' : 'text-muted-foreground'
-					}`}
-				>
-					{ticket.description}
-				</p>
-			{/if}
-		</div>
+		{#if ticket.assignees.length > 0}
+			<div class="flex -space-x-1">
+				{#each ticket.assignees as member (member.email)}
+					<Avatar.Root class="inline-block h-5 w-5 bg-background ring-1 ring-background">
+						<Avatar.Image src={member.image} alt="avatar" />
+						<Avatar.Fallback>{member.name[0]}</Avatar.Fallback>
+					</Avatar.Root>
+				{/each}
+			</div>
+		{/if}
+		<p class="text-left font-semibold">{ticket.name}</p>
+		{#if ticket.description}
+			<p
+				class={`whitespace-pre-wrap break-all text-left text-sm ${
+					isDue ? 'text-red-900 dark:text-red-200' : 'text-muted-foreground'
+				}`}
+			>
+				{ticket.description}
+			</p>
+		{/if}
 		{#if ticket.deadline || ticket.tags.length > 0}
 			<div class="flex flex-wrap items-center gap-2">
 				{#if ticket.deadline}
@@ -183,16 +191,6 @@
 				{/if}
 				{#each ticket.tags as tag (tag._id)}
 					<Tag {tag} />
-				{/each}
-			</div>
-		{/if}
-		{#if ticket.assignees.length > 0}
-			<div class="flex -space-x-1">
-				{#each ticket.assignees as user (user.email)}
-					<Avatar.Root class="inline-block h-6 w-6 bg-background ring-1 ring-background">
-						<Avatar.Image src={user.image} alt="avatar" />
-						<Avatar.Fallback>{user.name}</Avatar.Fallback>
-					</Avatar.Root>
 				{/each}
 			</div>
 		{/if}
@@ -240,6 +238,14 @@
 							bind:this={dueInput}
 							type="datetime-local"
 							value={ticket.deadline}
+						/>
+					</div>
+					<div class="flex flex-col gap-3">
+						<span class="text-sm leading-none">{$t('assignees')}</span>
+						<ManageAssignees
+							ticketAssignees={ticket.assignees}
+							ticketId={newTicketId ?? ticket._id}
+							{laneIdx}
 						/>
 					</div>
 					<div class="flex flex-col gap-3">
