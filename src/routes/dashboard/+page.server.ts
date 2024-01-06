@@ -157,7 +157,10 @@ export const actions: Actions = {
 
 		try {
 			await board.updateOne({
-				shared_with: board.shared_with.filter((u) => u.email !== user.email)
+				$pull: {
+					shared_with: { email: user.email },
+					'lanes.$[].tickets.$[].assignees': { email: user.email }
+				}
 			});
 		} catch (error) {
 			return fail(500, {

@@ -136,7 +136,12 @@ export const actions: Actions = {
 
 			await Board.updateMany(
 				{},
-				{ $pull: { shared_with: { email: user.email } } },
+				{
+					$pull: {
+						shared_with: { email: user.email },
+						'lanes.$[].tickets.$[].assignees': { email: user.email }
+					}
+				},
 				{ multi: true }
 			);
 

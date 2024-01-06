@@ -86,7 +86,12 @@ export const DELETE = (async ({ locals, request }) => {
 	}
 
 	try {
-		await board.updateOne({ $pull: { shared_with: { email } } });
+		await board.updateOne({
+			$pull: {
+				shared_with: { email },
+				'lanes.$[].tickets.$[].assignees': { email }
+			}
+		});
 
 		return json({ status: 'accessupdate' }, { status: 200 });
 	} catch (e) {

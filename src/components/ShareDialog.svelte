@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { useList, useObject } from '$lib/liveblocks';
 	import { t, type TranslationKeys } from '$locales';
-	import type { IOwner, IMember } from '$types';
+	import type { IOwner, IMember, ILane } from '$types';
 
 	import { Button, buttonVariants } from '$components/ui/button';
 	import { Input } from '$components/ui/input';
@@ -17,6 +17,7 @@
 
 	const owner = useObject<IOwner>('owner');
 	const members = useList<IMember>('members');
+	const lanes = useList<ILane>('lanes');
 
 	let message: TranslationKeys | undefined;
 	let success: boolean;
@@ -83,6 +84,16 @@
 				message = info.status;
 
 				$members.delete($members.findIndex((user) => user.email === email));
+
+				$lanes.forEach((lane, idx) => {
+					$lanes.set(idx, {
+						...lane,
+						tickets: lane.tickets.map((ticket) => ({
+							...ticket,
+							assignees: ticket.assignees.filter((assignee: IMember) => assignee.email !== email)
+						}))
+					});
+				});
 
 				setTimeout(() => (message = undefined), 3000);
 			})
