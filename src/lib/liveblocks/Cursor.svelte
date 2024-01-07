@@ -21,7 +21,7 @@
 </script>
 
 <div
-	class="pointer-events-none absolute inset-0 z-10 select-none"
+	class="pointer-events-none absolute inset-0 z-10 h-fit w-fit select-none"
 	style={`transform: translateX(${$coords.x}px) translateY(${$coords.y}px)`}
 >
 	<svg width="32" height="44" viewBox="0 0 24 36" fill="none">
