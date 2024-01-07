@@ -159,7 +159,7 @@
 
 {#if boardReady && !boardDeleted}
 	<div
-		class="absolute inset-0 h-screen w-screen touch-none"
+		class="absolute inset-0 h-screen w-screen touch-none overflow-hidden"
 		on:pointerleave={handlePointerLeave}
 		on:pointermove={handlePointerMove}
 	>
