@@ -20,7 +20,7 @@ export const PATCH = (async ({ locals, request }) => {
 		return new Response('Bad request', { status: 400 });
 	}
 
-	const board = await Board.findById(boardId);
+	const board = await Board.findById(boardId, 'owner shared_with');
 
 	if (!board) {
 		return new Response('Not found', { status: 404 });
@@ -64,7 +64,7 @@ export const DELETE = (async ({ locals, request }) => {
 		return new Response('Bad request', { status: 400 });
 	}
 
-	const board = await Board.findById(boardId);
+	const board = await Board.findById(boardId, 'owner shared_with');
 
 	if (!board) {
 		return new Response('Not found', { status: 404 });
