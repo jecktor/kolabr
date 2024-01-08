@@ -32,7 +32,7 @@ export type UserMeta = {
 // Optionally, the type of custom events broadcasted and listened for in this
 // room. Must be JSON-serializable.
 export type RoomEvent = {
-	// ...
+	type: 'reset';
 };
 
 export type LiveStorage = LiveObject<Storage>;

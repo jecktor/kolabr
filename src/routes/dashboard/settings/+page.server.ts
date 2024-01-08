@@ -1,5 +1,5 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth, deleteFile, Board } from '$lib/server';
+import { auth, liveblocks, deleteFile, Board } from '$lib/server';
 import { LuciaError } from 'lucia';
 
 export const load = async ({ locals }) => {
@@ -132,6 +132,13 @@ export const actions: Actions = {
 				await deleteFile(user.image);
 			}
 
+			const ownerBoards = await Board.find({ 'owner._id': user.userId }, '_id');
+			const userBoards = await Board.find({ 'shared_with.email': user.email }, '_id');
+
+			await Promise.all(
+				ownerBoards.map(async (board) => await liveblocks.deleteRoom(`kolabr-room-${board._id}`))
+			);
+
 			await Board.deleteMany({ 'owner._id': user.userId });
 
 			await Board.updateMany(
@@ -143,6 +150,18 @@ export const actions: Actions = {
 					}
 				},
 				{ multi: true }
+			);
+
+			await Promise.all(
+				userBoards.map(async (board) => {
+					await liveblocks.broadcastEvent(`kolabr-room-${board._id}`, {
+						type: 'reset'
+					});
+					await liveblocks.deleteRoom(`kolabr-room-${board._id}`);
+					await liveblocks.createRoom(`kolabr-room-${board._id}`, {
+						defaultAccesses: ['room:write']
+					});
+				})
 			);
 
 			await auth.deleteUser(user.userId);

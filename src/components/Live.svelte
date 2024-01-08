@@ -2,7 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
-	import { useMyPresence, useOthers, useSelf, useObject, useList } from '$lib/liveblocks';
+	import { useMyPresence, useOthers, useSelf, useObject, useList, useRoom } from '$lib/liveblocks';
 	import { t, translateDate } from '$locales';
 	import type { IBoard, ILane, ITag, IMember, IOwner, IBoardInfo, InputEvent } from '$types';
 
@@ -21,6 +21,8 @@
 	const myPresence = useMyPresence();
 	const self = useSelf();
 	const others = useOthers();
+
+	const room = useRoom();
 
 	myPresence.update({
 		cursor: null,
@@ -152,6 +154,10 @@
 
 	onDestroy(() => {
 		unsubscribe();
+	});
+
+	room.subscribe('event', () => {
+		window.location.reload();
 	});
 
 	overrideItemIdKeyNameBeforeInitialisingDndZones('_id');

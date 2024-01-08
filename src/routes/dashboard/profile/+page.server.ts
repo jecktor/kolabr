@@ -1,5 +1,5 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth, deleteFile, uploadFile, Board } from '$lib/server';
+import { auth, liveblocks, deleteFile, uploadFile, Board } from '$lib/server';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -53,11 +53,45 @@ export const actions: Actions = {
 				image: newAvatar
 			});
 
-			await Board.updateMany({ 'owner._id': user.userId }, { $set: { 'owner.image': newAvatar } });
+			const boards = await Board.find(
+				{
+					$or: [{ 'owner._id': user.userId }, { 'shared_with.email': user.email }]
+				},
+				'_id'
+			);
+
+			await Board.updateMany(
+				{ 'owner._id': user.userId },
+				{
+					$set: {
+						'owner.image': newAvatar,
+						'lanes.$[].tickets.$[].assignees.$[user].image': newAvatar
+					}
+				},
+				{ arrayFilters: [{ 'user.email': user.email }] }
+			);
 
 			await Board.updateMany(
 				{ shared_with: { $elemMatch: { email: user.email } } },
-				{ $set: { 'shared_with.$.image': newAvatar } }
+				{
+					$set: {
+						'shared_with.$[user].image': newAvatar,
+						'lanes.$[].tickets.$[].assignees.$[user].image': newAvatar
+					}
+				},
+				{ arrayFilters: [{ 'user.email': user.email }] }
+			);
+
+			await Promise.all(
+				boards.map(async (board) => {
+					await liveblocks.broadcastEvent(`kolabr-room-${board._id}`, {
+						type: 'reset'
+					});
+					await liveblocks.deleteRoom(`kolabr-room-${board._id}`);
+					await liveblocks.createRoom(`kolabr-room-${board._id}`, {
+						defaultAccesses: ['room:write']
+					});
+				})
 			);
 		} catch (e) {
 			return fail(400, {
@@ -103,11 +137,45 @@ export const actions: Actions = {
 				name
 			});
 
-			await Board.updateMany({ 'owner._id': user.userId }, { $set: { 'owner.name': name } });
+			const boards = await Board.find(
+				{
+					$or: [{ 'owner._id': user.userId }, { 'shared_with.email': user.email }]
+				},
+				'_id'
+			);
+
+			await Board.updateMany(
+				{ 'owner._id': user.userId },
+				{
+					$set: {
+						'owner.name': name,
+						'lanes.$[].tickets.$[].assignees.$[user].name': name
+					}
+				},
+				{ arrayFilters: [{ 'user.email': user.email }] }
+			);
 
 			await Board.updateMany(
 				{ shared_with: { $elemMatch: { email: user.email } } },
-				{ $set: { 'shared_with.$.name': name } }
+				{
+					$set: {
+						'shared_with.$[user].name': name,
+						'lanes.$[].tickets.$[].assignees.$[user].name': name
+					}
+				},
+				{ arrayFilters: [{ 'user.email': user.email }] }
+			);
+
+			await Promise.all(
+				boards.map(async (board) => {
+					await liveblocks.broadcastEvent(`kolabr-room-${board._id}`, {
+						type: 'reset'
+					});
+					await liveblocks.deleteRoom(`kolabr-room-${board._id}`);
+					await liveblocks.createRoom(`kolabr-room-${board._id}`, {
+						defaultAccesses: ['room:write']
+					});
+				})
 			);
 		} catch (e) {
 			return fail(400, {

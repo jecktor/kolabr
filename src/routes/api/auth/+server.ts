@@ -1,12 +1,10 @@
-import { Liveblocks } from '@liveblocks/node';
+import { liveblocks } from '$lib/server';
 import { str2Color } from '$utils';
-import { VITE_LIVEBLOCKS_SECRET_KEY } from '$env/static/private';
+import type { RequestHandler } from './$types';
 
-const liveblocks = new Liveblocks({ secret: VITE_LIVEBLOCKS_SECRET_KEY });
-
-export async function POST(req) {
-	const { room } = await req.request.json();
-	const userSession = await req.locals.auth.validate();
+export const POST = (async ({ locals, request }) => {
+	const userSession = await locals.auth.validate();
+	const { room } = await request.json();
 
 	if (!room || !userSession) {
 		return new Response(undefined, { status: 403 });
@@ -28,4 +26,4 @@ export async function POST(req) {
 	const { status, body } = await session.authorize();
 
 	return new Response(body, { status });
-}
+}) satisfies RequestHandler;

@@ -1,6 +1,5 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
-import { auth } from '$lib/server';
-import { Board } from '$lib/server';
+import { auth, liveblocks, Board } from '$lib/server';
 import { randomId, tagColors } from '$utils';
 import mongoose from 'mongoose';
 
@@ -104,7 +103,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const board = await Board.findById(boardId);
+		const board = await Board.findById(boardId, '_id owner');
 
 		if (!board)
 			return fail(400, {
@@ -118,6 +117,7 @@ export const actions: Actions = {
 		}
 
 		try {
+			await liveblocks.deleteRoom(`kolabr-room-${board._id}`);
 			await board.deleteOne({ _id: boardId });
 		} catch (error) {
 			return fail(500, {
@@ -142,7 +142,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const board = await Board.findById(boardId);
+		const board = await Board.findById(boardId, '_id owner');
 
 		if (!board)
 			return fail(400, {
@@ -161,6 +161,14 @@ export const actions: Actions = {
 					shared_with: { email: user.email },
 					'lanes.$[].tickets.$[].assignees': { email: user.email }
 				}
+			});
+
+			await liveblocks.broadcastEvent(`kolabr-room-${board._id}`, {
+				type: 'reset'
+			});
+			await liveblocks.deleteRoom(`kolabr-room-${board._id}`);
+			await liveblocks.createRoom(`kolabr-room-${board._id}`, {
+				defaultAccesses: ['room:write']
 			});
 		} catch (error) {
 			return fail(500, {
