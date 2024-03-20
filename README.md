@@ -1,3 +1,5 @@
+![](https://i.imgur.com/ie6DX3k.png)
+
 # Kolabr
 
 A Kanban board application with live collaboration capabilities. Made with [SvelteKit](https://kit.svelte.dev/) & [Liveblocks](https://liveblocks.io).
